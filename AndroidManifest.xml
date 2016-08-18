@@ -4,7 +4,7 @@
     android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="21" />
@@ -21,6 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="com.llxx.socket.service.SocketService"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true" >
+            <intent-filter android:priority="1000" >
+                <action android:name="com.llxx.socket.service.MAIN" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
