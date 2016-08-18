@@ -8,15 +8,15 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import com.llxx.socket.loger.Llxx_Loger;
+import com.llxx.socket.loger.Ll_Loger;
 
-public class ClientSocketWrap implements Runnable
+public class Ll_ClientSocketWrap implements Runnable
 {
     private Socket socket;
     private BufferedReader in = null;
     String msg = "";
 
-    public ClientSocketWrap(Socket socket, MessageListener listener)
+    public Ll_ClientSocketWrap(Socket socket, Ll_MessageListener listener)
     {
         this.socket = socket;
         try
@@ -63,7 +63,7 @@ public class ClientSocketWrap implements Runnable
      */
     public void sendmsg(String msg)
     {
-        Llxx_Loger.LogD("", msg);
+        Ll_Loger.LogD("", msg);
         Socket mSocket = this.socket;
         PrintWriter pout = null;
         try

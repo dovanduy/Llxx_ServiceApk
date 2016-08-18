@@ -1,7 +1,10 @@
 /**
  * 
  */
-package com.llxx.socket.service;
+package com.llxx.utils;
+
+import com.llxx.socket.service.ISocketService;
+import com.llxx.socket.service.ISocketService.Stub;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -17,7 +20,7 @@ import android.os.IBinder;
  * @describe 绑定Socket服务
  *
  */
-public class SocketServerBinderUtils
+public class BinderUtils
 {
     ISocketService mScoketService;
     Context context;
@@ -25,7 +28,7 @@ public class SocketServerBinderUtils
     /**
      * 
      */
-    public SocketServerBinderUtils(Context context)
+    public BinderUtils(Context context)
     {
         this.context = context;
     }

@@ -11,7 +11,7 @@ import android.util.Log;
  * @author 李万隆
  * @date   2015年5月5日
  */
-public class Llxx_Loger
+public class Ll_Loger
 {
     public static boolean LOGED = BuildConfig.DEBUG;
     public static String LOG_BUILD = "llxx_log:";

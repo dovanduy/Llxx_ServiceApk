@@ -1,9 +1,9 @@
 package com.llxx.socket.service;
 
-import com.llxx.socket.loger.Llxx_Loger;
-import com.llxx.socket.wrap.ClientSocketWrap;
-import com.llxx.socket.wrap.MessageListener;
-import com.llxx.socket.wrap.SocketServiceWrap;
+import com.llxx.socket.loger.Ll_Loger;
+import com.llxx.socket.wrap.Ll_ClientSocketWrap;
+import com.llxx.socket.wrap.Ll_MessageListener;
+import com.llxx.socket.wrap.Ll_SocketServiceWrap;
 import com.llxx.socket.wrap.bean.Ll_Message;
 
 import android.app.Service;
@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 
-public class SocketService extends Service implements MessageListener
+public class Ll_SocketService extends Service implements Ll_MessageListener
 {
 
     static final String TAG = "SocketService";
@@ -64,24 +64,24 @@ public class SocketService extends Service implements MessageListener
      */
     class SocketRunnable implements Runnable
     {
-        SocketServiceWrap mService = null;
+        Ll_SocketServiceWrap mService = null;
 
         @Override
         public void run()
         {
-            mService = new SocketServiceWrap(SocketService.this);
+            mService = new Ll_SocketServiceWrap(Ll_SocketService.this);
             mService.run();
         }
 
-        public SocketServiceWrap getService()
+        public Ll_SocketServiceWrap getService()
         {
             return mService;
         }
     }
 
     @Override
-    public void onMessage(ClientSocketWrap wrap, Ll_Message message)
+    public void onMessage(Ll_ClientSocketWrap wrap, Ll_Message message)
     {
-        Llxx_Loger.LogD(TAG, "SocketService.onMessage()->" + message.getMessage());
+        Ll_Loger.LogD(TAG, "SocketService.onMessage()->" + message.getMessage());
     }
 }

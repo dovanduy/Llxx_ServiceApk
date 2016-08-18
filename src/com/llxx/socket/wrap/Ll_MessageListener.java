@@ -9,12 +9,12 @@ import com.llxx.socket.wrap.bean.Ll_Message;
  * @describe 监听Message消息
  *
  */
-public interface MessageListener
+public interface Ll_MessageListener
 {
     /**
      * 监听到客户端发来的消息，然后发送给本地服务端
      * @param wrap 
      * @param message
      */
-    public void onMessage(ClientSocketWrap wrap, Ll_Message message);
+    public void onMessage(Ll_ClientSocketWrap wrap, Ll_Message message);
 }

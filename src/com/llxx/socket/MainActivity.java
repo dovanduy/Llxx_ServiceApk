@@ -1,8 +1,8 @@
 package com.llxx.socket;
 
 import com.llxx.service.R;
-import com.llxx.socket.loger.Llxx_Loger;
-import com.llxx.socket.service.SocketServerBinderUtils;
+import com.llxx.socket.loger.Ll_Loger;
+import com.llxx.utils.BinderUtils;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,13 +12,13 @@ import android.view.View.OnClickListener;
 public class MainActivity extends Activity implements OnClickListener
 {
     static final String TAG = "MainActivity";
-    SocketServerBinderUtils mBinderUtils;
+    BinderUtils mBinderUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mBinderUtils = new SocketServerBinderUtils(getApplicationContext());
+        mBinderUtils = new BinderUtils(getApplicationContext());
         mBinderUtils.bind();
 
         setContentView(R.layout.socket_control_layout);
@@ -37,7 +37,7 @@ public class MainActivity extends Activity implements OnClickListener
             try
             {
                 mBinderUtils.getService().sendMessage("socket_send");
-                Llxx_Loger.LogD(TAG, "socket_send->socket_send");
+                Ll_Loger.LogD(TAG, "socket_send->socket_send");
             }
             catch (Exception e)
             {

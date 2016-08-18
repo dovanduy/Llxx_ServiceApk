@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.llxx.socket.service;
+package com.llxx.utils;
 
 import java.util.List;
 

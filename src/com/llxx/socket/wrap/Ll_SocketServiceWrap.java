@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.llxx.socket.loger.Llxx_Loger;
+import com.llxx.socket.loger.Ll_Loger;
 
 import android.util.Log;
 
@@ -22,17 +22,17 @@ import android.util.Log;
  * @date 2016年8月18日
  * @describe 封装Socket服务端
  */
-public class SocketServiceWrap
+public class Ll_SocketServiceWrap
 {
     static final String TAG = "SocketServiceWrap";
     private static final int PORT = 8082;
-    private List<ClientSocketWrap> mList = new ArrayList<ClientSocketWrap>();
+    private List<Ll_ClientSocketWrap> mList = new ArrayList<Ll_ClientSocketWrap>();
     private ServerSocket server = null;
     private ExecutorService mExecutorService = null; //thread pool
 
-    MessageListener mMessageListener;
+    Ll_MessageListener mMessageListener;
 
-    public SocketServiceWrap(MessageListener listener)
+    public Ll_SocketServiceWrap(Ll_MessageListener listener)
     {
         mMessageListener = listener;
     }
@@ -58,10 +58,10 @@ public class SocketServiceWrap
             {
                 client = server.accept();
                 //把客户端放入客户端集合中
-                ClientSocketWrap wrap = new ClientSocketWrap(client, mMessageListener);
+                Ll_ClientSocketWrap wrap = new Ll_ClientSocketWrap(client, mMessageListener);
                 mList.add(wrap);
                 mExecutorService.execute(wrap); //start a new thread to handle the connection
-                Llxx_Loger.LogD(TAG, "client " + wrap + " connect to services");
+                Ll_Loger.LogD(TAG, "client " + wrap + " connect to services");
             }
         }
         catch (Exception e)
@@ -79,14 +79,14 @@ public class SocketServiceWrap
         int num = mList.size();
         for (int index = 0; index < num; index++)
         {
-            ClientSocketWrap mSocket = mList.get(index);
+            Ll_ClientSocketWrap mSocket = mList.get(index);
             PrintWriter pout = null;
             try
             {
                 pout = new PrintWriter(
                         new BufferedWriter(new OutputStreamWriter(mSocket.getSocket().getOutputStream())), true);
                 pout.println(msg);
-                Llxx_Loger.LogD(TAG, "sendMessage" + msg);
+                Ll_Loger.LogD(TAG, "sendMessage" + msg);
             }
             catch (IOException e)
             {

@@ -23,7 +23,7 @@
         </activity>
 
         <service
-            android:name="com.llxx.socket.service.SocketService"
+            android:name="com.llxx.socket.service.Ll_SocketService"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true" >
             <intent-filter android:priority="1000" >
