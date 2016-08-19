@@ -4,9 +4,11 @@
 package com.llxx.socket.service;
 
 import com.llxx.socket.loger.Ll_Loger;
+import com.llxx.utils.BinderUtils;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.os.RemoteException;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -20,11 +22,14 @@ public class Ll_AccessibilityService extends AccessibilityService
 {
     static final boolean DEBUG_OUTPUT = true;
     static final String TAG = "Ll_AccessibilityService";
+    BinderUtils mBinderUtils;
 
     @Override
     protected void onServiceConnected()
     {
         super.onServiceConnected();
+        mBinderUtils = new BinderUtils(getApplicationContext());
+        mBinderUtils.bind();
         AccessibilityServiceInfo accessibilityServiceInfo = new AccessibilityServiceInfo();
         // accessibilityServiceInfo.packageNames = PACKAGES;  
         accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
@@ -66,6 +71,8 @@ public class Ll_AccessibilityService extends AccessibilityService
             if (noteInfo != null)
             {
                 Ll_Loger.i(TAG, noteInfo.toString());
+                sendMessage("onClick|clicked|" + noteInfo.getPackageName() + "|"
+                        + noteInfo.getClassName() + "|" + noteInfo.getText());
             }
             Ll_Loger.i(TAG, "=============END=====================");
             break;
@@ -124,6 +131,25 @@ public class Ll_AccessibilityService extends AccessibilityService
     public void onInterrupt()
     {
 
+    }
+
+    /**
+     * 发送消息
+     * @param message
+     */
+    public void sendMessage(String message)
+    {
+        if (mBinderUtils.getService() != null)
+        {
+            try
+            {
+                mBinderUtils.getService().sendMessage(message);
+            }
+            catch (Throwable e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

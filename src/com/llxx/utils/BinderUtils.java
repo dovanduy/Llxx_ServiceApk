@@ -54,6 +54,10 @@ public class BinderUtils
      */
     public ISocketService getService()
     {
+        if (mScoketService == null)
+        {
+            bind();
+        }
         return mScoketService;
     }
 
@@ -63,13 +67,15 @@ public class BinderUtils
     public void bind()
     {
         Intent intent = new Intent("com.llxx.socket.service.MAIN");
-        intent = SecurityParent.createExplicitFromImplicitIntent(context, intent);
+        intent = SecurityParent.createExplicitFromImplicitIntent(context,
+                intent);
         if (intent != null)
         {
             try
             {
                 // 绑定服务
-                context.bindService(intent, mServiceConnect, Context.BIND_AUTO_CREATE);
+                context.bindService(intent, mServiceConnect,
+                        Context.BIND_AUTO_CREATE);
             }
             catch (Exception e)
             {
