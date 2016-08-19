@@ -5,6 +5,7 @@ package com.llxx.socket.action;
 
 import com.llxx.socket.loger.Ll_Loger;
 
+import android.content.Context;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -19,7 +20,7 @@ public class AccessibilityClickAction extends AccessibilityAction
     public static final String TAG = "AccessibilityClickAction";
 
     @Override
-    protected boolean processEvent(AccessibilityEvent event,
+    protected boolean processEvent(Context context, AccessibilityEvent event,
             AccessibilityNodeInfo nodeInfo)
     {
         // Ll_Loger.i(TAG, event.getBeforeText().toString());

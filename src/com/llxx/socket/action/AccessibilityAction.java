@@ -5,6 +5,7 @@ package com.llxx.socket.action;
 
 import com.llxx.socket.service.ISocketService;
 
+import android.content.Context;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -32,7 +33,7 @@ public abstract class AccessibilityAction
      * @param nodeInfo Node信息，有可能返回为空，需要添加判断
      * @return
      */
-    protected abstract boolean processEvent(AccessibilityEvent event,
+    protected abstract boolean processEvent(Context context, AccessibilityEvent event,
             AccessibilityNodeInfo nodeInfo);
 
     /**

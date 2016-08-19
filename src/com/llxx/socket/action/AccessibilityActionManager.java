@@ -3,6 +3,7 @@
  */
 package com.llxx.socket.action;
 
+import android.content.Context;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -20,7 +21,7 @@ public class AccessibilityActionManager
      * @param nodeInfo
      * @return
      */
-    public static final String processEvent(AccessibilityEvent event,
+    public static final String processEvent(Context context, AccessibilityEvent event,
             AccessibilityNodeInfo nodeInfo)
     {
         for (AccessibilityAction config : AccessibilityActionConfig.ACTIONS)
@@ -29,7 +30,7 @@ public class AccessibilityActionManager
             {
                 if (config.getEventType() == event.getEventType())
                 {
-                    boolean isMatch = config.processEvent(event, nodeInfo);
+                    boolean isMatch = config.processEvent(context, event, nodeInfo);
                     if (isMatch)
                     {
                         return config.getResult();

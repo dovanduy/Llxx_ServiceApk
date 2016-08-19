@@ -20,5 +20,6 @@ public class AccessibilityActionConfig
     {
         ACTIONS.add(new AccessibilityClickAction());
         ACTIONS.add(new AccessibilityToastAction());
+        ACTIONS.add(new AccessibilityActivityAction());
     }
 }

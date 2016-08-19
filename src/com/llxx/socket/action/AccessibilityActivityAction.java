@@ -5,7 +5,10 @@ package com.llxx.socket.action;
 
 import com.llxx.socket.loger.Ll_Loger;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -15,7 +18,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * @qq 	461051353
  * @describe 获取点击事件
  */
-public class AccessibilityToastAction extends AccessibilityAction
+public class AccessibilityActivityAction extends AccessibilityAction
 {
     public static final String TAG = "AccessibilityClickAction";
 
@@ -34,11 +37,16 @@ public class AccessibilityToastAction extends AccessibilityAction
                     "package name: " + event.getPackageName().toString());
         try
         {
-            if (event.getClassName().toString()
-                    .startsWith("android.widget.Toast"))
+            ComponentName componentName = new ComponentName(
+                    event.getPackageName().toString(),
+                    event.getClassName().toString());
+
+            ActivityInfo activityInfo = tryGetActivity(context, componentName);
+            if (activityInfo != null)
             {
-                setResult("notification|toast|" + event.getPackageName() + "|"
-                        + event.getClassName() + "|" + event.getText().get(0));
+                Ll_Loger.i(TAG, componentName.flattenToShortString());
+                setResult("start|activity|" + event.getPackageName() + "|"
+                        + event.getClassName());
             }
             return true;
         }
@@ -52,6 +60,21 @@ public class AccessibilityToastAction extends AccessibilityAction
     @Override
     public int getEventType()
     {
-        return AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED;
+        return AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
     }
+
+    private ActivityInfo tryGetActivity(Context context,
+            ComponentName componentName)
+    {
+        try
+        {
+            return context.getPackageManager().getActivityInfo(componentName,
+                    0);
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            return null;
+        }
+    }
+
 }

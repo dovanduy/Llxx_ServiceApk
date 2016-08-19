@@ -21,6 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- 第二页 -->
+        <activity android:name="com.llxx.socket.SecondActivity" >
+        </activity>
 
         <service
             android:name="com.llxx.socket.service.Ll_SocketService"
@@ -30,7 +34,7 @@
                 <action android:name="com.llxx.socket.service.MAIN" />
             </intent-filter>
         </service>
-        
+
         <!-- 辅助服务 -->
         <service
             android:name="com.llxx.socket.service.Ll_AccessibilityService"

@@ -6,6 +6,7 @@ import com.llxx.utils.BinderUtils;
 import com.llxx.utils.ToastUtil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,6 +27,7 @@ public class MainActivity extends Activity implements OnClickListener
 
         findViewById(R.id.socket_send).setOnClickListener(this);
         findViewById(R.id.open_toast).setOnClickListener(this);
+        findViewById(R.id.start_second_page).setOnClickListener(this);
     }
 
     int start = 0;
@@ -55,6 +57,12 @@ public class MainActivity extends Activity implements OnClickListener
             catch (Exception e)
             {
                 e.printStackTrace();
+            }
+            break;
+
+        case R.id.start_second_page:
+            {
+                startActivity(new Intent(this, SecondActivity.class));
             }
             break;
         default:
