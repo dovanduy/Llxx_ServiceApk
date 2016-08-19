@@ -3,6 +3,7 @@ package com.llxx.socket;
 import com.llxx.service.R;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.utils.BinderUtils;
+import com.llxx.utils.ToastUtil;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class MainActivity extends Activity implements OnClickListener
         setContentView(R.layout.socket_control_layout);
 
         findViewById(R.id.socket_send).setOnClickListener(this);
+        findViewById(R.id.open_toast).setOnClickListener(this);
     }
 
     int start = 0;
@@ -45,6 +47,16 @@ public class MainActivity extends Activity implements OnClickListener
             }
             break;
 
+        case R.id.open_toast:
+            try
+            {
+                ToastUtil.showToast(getApplicationContext(), "show toast");
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            break;
         default:
             break;
         }

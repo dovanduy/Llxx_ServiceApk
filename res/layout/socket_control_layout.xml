@@ -10,4 +10,10 @@
         android:layout_height="wrap_content"
         android:text="发送数据" />
 
+    <Button
+        android:id="@+id/open_toast"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Show_Toast" />
+
 </LinearLayout>
