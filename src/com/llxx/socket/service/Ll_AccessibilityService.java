@@ -8,6 +8,7 @@ import com.llxx.socket.loger.Ll_Loger;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
 
 /**
  * @author 李万隆
@@ -17,7 +18,7 @@ import android.view.accessibility.AccessibilityEvent;
  */
 public class Ll_AccessibilityService extends AccessibilityService
 {
-    static final boolean DEBUG_OUTPUT = false;
+    static final boolean DEBUG_OUTPUT = true;
     static final String TAG = "Ll_AccessibilityService";
 
     @Override
@@ -46,6 +47,22 @@ public class Ll_AccessibilityService extends AccessibilityService
         {
         case AccessibilityEvent.TYPE_VIEW_CLICKED:
             eventText = "TYPE_VIEW_CLICKED";
+            Ll_Loger.i(TAG, "==============Start====================");
+            eventText = "TYPE_VIEW_CLICKED";
+           
+            AccessibilityNodeInfo noteInfo = event.getSource();
+            
+            // Ll_Loger.i(TAG, event.getBeforeText().toString());
+            // Ll_Loger.i(TAG, event.getClassName().toString());
+            // Ll_Loger.i(TAG, event.getContentDescription().toString());
+            // Ll_Loger.i(TAG, event.getText().toString());
+            Ll_Loger.i(TAG, event.getPackageName().toString());
+            
+            if (noteInfo != null)
+            {
+                Ll_Loger.i(TAG, noteInfo.toString());
+            }
+            Ll_Loger.i(TAG, "=============END=====================");
             break;
         case AccessibilityEvent.TYPE_VIEW_FOCUSED:
             eventText = "TYPE_VIEW_FOCUSED";
