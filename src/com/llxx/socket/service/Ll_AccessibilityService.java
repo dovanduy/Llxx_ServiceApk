@@ -25,7 +25,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  */
 public class Ll_AccessibilityService extends AccessibilityService
 {
-    static final boolean DEBUG_OUTPUT = true;
+    static final boolean DEBUG_OUTPUT = false;
     static final String TAG = "Ll_AccessibilityService";
     BinderUtils mBinderUtils;
     String[] PACKAGES = { "com.llxx.service" };
@@ -81,23 +81,6 @@ public class Ll_AccessibilityService extends AccessibilityService
             break;
         case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
             eventText = "TYPE_WINDOW_STATE_CHANGED";
-        {
-            // Ll_Loger.i(TAG, event.getBeforeText().toString());
-            if (event.getClassName() != null)
-                Ll_Loger.i(TAG,
-                        "class name: " + event.getClassName().toString());
-
-            // Ll_Loger.i(TAG, event.getContentDescription().toString());
-            // Ll_Loger.i(TAG, event.getText().toString());
-            if (event.getPackageName() != null)
-                Ll_Loger.i(TAG,
-                        "package name: " + event.getPackageName().toString());
-
-            if (nodeInfo != null)
-            {
-                Ll_Loger.i(TAG, nodeInfo.toString());
-            }
-        }
             break;
         case AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED:
             eventText = "TYPE_NOTIFICATION_STATE_CHANGED";
