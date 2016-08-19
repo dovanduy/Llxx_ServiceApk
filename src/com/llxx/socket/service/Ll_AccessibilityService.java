@@ -49,15 +49,20 @@ public class Ll_AccessibilityService extends AccessibilityService
             eventText = "TYPE_VIEW_CLICKED";
             Ll_Loger.i(TAG, "==============Start====================");
             eventText = "TYPE_VIEW_CLICKED";
-           
+
             AccessibilityNodeInfo noteInfo = event.getSource();
-            
+
             // Ll_Loger.i(TAG, event.getBeforeText().toString());
-            // Ll_Loger.i(TAG, event.getClassName().toString());
+            if (event.getClassName() != null)
+                Ll_Loger.i(TAG,
+                        "class name: " + event.getClassName().toString());
+
             // Ll_Loger.i(TAG, event.getContentDescription().toString());
             // Ll_Loger.i(TAG, event.getText().toString());
-            Ll_Loger.i(TAG, event.getPackageName().toString());
-            
+            if (event.getPackageName() != null)
+                Ll_Loger.i(TAG,
+                        "package name: " + event.getPackageName().toString());
+
             if (noteInfo != null)
             {
                 Ll_Loger.i(TAG, noteInfo.toString());
