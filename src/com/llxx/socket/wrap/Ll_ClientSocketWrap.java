@@ -48,7 +48,7 @@ public class Ll_ClientSocketWrap implements Runnable
             {
                 if ((msg = in.readLine()) != null)
                 {
-
+                    System.out.println("Ll_ClientSocketWrap.run()---");
                 }
             }
         }

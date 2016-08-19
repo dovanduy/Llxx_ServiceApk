@@ -28,6 +28,7 @@ public class Ll_AccessibilityService extends AccessibilityService
     static final boolean DEBUG_OUTPUT = true;
     static final String TAG = "Ll_AccessibilityService";
     BinderUtils mBinderUtils;
+    String [] PACKAGES = {"com.llxx.service"};
 
     @Override
     protected void onServiceConnected()
@@ -36,10 +37,10 @@ public class Ll_AccessibilityService extends AccessibilityService
         mBinderUtils = new BinderUtils(getApplicationContext());
         mBinderUtils.bind();
         AccessibilityServiceInfo accessibilityServiceInfo = new AccessibilityServiceInfo();
-        // accessibilityServiceInfo.packageNames = PACKAGES;  
+        accessibilityServiceInfo.packageNames = PACKAGES;  
         accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
         accessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_SPOKEN;
-        accessibilityServiceInfo.notificationTimeout = 1000;
+        accessibilityServiceInfo.notificationTimeout = 100;
         setServiceInfo(accessibilityServiceInfo);
     }
 
