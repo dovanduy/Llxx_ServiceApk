@@ -61,7 +61,7 @@ public class Ll_SocketServiceWrap
                 Ll_ClientSocketWrap wrap = new Ll_ClientSocketWrap(client, mMessageListener);
                 mList.add(wrap);
                 mExecutorService.execute(wrap); //start a new thread to handle the connection
-                Ll_Loger.LogD(TAG, "client " + wrap + " connect to services");
+                Ll_Loger.d(TAG, "client " + wrap + " connect to services");
             }
         }
         catch (Exception e)
@@ -86,7 +86,7 @@ public class Ll_SocketServiceWrap
                 pout = new PrintWriter(
                         new BufferedWriter(new OutputStreamWriter(mSocket.getSocket().getOutputStream())), true);
                 pout.println(msg);
-                Ll_Loger.LogD(TAG, "sendMessage" + msg);
+                Ll_Loger.d(TAG, "sendMessage" + msg);
             }
             catch (IOException e)
             {

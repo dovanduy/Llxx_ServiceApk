@@ -82,6 +82,6 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
     @Override
     public void onMessage(Ll_ClientSocketWrap wrap, Ll_Message message)
     {
-        Ll_Loger.LogD(TAG, "SocketService.onMessage()->" + message.getMessage());
+        Ll_Loger.d(TAG, "SocketService.onMessage()->" + message.getMessage());
     }
 }

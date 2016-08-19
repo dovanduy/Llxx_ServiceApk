@@ -63,7 +63,7 @@ public class Ll_ClientSocketWrap implements Runnable
      */
     public void sendmsg(String msg)
     {
-        Ll_Loger.LogD("", msg);
+        Ll_Loger.d("", msg);
         Socket mSocket = this.socket;
         PrintWriter pout = null;
         try

@@ -21,7 +21,7 @@ public class Ll_Loger
      * @param tag
      * @param msg
      */
-    public static final void LogV(Object tag, String msg)
+    public static final void v(Object tag, String msg)
     {
         if (LOGED)
             Log.v(tag.getClass().getSimpleName(), LOG_BUILD + msg);
@@ -32,7 +32,7 @@ public class Ll_Loger
      * @param tag
      * @param msg
      */
-    public static final void LogI(Object tag, String msg)
+    public static final void i(Object tag, String msg)
     {
         if (LOGED)
             Log.i(tag.getClass().getSimpleName(), LOG_BUILD + msg);
@@ -43,7 +43,7 @@ public class Ll_Loger
      * @param tag
      * @param msg
      */
-    public static final void LogE(Object tag, String msg)
+    public static final void e(Object tag, String msg)
     {
         Log.e(tag.getClass().getSimpleName(), LOG_BUILD + msg);
     }
@@ -53,7 +53,7 @@ public class Ll_Loger
      * @param tag
      * @param msg
      */
-    public static final void LogD(Object tag, String msg)
+    public static final void d(Object tag, String msg)
     {
         if (LOGED)
             Log.d(tag.getClass().getSimpleName(), LOG_BUILD + msg);
@@ -64,7 +64,7 @@ public class Ll_Loger
      * @param tag
      * @param msg
      */
-    public static final void LogE(Object tag, Exception msg)
+    public static final void e(Object tag, Exception msg)
     {
         if (LOGED)
         {

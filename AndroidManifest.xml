@@ -30,6 +30,19 @@
                 <action android:name="com.llxx.socket.service.MAIN" />
             </intent-filter>
         </service>
+        
+        <!-- 辅助服务 -->
+        <service
+            android:name="com.llxx.socket.service.Ll_AccessibilityService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility" />
+        </service>
     </application>
 
 </manifest>

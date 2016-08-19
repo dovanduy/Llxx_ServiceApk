@@ -37,7 +37,7 @@ public class MainActivity extends Activity implements OnClickListener
             try
             {
                 mBinderUtils.getService().sendMessage("socket_send");
-                Ll_Loger.LogD(TAG, "socket_send->socket_send");
+                Ll_Loger.d(TAG, "socket_send->socket_send");
             }
             catch (Exception e)
             {
