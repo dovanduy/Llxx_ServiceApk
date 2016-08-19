@@ -1,0 +1,46 @@
+/**
+ * 
+ */
+package com.llxx.socket.action;
+
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
+
+/**
+ * @author 李万隆
+ * @date   2016年8月19日
+ * @qq 	461051353
+ * @describe 类描述
+ */
+public class AccessibilityActionManager
+{
+    /**
+     * 处理辅助功能返回的事件
+     * @param event
+     * @param nodeInfo
+     * @return
+     */
+    public static final String processEvent(AccessibilityEvent event,
+            AccessibilityNodeInfo nodeInfo)
+    {
+        for (AccessibilityAction config : AccessibilityActionConfig.ACTIONS)
+        {
+            try
+            {
+                if (config.getEventType() == event.getEventType())
+                {
+                    boolean isMatch = config.processEvent(event, nodeInfo);
+                    if (isMatch)
+                    {
+                        return config.getResult();
+                    }
+                }
+            }
+            catch (Throwable e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+}

@@ -3,6 +3,8 @@
  */
 package com.llxx.socket.service;
 
+import com.llxx.socket.action.AccessibilityAction;
+import com.llxx.socket.action.AccessibilityActionManager;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.utils.BinderUtils;
 
@@ -11,6 +13,7 @@ import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Notification;
 import android.os.Parcelable;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -43,6 +46,14 @@ public class Ll_AccessibilityService extends AccessibilityService
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event)
     {
+        AccessibilityNodeInfo noteInfo = event.getSource();
+        String result = AccessibilityActionManager.processEvent(event,
+                noteInfo);
+        if (!TextUtils.isEmpty(result))
+        {
+            sendMessage(result);
+            return;
+        }
         // TODO Auto-generated method stub  
         int eventType = event.getEventType();
         String eventText = "";
@@ -53,33 +64,7 @@ public class Ll_AccessibilityService extends AccessibilityService
         switch (eventType)
         {
         case AccessibilityEvent.TYPE_VIEW_CLICKED:
-            {
-                eventText = "TYPE_VIEW_CLICKED";
-                Ll_Loger.i(TAG, "==============Start====================");
-                eventText = "TYPE_VIEW_CLICKED";
-
-                AccessibilityNodeInfo noteInfo = event.getSource();
-
-                // Ll_Loger.i(TAG, event.getBeforeText().toString());
-                if (event.getClassName() != null)
-                    Ll_Loger.i(TAG,
-                            "class name: " + event.getClassName().toString());
-
-                // Ll_Loger.i(TAG, event.getContentDescription().toString());
-                // Ll_Loger.i(TAG, event.getText().toString());
-                if (event.getPackageName() != null)
-                    Ll_Loger.i(TAG, "package name: "
-                            + event.getPackageName().toString());
-
-                if (noteInfo != null)
-                {
-                    Ll_Loger.i(TAG, noteInfo.toString());
-                    sendMessage("onClick|clicked|" + noteInfo.getPackageName()
-                            + "|" + noteInfo.getClassName() + "|"
-                            + noteInfo.getText());
-                }
-                Ll_Loger.i(TAG, "=============END=====================");
-            }
+            eventText = "TYPE_VIEW_CLICKED";
             break;
         case AccessibilityEvent.TYPE_VIEW_FOCUSED:
             eventText = "TYPE_VIEW_FOCUSED";
@@ -97,43 +82,7 @@ public class Ll_AccessibilityService extends AccessibilityService
             eventText = "TYPE_WINDOW_STATE_CHANGED";
             break;
         case AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED:
-            {
-                eventText = "TYPE_NOTIFICATION_STATE_CHANGED";
-                if (event.getClassName() != null)
-                    Ll_Loger.i(TAG,
-                            "class name: " + event.getClassName().toString());
-
-                // Ll_Loger.i(TAG, event.getContentDescription().toString());
-                // Ll_Loger.i(TAG, event.getText().toString());
-                if (event.getPackageName() != null)
-                    Ll_Loger.i(TAG, "package name: "
-                            + event.getPackageName().toString());
-                try
-                {
-                    if (event.getClassName().toString()
-                            .startsWith("android.widget.Toast"))
-                    {
-                        sendMessage(
-                                "notification|toast|" + event.getPackageName()
-                                        + "|" + event.getClassName() + "|"
-                                        + event.getText().get(0));
-                    }
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-
-                AccessibilityNodeInfo noteInfo = event.getSource();
-
-                if (noteInfo != null)
-                {
-                    Ll_Loger.i(TAG, noteInfo.toString());
-                    sendMessage("onClick|clicked|" + noteInfo.getPackageName()
-                            + "|" + noteInfo.getClassName() + "|"
-                            + noteInfo.getText());
-                }
-            }
+            eventText = "TYPE_NOTIFICATION_STATE_CHANGED";
 
             break;
         case AccessibilityEvent.TYPE_TOUCH_EXPLORATION_GESTURE_END:
