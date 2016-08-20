@@ -9,19 +9,24 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.llxx.socket.loger.Ll_Loger;
+import com.llxx.socket.wrap.bean.Ll_Message;
 
 public class Ll_ClientSocketWrap implements Runnable
 {
+    public static final String TAG = "Ll_ClientSocketWrap";
     private Socket socket;
     private BufferedReader in = null;
     String msg = "";
+    Ll_MessageListener mListener;
 
     public Ll_ClientSocketWrap(Socket socket, Ll_MessageListener listener)
     {
         this.socket = socket;
+        mListener = listener;
         try
         {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            in = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
         }
         catch (IOException e)
         {
@@ -46,9 +51,19 @@ public class Ll_ClientSocketWrap implements Runnable
         {
             while (true)
             {
+                Ll_Loger.i(TAG, this + " wait for message");
                 if ((msg = in.readLine()) != null)
                 {
-                    System.out.println("Ll_ClientSocketWrap.run()---");
+                    if (mListener != null)
+                    {
+                        mListener.onMessage(this, new Ll_Message(msg));
+                        Ll_Loger.d(TAG, this + " receive message -->" + msg);
+                    }
+                    
+                }
+                if(socket.isClosed())
+                {
+                    break;
                 }
             }
         }
@@ -68,7 +83,11 @@ public class Ll_ClientSocketWrap implements Runnable
         PrintWriter pout = null;
         try
         {
-            pout = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mSocket.getOutputStream())), true);
+            pout = new PrintWriter(
+                    new BufferedWriter(
+                            new OutputStreamWriter(mSocket.getOutputStream())),
+                    true);
+            Ll_Loger.d(TAG, "sendmsg -> " + msg);
             pout.println(msg);
         }
         catch (IOException e)

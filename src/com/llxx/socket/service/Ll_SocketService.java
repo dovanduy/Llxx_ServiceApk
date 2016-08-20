@@ -1,6 +1,9 @@
 package com.llxx.socket.service;
 
 import com.llxx.socket.loger.Ll_Loger;
+import com.llxx.socket.protocol.IProtocol;
+import com.llxx.socket.protocol.Protocol;
+import com.llxx.socket.protocol.ProtocolSplit;
 import com.llxx.socket.wrap.Ll_ClientSocketWrap;
 import com.llxx.socket.wrap.Ll_MessageListener;
 import com.llxx.socket.wrap.Ll_SocketServiceWrap;
@@ -17,12 +20,14 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
     static final String TAG = "SocketService";
     Thread mSocketThread;
     SocketRunnable mRunnable;
+    IProtocol mProtocol;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
 
+        mProtocol = new ProtocolSplit();
         mRunnable = new SocketRunnable();
         mSocketThread = new Thread(mRunnable);
         mSocketThread.start();
@@ -82,7 +87,12 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
     @Override
     public void onMessage(Ll_ClientSocketWrap wrap, Ll_Message message)
     {
+        Protocol protocol = mProtocol.parseMessage(message);
+        Ll_Loger.d(TAG, "SocketService.onMessage()->" + message.getMessage() + "," + protocol);
+        if (protocol != null)
+        {
+            wrap.sendmsg(protocol.getResult(getApplicationContext()));
+        }
         
-        Ll_Loger.d(TAG, "SocketService.onMessage()->" + message.getMessage());
     }
 }
