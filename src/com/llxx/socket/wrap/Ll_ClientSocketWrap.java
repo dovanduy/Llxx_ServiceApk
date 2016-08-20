@@ -25,8 +25,7 @@ public class Ll_ClientSocketWrap implements Runnable
         mListener = listener;
         try
         {
-            in = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }
         catch (IOException e)
         {
@@ -49,28 +48,41 @@ public class Ll_ClientSocketWrap implements Runnable
     {
         try
         {
-            while (true)
+            Ll_Loger.i(TAG, this + " wait for message");
+            while ((msg = in.readLine()) != null)
             {
+                if (mListener != null)
+                {
+                    mListener.onMessage(this, new Ll_Message(msg));
+                    Ll_Loger.d(TAG, this + " receive message -->" + msg);
+                }
                 Ll_Loger.i(TAG, this + " wait for message");
-                if ((msg = in.readLine()) != null)
-                {
-                    if (mListener != null)
-                    {
-                        mListener.onMessage(this, new Ll_Message(msg));
-                        Ll_Loger.d(TAG, this + " receive message -->" + msg);
-                    }
-                    
-                }
-                if(socket.isClosed())
-                {
-                    break;
-                }
             }
+            try
+            {
+                socket.close();
+                Ll_Loger.d(TAG, this + " close  -->" + socket);
+            }
+            catch (Throwable e)
+            {
+                e.printStackTrace();
+            }
+            Ll_Loger.d(TAG, this + "--> isClose() " + isClose());
+            
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Socket is close
+     * @return
+     */
+    public boolean isClose()
+    {
+        return socket.isClosed();
     }
 
     /**
@@ -83,10 +95,7 @@ public class Ll_ClientSocketWrap implements Runnable
         PrintWriter pout = null;
         try
         {
-            pout = new PrintWriter(
-                    new BufferedWriter(
-                            new OutputStreamWriter(mSocket.getOutputStream())),
-                    true);
+            pout = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mSocket.getOutputStream())), true);
             Ll_Loger.d(TAG, "sendmsg -> " + msg);
             pout.println(msg);
         }
