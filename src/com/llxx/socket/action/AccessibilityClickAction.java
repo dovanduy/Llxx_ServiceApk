@@ -20,9 +20,9 @@ public class AccessibilityClickAction extends AccessibilityAction
     public static final String TAG = "AccessibilityClickAction";
 
     @Override
-    protected boolean processEvent(Context context, AccessibilityEvent event,
-            AccessibilityNodeInfo nodeInfo)
+    protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
+        setResult("");
         // Ll_Loger.i(TAG, event.getBeforeText().toString());
         if (event.getClassName() != null)
             Ll_Loger.i(TAG, "class name: " + event.getClassName().toString());
@@ -30,16 +30,25 @@ public class AccessibilityClickAction extends AccessibilityAction
         // Ll_Loger.i(TAG, event.getContentDescription().toString());
         // Ll_Loger.i(TAG, event.getText().toString());
         if (event.getPackageName() != null)
-            Ll_Loger.i(TAG,
-                    "package name: " + event.getPackageName().toString());
+            Ll_Loger.i(TAG, "package name: " + event.getPackageName().toString());
 
         if (nodeInfo != null)
         {
             Ll_Loger.i(TAG, nodeInfo.toString());
-            setResult("onClick|clicked|" + nodeInfo.getPackageName() + "|"
-                    + nodeInfo.getClassName() + "|" + nodeInfo.getText());
+            setResult("onClick|clicked|" + event.getPackageName() + "|" + event.getClassName() + "|"
+                    + nodeInfo.getText());
+            return true;
         }
-        return true;
+        else if (event.getText() != null && event.getText().size() > 0)
+        {
+            Ll_Loger.i(TAG, "nodeInfo is null" +  event.getText());
+            setResult("onClick|clicked|" + event.getPackageName() + "|" + event.getClassName() + "|"
+                    + event.getText().get(0));
+            //            Ll_Loger.i(TAG, "nodeInfo is null" +  event.getText());
+            
+            return true;
+        }
+        return false;
     }
 
     @Override

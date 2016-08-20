@@ -21,10 +21,10 @@ public class Ll_Loger
      * @param tag
      * @param msg
      */
-    public static final void v(Object tag, String msg)
+    public static final void v(String tag, String msg)
     {
         if (LOGED)
-            Log.v(tag.getClass().getSimpleName(), LOG_BUILD + msg);
+            Log.v(tag, LOG_BUILD + msg);
     }
 
     /**
@@ -32,10 +32,10 @@ public class Ll_Loger
      * @param tag
      * @param msg
      */
-    public static final void i(Object tag, String msg)
+    public static final void i(String tag, String msg)
     {
         if (LOGED)
-            Log.i(tag.getClass().getSimpleName(), LOG_BUILD + msg);
+            Log.i(tag, LOG_BUILD + msg);
     }
 
     /**
@@ -43,9 +43,9 @@ public class Ll_Loger
      * @param tag
      * @param msg
      */
-    public static final void e(Object tag, String msg)
+    public static final void e(String tag, String msg)
     {
-        Log.e(tag.getClass().getSimpleName(), LOG_BUILD + msg);
+        Log.e(tag, LOG_BUILD + msg);
     }
 
     /**
@@ -53,10 +53,10 @@ public class Ll_Loger
      * @param tag
      * @param msg
      */
-    public static final void d(Object tag, String msg)
+    public static final void d(String tag, String msg)
     {
         if (LOGED)
-            Log.d(tag.getClass().getSimpleName(), LOG_BUILD + msg);
+            Log.d(tag, LOG_BUILD + msg);
     }
 
     /**

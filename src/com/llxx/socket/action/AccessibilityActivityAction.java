@@ -16,16 +16,17 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * @author 李万隆
  * @date   2016年8月19日
  * @qq 	461051353
- * @describe 获取点击事件
+ * @describe 获取Activity事件
  */
 public class AccessibilityActivityAction extends AccessibilityAction
 {
-    public static final String TAG = "AccessibilityClickAction";
+    public static final String TAG = "AccessibilityActivityAction";
 
     @Override
     protected boolean processEvent(Context context, AccessibilityEvent event,
             AccessibilityNodeInfo nodeInfo)
     {
+        setResult("");
         // Ll_Loger.i(TAG, event.getBeforeText().toString());
         if (event.getClassName() != null)
             Ll_Loger.i(TAG, "class name: " + event.getClassName().toString());
