@@ -23,10 +23,11 @@ public class ProtocolSplit implements IProtocol
         {
             strings = message.getMessage().split("|");
         }
-        String action = strings[0];
+        String action = strings[0].trim().replaceAll("\r\n", "");
         Class<? extends Protocol> protocol = ProtocolManager.mProtocols
                 .get(action);
-        Ll_Loger.d(TAG, "parseMessage -> " + message.getMessage());
+        Ll_Loger.d(TAG, "parseMessage -> " + message.getMessage()
+                + ", protocol ->" + protocol);
         if (protocol != null)
         {
             try

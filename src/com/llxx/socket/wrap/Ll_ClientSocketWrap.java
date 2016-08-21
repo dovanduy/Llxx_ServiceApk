@@ -11,6 +11,8 @@ import java.net.Socket;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.wrap.bean.Ll_Message;
 
+import android.text.TextUtils;
+
 public class Ll_ClientSocketWrap implements Runnable
 {
     public static final String TAG = "Ll_ClientSocketWrap";
@@ -25,7 +27,8 @@ public class Ll_ClientSocketWrap implements Runnable
         mListener = listener;
         try
         {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            in = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
         }
         catch (IOException e)
         {
@@ -43,20 +46,38 @@ public class Ll_ClientSocketWrap implements Runnable
         return socket;
     }
 
+    private StringBuilder input = new StringBuilder();
+    private boolean isKeepListener = true;
+
     @Override
     public void run()
     {
         try
         {
             Ll_Loger.i(TAG, this + " wait for message");
-            while ((msg = in.readLine()) != null)
+            while (isKeepListener)
             {
-                if (mListener != null)
+                input.setLength(0); // clear
+
+                int a;
+                // (char) -1 is not equal to -1.
+                // ready is checked to ensure the read call doesn't block.
+                while ((a = in.read()) != -1 && in.ready())
+                {
+                    input.append((char) a);
+                }
+                String msg = input.toString();
+                if (mListener != null && !TextUtils.isEmpty(msg))
                 {
                     mListener.onMessage(this, new Ll_Message(msg));
                     Ll_Loger.d(TAG, this + " receive message -->" + msg);
                 }
-                Ll_Loger.i(TAG, this + " wait for message");
+                // 客户端已经断开连接
+                if (a == -1)
+                {
+                    isKeepListener = false;
+                }
+                Ll_Loger.i(TAG, this + " wait for message" + a);
             }
             try
             {
@@ -68,7 +89,7 @@ public class Ll_ClientSocketWrap implements Runnable
                 e.printStackTrace();
             }
             Ll_Loger.d(TAG, this + "--> isClose() " + isClose());
-            
+
         }
         catch (Exception e)
         {
@@ -95,7 +116,10 @@ public class Ll_ClientSocketWrap implements Runnable
         PrintWriter pout = null;
         try
         {
-            pout = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mSocket.getOutputStream())), true);
+            pout = new PrintWriter(
+                    new BufferedWriter(
+                            new OutputStreamWriter(mSocket.getOutputStream())),
+                    true);
             Ll_Loger.d(TAG, "sendmsg -> " + msg);
             pout.println(msg);
         }
