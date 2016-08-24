@@ -3,6 +3,7 @@ package com.llxx.socket.service;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.protocol.IProtocol;
 import com.llxx.socket.protocol.Protocol;
+import com.llxx.socket.protocol.ProtocolJson;
 import com.llxx.socket.protocol.ProtocolSplit;
 import com.llxx.socket.wrap.Ll_ClientSocketWrap;
 import com.llxx.socket.wrap.Ll_MessageListener;
@@ -20,14 +21,18 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
     static final String TAG = "SocketService";
     Thread mSocketThread;
     SocketRunnable mRunnable;
-    IProtocol mProtocol;
+    IProtocol mProtocolJson;
+    IProtocol mProtocolSplit;
+    Ll_ClientSocketWrap mAccessibilityClient;
+    Object mAccessibilityClientLock = new Object();
 
     @Override
     public void onCreate()
     {
         super.onCreate();
 
-        mProtocol = new ProtocolSplit();
+        mProtocolJson = new ProtocolJson();
+        mProtocolSplit = new ProtocolSplit();
         mRunnable = new SocketRunnable();
         mSocketThread = new Thread(mRunnable);
         mSocketThread.start();
@@ -87,12 +92,37 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
     @Override
     public void onMessage(Ll_ClientSocketWrap wrap, Ll_Message message)
     {
-        Protocol protocol = mProtocol.parseMessage(message);
+        Protocol protocol = null;
+        if (message.getMsgtype() == Ll_Message.MSG_JSON)
+        {
+            protocol = mProtocolJson.parseMessage(message);
+        }
+        else
+        {
+            protocol = mProtocolJson.parseMessage(message);
+        }
+
         Ll_Loger.d(TAG, "SocketService.onMessage()->" + message.getMessage() + "," + protocol);
         if (protocol != null)
         {
+            protocol.doAction(wrap, this);
             wrap.sendmsg(protocol.getResult(getApplicationContext()));
         }
-        
+        else
+        {
+            // XXX DO ERROR
+        }
+    }
+
+    /**
+     * 设置辅助服务的客户端
+     * @param wrap
+     */
+    public void setAccessibilityClient(Ll_ClientSocketWrap wrap)
+    {
+        synchronized (mAccessibilityClientLock)
+        {
+            mAccessibilityClient = wrap;
+        }
     }
 }

@@ -3,16 +3,13 @@
  */
 package com.llxx.socket.service;
 
-import com.llxx.socket.action.AccessibilityAction;
+import com.llxx.client.node.Ll_AccessibilityClient;
 import com.llxx.socket.action.AccessibilityActionManager;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.utils.BinderUtils;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
-import android.app.Notification;
-import android.os.Parcelable;
-import android.os.RemoteException;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -29,11 +26,16 @@ public class Ll_AccessibilityService extends AccessibilityService
     static final String TAG = "Ll_AccessibilityService";
     BinderUtils mBinderUtils;
     String[] PACKAGES = { "com.llxx.service" };
+    Thread mBinderThread;
+    Ll_AccessibilityClient mBinderClient;
 
     @Override
     protected void onServiceConnected()
     {
         super.onServiceConnected();
+        mBinderClient = new Ll_AccessibilityClient(this);
+        mBinderThread = new Thread(mBinderClient);
+        mBinderThread.start();
         mBinderUtils = new BinderUtils(getApplicationContext());
         mBinderUtils.bind();
         AccessibilityServiceInfo accessibilityServiceInfo = new AccessibilityServiceInfo();
@@ -123,7 +125,7 @@ public class Ll_AccessibilityService extends AccessibilityService
     @Override
     public void onInterrupt()
     {
-
+        
     }
 
     /**
@@ -143,6 +145,13 @@ public class Ll_AccessibilityService extends AccessibilityService
                 e.printStackTrace();
             }
         }
+    }
+    
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        mBinderClient.stop();
     }
 
 }

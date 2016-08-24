@@ -4,6 +4,8 @@
 package com.llxx.socket.protocol.wrap;
 
 import com.llxx.socket.protocol.Protocol;
+import com.llxx.socket.service.Ll_SocketService;
+import com.llxx.socket.wrap.Ll_ClientSocketWrap;
 
 import android.content.Context;
 import android.view.WindowManager;
@@ -36,6 +38,12 @@ public class ProtocolScreen extends Protocol
         int width = wm.getDefaultDisplay().getWidth();
         int height = wm.getDefaultDisplay().getHeight();
         return "getwh|" + width + "|" + height;
+    }
+
+    @Override
+    public void doAction(Ll_ClientSocketWrap wrap, Ll_SocketService service)
+    {
+        
     }
 
 }

@@ -37,6 +37,17 @@ public class Ll_Loger
         if (LOGED)
             Log.i(tag, LOG_BUILD + msg);
     }
+    
+    /**
+     * 信息日志
+     * @param tag
+     * @param msg
+     */
+    public static final void w(String tag, String msg)
+    {
+        if (LOGED)
+            Log.w(tag, LOG_BUILD + msg);
+    }
 
     /**
      * 错误日志

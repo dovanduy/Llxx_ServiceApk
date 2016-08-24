@@ -5,6 +5,7 @@ package com.llxx.socket.protocol;
 
 import java.util.HashMap;
 
+import com.llxx.socket.protocol.wrap.ProtocolConnectService;
 import com.llxx.socket.protocol.wrap.ProtocolScreen;
 
 /**
@@ -18,5 +19,7 @@ public class ProtocolManager
     static
     {
         mProtocols.put("getwh", ProtocolScreen.class);
+        mProtocols.put("accessibility_connect_service", ProtocolConnectService.class);
+        
     }
 }

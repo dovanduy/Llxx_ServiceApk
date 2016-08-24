@@ -26,7 +26,8 @@ public class ProtocolJson implements IProtocol
             String action = object.optString("action", "");
             Class<? extends Protocol> protocol = ProtocolManager.mProtocols
                     .get(action);
-            Ll_Loger.d(TAG, "parseMessage -> " + message.getMessage()
+            
+            Ll_Loger.d(TAG, "parseMessage -> action : " + action
                     + ", protocol ->" + protocol);
             if (protocol != null)
             {
