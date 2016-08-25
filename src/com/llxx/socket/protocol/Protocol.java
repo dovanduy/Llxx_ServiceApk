@@ -3,6 +3,9 @@
  */
 package com.llxx.socket.protocol;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.llxx.command.Command;
 import com.llxx.socket.service.Ll_SocketService;
 import com.llxx.socket.wrap.Ll_ClientSocketWrap;
@@ -13,12 +16,66 @@ import com.llxx.socket.wrap.Ll_ClientSocketWrap;
  */
 public abstract class Protocol extends Command
 {
-    
-    
-    public abstract void doAction(Ll_ClientSocketWrap wrap, Ll_SocketService service);
-    
+    private String classname = "";
+    private String packageName = "";
+
+    public abstract void doAction(Ll_ClientSocketWrap wrap,
+            Ll_SocketService service);
+
     public Protocol()
     {
         setAction(action());
+    }
+
+    @Override
+    public JSONObject getJsonObject()
+    {
+        JSONObject object = super.getJsonObject();
+        if (object != null)
+        {
+            try
+            {
+                object.put("classname", getClassname());
+                object.put("packagename", getPackageName());
+                return object;
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return the classname
+     */
+    public String getClassname()
+    {
+        return classname;
+    }
+
+    /**
+     * @param classname the classname to set
+     */
+    public void setClassname(String classname)
+    {
+        this.classname = classname;
+    }
+
+    /**
+     * @return the packageName
+     */
+    public String getPackageName()
+    {
+        return packageName;
+    }
+
+    /**
+     * @param packageName the packageName to set
+     */
+    public void setPackageName(String packageName)
+    {
+        this.packageName = packageName;
     }
 }

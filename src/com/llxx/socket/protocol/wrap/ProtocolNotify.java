@@ -19,8 +19,6 @@ import android.content.Context;
 public class ProtocolNotify extends Protocol
 {
 
-    private String classname = "";
-    private String packageName = "";
     private String type = "";
     private String title = "";
 
@@ -50,8 +48,6 @@ public class ProtocolNotify extends Protocol
         {
             try
             {
-                object.put("classname", getClassname());
-                object.put("packageName", getPackageName());
                 object.put("type", getType());
                 object.put("title", getTitle());
                 return object.toString();
@@ -62,38 +58,6 @@ public class ProtocolNotify extends Protocol
             }
         }
         return null;
-    }
-
-    /**
-     * @return the classname
-     */
-    public String getClassname()
-    {
-        return classname;
-    }
-
-    /**
-     * @param classname the classname to set
-     */
-    public void setClassname(String classname)
-    {
-        this.classname = classname;
-    }
-
-    /**
-     * @return the packageName
-     */
-    public String getPackageName()
-    {
-        return packageName;
-    }
-
-    /**
-     * @param packageName the packageName to set
-     */
-    public void setPackageName(String packageName)
-    {
-        this.packageName = packageName;
     }
 
     /**
