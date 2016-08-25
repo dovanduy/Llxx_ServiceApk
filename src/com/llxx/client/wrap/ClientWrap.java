@@ -1,4 +1,4 @@
-package com.llxx.client.node;
+package com.llxx.client.wrap;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,18 +8,13 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import org.json.JSONObject;
-
-import com.llxx.client.action.ActionConnectService;
-import com.llxx.client.command.CommandManager;
-import com.llxx.client.command.CommandRun;
 import com.llxx.socket.loger.Ll_Loger;
-import com.llxx.socket.service.Ll_AccessibilityService;
+import com.llxx.socket.wrap.Ll_MessageListener;
 import com.llxx.socket.wrap.bean.Ll_Message;
 
 import android.text.TextUtils;
 
-public class Ll_AccessibilityClient implements Runnable
+public class ClientWrap implements Runnable
 {
     private static final String HOST = "127.0.0.1";
     private static final int PORT = 8082;
@@ -27,16 +22,19 @@ public class Ll_AccessibilityClient implements Runnable
     private BufferedReader in = null;
     private PrintWriter out = null;
 
-    public static final String TAG = "Ll_AccessibilityClient";
+    public static final String TAG = "ClientWrap";
+
+    Ll_MessageListener mListener;
 
     // 
     private StringBuilder input = new StringBuilder();
     private boolean isKeepListener = true;
-    Ll_AccessibilityService mAccessibilityService;
+    
+    private boolean isConnect = false;
 
-    public Ll_AccessibilityClient(Ll_AccessibilityService accessibilityService)
+    public ClientWrap(Ll_MessageListener listener)
     {
-        mAccessibilityService = accessibilityService;
+        mListener = listener;
     }
 
     /**
@@ -74,11 +72,10 @@ public class Ll_AccessibilityClient implements Runnable
 
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-            send(new ActionConnectService().getResult(mAccessibilityService));
+            isConnect = true;
             while (isKeepListener)
             {
                 input.setLength(0); // clear
-
                 int a;
                 // (char) -1 is not equal to -1.
                 // ready is checked to ensure the read call doesn't block.
@@ -87,34 +84,9 @@ public class Ll_AccessibilityClient implements Runnable
                     input.append((char) a);
                 }
                 String msg = input.toString();
-                if (!TextUtils.isEmpty(msg))
+                if (!TextUtils.isEmpty(msg) && mListener != null)
                 {
-                    Ll_Loger.d(TAG, socket + " receive message -->" + msg);
-                    JSONObject object = new JSONObject(msg);
-                    String action = object.optString("action", "");
-                    Class<? extends CommandRun> command = CommandManager.mProtocols.get(action);
-
-                    Ll_Loger.d(TAG, "parseMessage -> action : " + action + ", protocol ->" + command);
-                    if (command != null)
-                    {
-                        try
-                        {
-                            // 1. 设置消息 2.解析消息 3.运行命令 4.发送给服务端结果
-                            CommandRun mProtocol = command.newInstance();
-                            mProtocol.setMessage(new Ll_Message(msg));
-                            mProtocol.prase();
-                            mProtocol.runCommand(mAccessibilityService);
-                            send(mProtocol.getResult(mAccessibilityService));
-                        }
-                        catch (InstantiationException e)
-                        {
-                            e.printStackTrace();
-                        }
-                        catch (IllegalAccessException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
+                    mListener.onMessage(null, new Ll_Message(msg));
                 }
                 // 客户端已经断开连接
                 if (a == -1)
@@ -123,6 +95,7 @@ public class Ll_AccessibilityClient implements Runnable
                 }
                 Ll_Loger.i(TAG, socket + " wait for message" + a);
             }
+            isConnect = false;
             socket.close();
             Ll_Loger.d(TAG, socket + " close  -->" + socket);
             Ll_Loger.d(TAG, socket + "--> isClose() " + isClose());
@@ -154,7 +127,6 @@ public class Ll_AccessibilityClient implements Runnable
         try
         {
             pout = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mSocket.getOutputStream())), true);
-            Ll_Loger.d(TAG, "Accessibility sendmsg -> " + msg);
             pout.println(msg);
         }
         catch (IOException e)
@@ -166,6 +138,15 @@ public class Ll_AccessibilityClient implements Runnable
     public void stop()
     {
         isKeepListener = false;
+    }
+    
+    /**
+     * 是否连接
+     * @return
+     */
+    public boolean isConnect()
+    {
+        return isConnect;
     }
 
 }

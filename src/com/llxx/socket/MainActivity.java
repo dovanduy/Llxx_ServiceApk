@@ -1,21 +1,28 @@
 package com.llxx.socket;
 
+import org.json.JSONObject;
+
+import com.llxx.client.command.CommandClick;
+import com.llxx.client.wrap.ClientWrap;
 import com.llxx.service.R;
 import com.llxx.socket.loger.Ll_Loger;
+import com.llxx.socket.wrap.Ll_ClientSocketWrap;
+import com.llxx.socket.wrap.Ll_MessageListener;
+import com.llxx.socket.wrap.bean.Ll_Message;
 import com.llxx.utils.BinderUtils;
 import com.llxx.utils.ToastUtil;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class MainActivity extends Activity implements OnClickListener
+public class MainActivity extends Activity implements OnClickListener, Ll_MessageListener
 {
     static final String TAG = "MainActivity";
     BinderUtils mBinderUtils;
+    ClientWrap mClientWrap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -23,6 +30,9 @@ public class MainActivity extends Activity implements OnClickListener
         super.onCreate(savedInstanceState);
         mBinderUtils = new BinderUtils(getApplicationContext());
         mBinderUtils.bind();
+
+        mClientWrap = new ClientWrap(this);
+        new Thread(mClientWrap).start();
 
         setContentView(R.layout.socket_control_layout);
 
@@ -42,7 +52,9 @@ public class MainActivity extends Activity implements OnClickListener
         case R.id.socket_send:
             try
             {
-                mBinderUtils.getService().sendMessage("socket_send");
+                // mBinderUtils.getService().sendMessage("socket_send");
+                JSONObject command = new CommandClick().performClickById("start_fuzhu_fuwu").getJsonObject();
+                mClientWrap.send(command == null ? "" : command.toString());
                 Ll_Loger.d(TAG, "socket_send->socket_send");
             }
             catch (Exception e)
@@ -54,10 +66,9 @@ public class MainActivity extends Activity implements OnClickListener
         case R.id.start_fuzhu_fuwu:
             try
             {
-                Intent intent = new Intent(
-                        "android.settings.ACCESSIBILITY_SETTINGS");
+                Intent intent = new Intent("android.settings.ACCESSIBILITY_SETTINGS");
                 startActivity(intent);
-                
+
             }
             catch (Exception e)
             {
@@ -84,6 +95,19 @@ public class MainActivity extends Activity implements OnClickListener
         default:
             break;
         }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        mClientWrap.stop();
+    }
+
+    @Override
+    public void onMessage(Ll_ClientSocketWrap wrap, Ll_Message message)
+    {
+        Ll_Loger.d(TAG, "message->" + message.getMessage());
     }
 
     /*

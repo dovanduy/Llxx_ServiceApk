@@ -22,10 +22,6 @@ public abstract class Protocol extends Command
     public abstract void doAction(Ll_ClientSocketWrap wrap,
             Ll_SocketService service);
 
-    public Protocol()
-    {
-        setAction(action());
-    }
 
     @Override
     public JSONObject getJsonObject()

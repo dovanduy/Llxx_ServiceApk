@@ -9,10 +9,11 @@ import android.content.Context;
 public abstract class Command
 {
     Ll_Message message;
+    boolean isRunOk = false;
 
     public Command()
     {
-
+        setAction(action());
     }
 
     /**
@@ -88,4 +89,21 @@ public abstract class Command
         }
         return null;
     }
+
+    /**
+     * @return the isRunOk
+     */
+    public boolean isRunOk()
+    {
+        return isRunOk;
+    }
+
+    /**
+     * @param isRunOk the isRunOk to set
+     */
+    public void setRunOk(boolean isRunOk)
+    {
+        this.isRunOk = isRunOk;
+    }
+
 }
