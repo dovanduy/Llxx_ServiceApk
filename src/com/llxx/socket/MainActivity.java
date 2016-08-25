@@ -53,7 +53,7 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
             try
             {
                 // mBinderUtils.getService().sendMessage("socket_send");
-                JSONObject command = new CommandClick().performClickById("start_fuzhu_fuwu").getJsonObject();
+                JSONObject command = new CommandClick().performClickById("com.llxx.service:id/start_fuzhu_fuwu").getJsonObject();
                 mClientWrap.send(command == null ? "" : command.toString());
                 Ll_Loger.d(TAG, "socket_send->socket_send");
             }

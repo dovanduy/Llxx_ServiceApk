@@ -5,6 +5,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 public class CommandClick extends CommandRun
 {
+    public static final String TAG = "CommandClick";
 
     public static final int CLICK_TYPE_BY_NONE = 0x00;
     public static final int CLICK_TYPE_BY_ID = 0x01;
@@ -56,7 +58,7 @@ public class CommandClick extends CommandRun
     @Override
     public String action()
     {
-        return "click";
+        return "preformClick";
     }
 
     @Override
@@ -121,9 +123,13 @@ public class CommandClick extends CommandRun
     @Override
     public boolean runCommand(Ll_AccessibilityService accessibilityService)
     {
+        Ll_Loger.d(TAG, "click " + clickName);
         AccessibilityNodeInfo info = accessibilityService.getRootInActiveWindow();
         if (accessibilityService.getRootInActiveWindow() == null)//取得当前激活窗体的根节点
+        {
+            Ll_Loger.e(TAG, "click " + clickName + " but getRootInActiveWindow() is null");
             return false;
+        }
 
         boolean result = false;
         //通过文字找到当前的节点
@@ -137,6 +143,7 @@ public class CommandClick extends CommandRun
             nodes = info.findAccessibilityNodeInfosByText(clickName);
         }
 
+        Ll_Loger.e(TAG, "click " + clickName + " nodes size is " + nodes.size());
         for (int i = 0; nodes != null && i < nodes.size(); i++)
         {
             AccessibilityNodeInfo node = nodes.get(i);

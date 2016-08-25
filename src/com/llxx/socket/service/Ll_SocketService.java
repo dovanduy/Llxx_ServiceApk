@@ -1,5 +1,9 @@
 package com.llxx.socket.service;
 
+import org.json.JSONObject;
+
+import com.llxx.client.command.CommandManager;
+import com.llxx.command.Command;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.protocol.IProtocol;
 import com.llxx.socket.protocol.Protocol;
@@ -99,10 +103,11 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
         }
         else
         {
-            protocol = mProtocolJson.parseMessage(message);
+            protocol = mProtocolSplit.parseMessage(message);
         }
 
         Ll_Loger.d(TAG, "SocketService.onMessage()->" + message.getMessage() + "," + protocol);
+
         if (protocol != null)
         {
             protocol.doAction(wrap, this);
@@ -110,6 +115,21 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
         }
         else
         {
+            try
+            {
+                JSONObject object = new JSONObject(message.getMessage());
+                String action = object.optString("action", "");
+                Class<? extends Command> command = CommandManager.mProtocols.get(action);
+                if (command != null)
+                {
+                    mAccessibilityClient.sendmsg(message.getMessage());
+                }
+            }
+            catch (Exception e)
+            {
+                // TODO: handle exception
+            }
+
             // XXX DO ERROR
         }
     }

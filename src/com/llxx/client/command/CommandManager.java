@@ -8,7 +8,6 @@ public class CommandManager
 
     static
     {
-        mProtocols.put("click", CommandClick.class);
-
+        mProtocols.put("preformClick", CommandClick.class);
     }
 }
