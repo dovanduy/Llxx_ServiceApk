@@ -4,6 +4,8 @@
 package com.llxx.socket.action;
 
 import com.llxx.socket.loger.Ll_Loger;
+import com.llxx.socket.protocol.wrap.ProtocolConstants;
+import com.llxx.socket.protocol.wrap.ProtocolNotify;
 
 import android.content.Context;
 import android.view.accessibility.AccessibilityEvent;
@@ -38,8 +40,15 @@ public class AccessibilityToastAction extends AccessibilityAction
             if (event.getClassName().toString()
                     .startsWith("android.widget.Toast"))
             {
-                setResult("notification|toast|" + event.getPackageName() + "|"
-                        + event.getClassName() + "|" + event.getText().get(0));
+                ProtocolNotify activity = new ProtocolNotify();
+                activity.setClassname(event.getClassName().toString());
+                activity.setPackageName(event.getPackageName().toString());
+                activity.setType(ProtocolConstants.NOTIF_TYPE_TOAST);
+                activity.setTitle(event.getText().get(0).toString());
+                setResult(activity.getResult(context));
+                // Ll_Loger.i(TAG, nodeInfo.toString());
+                // setResult("notification|toast|" + event.getPackageName() + "|"
+                //         + event.getClassName() + "|" + event.getText().get(0));
             }
             return true;
         }

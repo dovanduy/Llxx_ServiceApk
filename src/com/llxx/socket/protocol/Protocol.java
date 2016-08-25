@@ -13,6 +13,8 @@ import com.llxx.socket.wrap.Ll_ClientSocketWrap;
  */
 public abstract class Protocol extends Command
 {
+    
+    
     public abstract void doAction(Ll_ClientSocketWrap wrap, Ll_SocketService service);
     
     public Protocol()

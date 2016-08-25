@@ -4,6 +4,8 @@
 package com.llxx.socket.action;
 
 import com.llxx.socket.loger.Ll_Loger;
+import com.llxx.socket.protocol.wrap.ProtocolActivity;
+import com.llxx.socket.protocol.wrap.ProtocolConstants;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -46,8 +48,11 @@ public class AccessibilityActivityAction extends AccessibilityAction
             if (activityInfo != null)
             {
                 Ll_Loger.i(TAG, componentName.flattenToShortString());
-                setResult("start|activity|" + event.getPackageName() + "|"
-                        + event.getClassName());
+                ProtocolActivity activity = new ProtocolActivity();
+                activity.setClassname(event.getClassName().toString());
+                activity.setPackageName(event.getPackageName().toString());
+                activity.setType(ProtocolConstants.START_TYPE_ACTIVITY);
+                setResult(activity.getResult(context));
             }
             return true;
         }
