@@ -21,5 +21,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="启动第二页" />
+    
+    <Button
+        android:id="@+id/start_fuzhu_fuwu"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="打开辅助服务" />
+    
+    
 
 </LinearLayout>
