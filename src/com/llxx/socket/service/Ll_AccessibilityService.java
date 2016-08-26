@@ -25,7 +25,8 @@ public class Ll_AccessibilityService extends AccessibilityService
     static final boolean DEBUG_OUTPUT = false;
     static final String TAG = "Ll_AccessibilityService";
     BinderUtils mBinderUtils;
-    String[] PACKAGES = { "com.llxx.service" };
+    // 添加网易阅读，这里后面的是要做成自动化处理
+    String[] PACKAGES = { "com.llxx.service" , "com.netease.newsreader.activity"};
     Thread mBinderThread;
     Ll_AccessibilityClient mBinderClient;
 

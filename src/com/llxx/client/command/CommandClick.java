@@ -148,9 +148,17 @@ public class CommandClick extends CommandRun
         {
             AccessibilityNodeInfo node = nodes.get(i);
             // 执行按钮点击行为
-            if (node.getClassName().equals("android.widget.Button") && node.isEnabled())
+            // node.getClassName().equals("android.widget.Button")
+            try
             {
-                result = node.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                if (node.isEnabled())
+                {
+                    result = node.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                }
+            }
+            catch (Throwable e)
+            {
+                e.printStackTrace();
             }
         }
         return result;
