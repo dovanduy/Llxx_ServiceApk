@@ -127,7 +127,7 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
             }
             catch (Exception e)
             {
-                // TODO: handle exception
+                e.printStackTrace();
             }
 
             // XXX DO ERROR
