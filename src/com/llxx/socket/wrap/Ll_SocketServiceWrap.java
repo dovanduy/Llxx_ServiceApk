@@ -74,13 +74,13 @@ public class Ll_SocketServiceWrap
      * 给指定Hash的客户端发送消息
      * @param msg
      */
-    public void sendMessage(String msg, int hash)
+    public void sendMessage(String msg, int hash , int exclude)
     {
         int num = mList.size();
         for (int index = 0; index < num; index++)
         {
             Ll_ClientSocketWrap mSocket = mList.get(index);
-            if (hash == mSocket.hashCode() || hash == 0)
+            if (mSocket.hashCode() != exclude && (hash == mSocket.hashCode() || hash == 0))
             {
                 PrintWriter pout = null;
                 if (mSocket.getSocket().isConnected())
@@ -102,6 +102,10 @@ public class Ll_SocketServiceWrap
         }
     }
 
+    public void sendMessage(String msg, int hash)
+    {
+        sendMessage(msg, hash , 0);
+    }
     /**
      * 给所有的客户端发送消息
      * @param msg

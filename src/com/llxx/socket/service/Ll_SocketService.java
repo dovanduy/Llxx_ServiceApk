@@ -132,7 +132,7 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
                         int hashCode = object.optInt("clientHash", 0);
                         if(hashCode == 0)
                         {
-                            mRunnable.getService().sendMessage(message.getMessage());
+                            mRunnable.getService().sendMessage(message.getMessage(), 0, wrap.hashCode());
                         }
                         else
                         {
