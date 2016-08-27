@@ -33,6 +33,10 @@ public abstract class Protocol extends Command
             {
                 object.put("classname", getClassname());
                 object.put("packagename", getPackageName());
+                if(getCommandResult() != null)
+                {
+                    object.put("result", getCommandResult());
+                }
                 return object;
             }
             catch (JSONException e)

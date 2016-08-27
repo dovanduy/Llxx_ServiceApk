@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.wrap.bean.Ll_Message;
@@ -24,11 +25,21 @@ public class Ll_ClientSocketWrap implements Runnable
     public Ll_ClientSocketWrap(Socket socket, Ll_MessageListener listener)
     {
         this.socket = socket;
+        try
+        {
+            socket.setSendBufferSize(1024 * 60 * 2);
+            socket.setReceiveBufferSize(1024 * 60 * 2);
+            socket.setTcpNoDelay(true);
+            Ll_Loger.i(TAG, "setSendBufferSize ok!!!!!!!!!!!");
+        }
+        catch (SocketException e1)
+        {
+            e1.printStackTrace();
+        }
         mListener = listener;
         try
         {
-            in = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }
         catch (IOException e)
         {
@@ -116,10 +127,7 @@ public class Ll_ClientSocketWrap implements Runnable
         PrintWriter pout = null;
         try
         {
-            pout = new PrintWriter(
-                    new BufferedWriter(
-                            new OutputStreamWriter(mSocket.getOutputStream())),
-                    true);
+            pout = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mSocket.getOutputStream())), true);
             Ll_Loger.d(TAG, "sendmsg -> " + msg);
             pout.println(msg);
         }

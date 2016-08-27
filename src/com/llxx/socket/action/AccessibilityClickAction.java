@@ -3,6 +3,9 @@
  */
 package com.llxx.socket.action;
 
+import org.json.JSONException;
+
+import com.llxx.nodefinder.AccessibilityNodeInfoToJson;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.protocol.wrap.ProtocolActivity;
 import com.llxx.socket.protocol.wrap.ProtocolClick;
@@ -57,6 +60,14 @@ public class AccessibilityClickAction extends AccessibilityAction
             }
             Ll_Loger.i(TAG, "nodeInfo.getViewIdResourceName() "
                     + nodeInfo.getViewIdResourceName());
+            try
+            {
+                activity.setCommandResult(AccessibilityNodeInfoToJson.getJson(nodeInfo));
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
             setResult(activity.getResult(context));
             // Ll_Loger.i(TAG, nodeInfo.toString());
             return true;
