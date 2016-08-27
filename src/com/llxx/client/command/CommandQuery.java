@@ -3,6 +3,7 @@ package com.llxx.client.command;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.llxx.nodefinder.AccessibilityNodeInfoToJson;
 import com.llxx.nodefinder.UiSelector;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
@@ -15,39 +16,42 @@ public class CommandQuery extends CommandRun
     public static final String TAG = "CommandQuery";
     public static final int TYPE_NONE = 0x00;
     public static final int TYPE_QUERY_LISTVIEW = 0x01;
+    public static final int TYPE_QUERY_CONTAINER_IDS = 0x02;
     int type = 0;
 
     @Override
     public boolean runCommand(Ll_AccessibilityService accessibilityService)
     {
+        UiSelector selector = null;
         if (type == TYPE_NONE)
         {
             return true;
         }
         else if (type == TYPE_QUERY_LISTVIEW)
         {
-            AccessibilityNodeInfo info = accessibilityService
-                    .getQueryController()
-                    .findAccessibilityNodeInfo(new UiSelector()
-                            .className("android.widget.ListView"));
-            if (info != null)
-            {
-                JSONObject result = new JSONObject();
-                try
-                {
-                    result.put("childcount", info.getChildCount());
-                    result.put("nodeinfo", info.toString());
-                    setCommandResult(result);
-                    return true;
-                }
-                catch (Throwable e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            Ll_Loger.e(TAG,
-                    "TYPE_QUERY_LISTVIEW but findAccessibilityNodeInfo is null");
+            selector = new UiSelector().className("android.widget.ListView");
         }
+        else if (type == TYPE_QUERY_CONTAINER_IDS)
+        {
+            selector = new UiSelector().className("android.widget.ListView");
+        }
+        AccessibilityNodeInfo info = accessibilityService.getQueryController()
+                .findAccessibilityNodeInfo(selector);
+        if (info != null)
+        {
+            try
+            {
+                JSONObject result = AccessibilityNodeInfoToJson.getJson(info);
+                setCommandResult(result);
+                return true;
+            }
+            catch (Throwable e)
+            {
+                e.printStackTrace();
+            }
+        }
+        Ll_Loger.e(TAG,
+                "TYPE_QUERY_LISTVIEW but findAccessibilityNodeInfo is null");
         return false;
     }
 

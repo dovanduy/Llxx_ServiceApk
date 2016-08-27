@@ -21,6 +21,7 @@ public class ProtocolClick extends Protocol
 
     private String type = "";
     private String title = "";
+    private String idname = "";
 
     @Override
     public void doAction(Ll_ClientSocketWrap wrap, Ll_SocketService service)
@@ -50,6 +51,7 @@ public class ProtocolClick extends Protocol
             {
                 object.put("type", getType());
                 object.put("title", getTitle());
+                object.put("id", getIdname());
                 return object.toString();
             }
             catch (JSONException e)
@@ -92,4 +94,21 @@ public class ProtocolClick extends Protocol
         this.title = title;
     }
 
+    /**
+     * @return the idname
+     */
+    public String getIdname()
+    {
+        return idname;
+    }
+
+    /**
+     * @param idname the idname to set
+     */
+    public void setIdname(String idname)
+    {
+        this.idname = idname;
+    }
+
+    
 }

@@ -8,8 +8,10 @@ import com.llxx.socket.protocol.wrap.ProtocolActivity;
 import com.llxx.socket.protocol.wrap.ProtocolClick;
 import com.llxx.socket.protocol.wrap.ProtocolConstants;
 import com.llxx.socket.protocol.wrap.ProtocolNotify;
-
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
+import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -23,6 +25,7 @@ public class AccessibilityClickAction extends AccessibilityAction
 {
     public static final String TAG = "AccessibilityClickAction";
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     protected boolean processEvent(Context context, AccessibilityEvent event,
             AccessibilityNodeInfo nodeInfo)
@@ -38,22 +41,28 @@ public class AccessibilityClickAction extends AccessibilityAction
             Ll_Loger.i(TAG,
                     "package name: " + event.getPackageName().toString());
 
+        ProtocolClick activity = new ProtocolClick();
+        activity.setClassname(event.getClassName().toString());
+        activity.setPackageName(event.getPackageName().toString());
+
         if (nodeInfo != null)
         {
-            ProtocolClick activity = new ProtocolClick();
-            activity.setClassname(event.getClassName().toString());
-            activity.setPackageName(event.getPackageName().toString());
             activity.setType(activity.getClassname());
-            activity.setTitle(nodeInfo.getText().toString());
+            activity.setTitle(nodeInfo.getText() != null
+                    ? nodeInfo.getText().toString() : "");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+            {
+                String id = nodeInfo.getViewIdResourceName();
+                activity.setIdname(TextUtils.isEmpty(id) ? "" : id);
+            }
+            Ll_Loger.i(TAG, "nodeInfo.getViewIdResourceName() "
+                    + nodeInfo.getViewIdResourceName());
             setResult(activity.getResult(context));
             // Ll_Loger.i(TAG, nodeInfo.toString());
             return true;
         }
         else if (event.getText() != null && event.getText().size() > 0)
         {
-            ProtocolClick activity = new ProtocolClick();
-            activity.setClassname(event.getClassName().toString());
-            activity.setPackageName(event.getPackageName().toString());
             activity.setType(activity.getClassname());
             activity.setTitle(event.getText().get(0).toString());
             setResult(activity.getResult(context));

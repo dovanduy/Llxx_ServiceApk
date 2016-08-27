@@ -30,10 +30,17 @@ public class AccessibilityActionManager
             {
                 if (config.getEventType() == event.getEventType())
                 {
-                    boolean isMatch = config.processEvent(context, event, nodeInfo);
-                    if (isMatch)
+                    try
                     {
-                        return config.getResult();
+                        boolean isMatch = config.processEvent(context, event, nodeInfo);
+                        if (isMatch)
+                        {
+                            return config.getResult();
+                        }
+                    }
+                    catch (Throwable e)
+                    {
+                        e.printStackTrace();
                     }
                 }
             }
