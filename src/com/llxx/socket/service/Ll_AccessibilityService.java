@@ -23,7 +23,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  */
 public class Ll_AccessibilityService extends AccessibilityService
 {
-    static final boolean DEBUG_OUTPUT = false;
+    static final boolean DEBUG_OUTPUT = true;
     static final String TAG = "Ll_AccessibilityService";
     BinderUtils mBinderUtils;
     // 添加网易阅读，这里后面的是要做成自动化处理
@@ -36,6 +36,11 @@ public class Ll_AccessibilityService extends AccessibilityService
     protected void onServiceConnected()
     {
         super.onServiceConnected();
+        // 通知控制器
+        if(mController == null)
+        {
+            mController = new QueryController(this);
+        }
         mBinderClient = new Ll_AccessibilityClient(this);
         mBinderThread = new Thread(mBinderClient);
         mBinderThread.start();
@@ -52,11 +57,6 @@ public class Ll_AccessibilityService extends AccessibilityService
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event)
     {
-        // 通知控制器
-        if(mController == null)
-        {
-            mController = new QueryController(this);
-        }
         mController.onAccessibilityEvent(event);
         
         // 处理自己的消息
@@ -184,4 +184,12 @@ public class Ll_AccessibilityService extends AccessibilityService
         mBinderClient.stop();
     }
 
+    /**
+     * 获取查询器
+     * @return
+     */
+    public QueryController getQueryController()
+    {
+        return mController;
+    }
 }

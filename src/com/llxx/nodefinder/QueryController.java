@@ -51,7 +51,7 @@ public class QueryController
     private int mLogParentIndent = 0;
 
     private String mLastTraversedText = "";
-    
+
     Ll_AccessibilityService mAccessibilityService;
 
     public QueryController(Ll_AccessibilityService service)
