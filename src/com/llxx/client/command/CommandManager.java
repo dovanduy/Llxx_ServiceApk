@@ -9,5 +9,6 @@ public class CommandManager
     static
     {
         mProtocols.put("preformClick", CommandClick.class);
+        mProtocols.put("queryAccessibility", CommandQuery.class);
     }
 }

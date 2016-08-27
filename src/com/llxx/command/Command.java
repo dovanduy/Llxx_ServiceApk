@@ -10,7 +10,17 @@ public abstract class Command
 {
     Ll_Message message;
     boolean isRunOk = false;
+    
+    /**
+     * 是否是发送给客户端端的
+     */
+    boolean isToClient = false;
 
+    /**
+     * 客户端持有对象的Hash值
+     */
+    int clientHash = 0;
+    
     public Command()
     {
         setAction(action());
@@ -89,6 +99,25 @@ public abstract class Command
         }
         return null;
     }
+    
+    /**
+     * 获取JsonObject对象
+     * @return
+     */
+    public JSONObject getErrorResult()
+    {
+        try
+        {
+            JSONObject object = new JSONObject();
+            object.put("action", getAction());
+            return object;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * @return the isRunOk
@@ -104,6 +133,38 @@ public abstract class Command
     public void setRunOk(boolean isRunOk)
     {
         this.isRunOk = isRunOk;
+    }
+
+    /**
+     * @return the isToClient
+     */
+    public boolean isToClient()
+    {
+        return isToClient;
+    }
+
+    /**
+     * @param isToClient the isToClient to set
+     */
+    public void setToClient(boolean isToClient)
+    {
+        this.isToClient = isToClient;
+    }
+
+    /**
+     * @return the clientHash
+     */
+    public int getClientHash()
+    {
+        return clientHash;
+    }
+
+    /**
+     * @param clientHash the clientHash to set
+     */
+    public void setClientHash(int clientHash)
+    {
+        this.clientHash = clientHash;
     }
 
 }

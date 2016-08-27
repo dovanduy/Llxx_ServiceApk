@@ -58,8 +58,7 @@ public class Ll_SocketServiceWrap
             {
                 client = server.accept();
                 //把客户端放入客户端集合中
-                Ll_ClientSocketWrap wrap = new Ll_ClientSocketWrap(client,
-                        mMessageListener);
+                Ll_ClientSocketWrap wrap = new Ll_ClientSocketWrap(client, mMessageListener);
                 mList.add(wrap);
                 mExecutorService.execute(wrap); //start a new thread to handle the connection
                 Ll_Loger.d(TAG, "client " + wrap + " connect to services");
@@ -72,32 +71,43 @@ public class Ll_SocketServiceWrap
     }
 
     /**
-     * 给所有的客户端发送消息
+     * 给指定Hash的客户端发送消息
      * @param msg
      */
-    public void sendMessage(String msg)
+    public void sendMessage(String msg, int hash)
     {
         int num = mList.size();
         for (int index = 0; index < num; index++)
         {
             Ll_ClientSocketWrap mSocket = mList.get(index);
-            PrintWriter pout = null;
-            if (mSocket.getSocket().isConnected())
+            if (hash == mSocket.hashCode() || hash == 0)
             {
-                try
+                PrintWriter pout = null;
+                if (mSocket.getSocket().isConnected())
                 {
-                    pout = new PrintWriter(
-                            new BufferedWriter(new OutputStreamWriter(
-                                    mSocket.getSocket().getOutputStream())),
-                            true);
-                    pout.println(msg);
-                    Ll_Loger.d(TAG, "sendMessage" + msg);
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
+                    try
+                    {
+                        pout = new PrintWriter(
+                                new BufferedWriter(new OutputStreamWriter(mSocket.getSocket().getOutputStream())),
+                                true);
+                        pout.println(msg);
+                        Ll_Loger.d(TAG, "sendMessage" + msg);
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * 给所有的客户端发送消息
+     * @param msg
+     */
+    public void sendMessage(String msg)
+    {
+        sendMessage(msg, 0);
     }
 }

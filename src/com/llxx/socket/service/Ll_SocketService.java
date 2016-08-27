@@ -122,7 +122,23 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
                 Class<? extends Command> command = CommandManager.mProtocols.get(action);
                 if (command != null)
                 {
-                    mAccessibilityClient.sendmsg(message.getMessage());
+                    if(!object.optBoolean("isToClient", false))
+                    {
+                        object.put("clientHash", wrap.hashCode());
+                        mAccessibilityClient.sendmsg(object.toString());
+                    }
+                    else
+                    {
+                        int hashCode = object.optInt("clientHash", 0);
+                        if(hashCode == 0)
+                        {
+                            mRunnable.getService().sendMessage(message.getMessage());
+                        }
+                        else
+                        {
+                            mRunnable.getService().sendMessage(message.getMessage(), hashCode);
+                        }
+                    }
                 }
             }
             catch (Exception e)
