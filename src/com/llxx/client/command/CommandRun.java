@@ -36,6 +36,10 @@ public abstract class CommandRun extends Command
             {
                 object.put("sucess", isRunOk());
                 object.put("clientHash", getClientHash());
+                if(getCommandResult() != null)
+                {
+                    object.put("result", getCommandResult());
+                }
                 return object;
             }
             catch (JSONException e)

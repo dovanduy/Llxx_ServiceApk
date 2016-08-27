@@ -21,6 +21,11 @@ public abstract class Command
      */
     int clientHash = 0;
     
+    /**
+     * 返回客户端执行结果
+     */
+    JSONObject result = null;
+    
     public Command()
     {
         setAction(action());
@@ -167,4 +172,19 @@ public abstract class Command
         this.clientHash = clientHash;
     }
 
+    /**
+     * @return the result
+     */
+    public JSONObject getCommandResult()
+    {
+        return result;
+    }
+
+    /**
+     * @param result the result to set
+     */
+    public void setCommandResult(JSONObject result)
+    {
+        this.result = result;
+    }
 }

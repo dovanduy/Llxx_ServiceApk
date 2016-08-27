@@ -4,6 +4,7 @@
 package com.llxx.socket.service;
 
 import com.llxx.client.node.Ll_AccessibilityClient;
+import com.llxx.nodefinder.QueryController;
 import com.llxx.socket.action.AccessibilityActionManager;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.utils.BinderUtils;
@@ -29,7 +30,8 @@ public class Ll_AccessibilityService extends AccessibilityService
     String[] PACKAGES = { "com.llxx.service" , "com.netease.newsreader.activity"};
     Thread mBinderThread;
     Ll_AccessibilityClient mBinderClient;
-
+    QueryController mController;
+    
     @Override
     protected void onServiceConnected()
     {
@@ -50,6 +52,14 @@ public class Ll_AccessibilityService extends AccessibilityService
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event)
     {
+        // 通知控制器
+        if(mController == null)
+        {
+            mController = new QueryController(this);
+        }
+        mController.onAccessibilityEvent(event);
+        
+        // 处理自己的消息
         AccessibilityNodeInfo nodeInfo = event.getSource();
         String result = AccessibilityActionManager
                 .processEvent(getApplicationContext(), event, nodeInfo);

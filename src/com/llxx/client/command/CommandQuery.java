@@ -2,20 +2,36 @@ package com.llxx.client.command;
 
 import org.json.JSONObject;
 
+import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
 
 import android.content.Context;
+import android.view.accessibility.AccessibilityNodeInfo;
 
 public class CommandQuery extends CommandRun
 {
-    public static final int TYPE_NONE = 0;
+    public static final String TAG = "CommandQuery";
+    public static final int TYPE_NONE = 0x00;
+    public static final int TYPE_QUERY_LISTVIEW = 0x01;
     int type = 0;
 
     @Override
     public boolean runCommand(Ll_AccessibilityService accessibilityService)
     {
-        if(TYPE_NONE == type)
+        if(type == TYPE_NONE)
         {
+            return true;
+        }
+        else if(type == TYPE_QUERY_LISTVIEW)
+        {
+            AccessibilityNodeInfo info = accessibilityService.getRootInActiveWindow();
+            if (accessibilityService.getRootInActiveWindow() == null)//取得当前激活窗体的根节点
+            {
+                Ll_Loger.e(TAG, "TYPE_QUERY_LISTVIEW "  + " but getRootInActiveWindow() is null");
+                return false;
+            }
+            
+            
             return true;
         }
         return false;
