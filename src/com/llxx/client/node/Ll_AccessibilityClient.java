@@ -109,7 +109,7 @@ public class Ll_AccessibilityClient implements Runnable
                             CommandRun mProtocol = command.newInstance();
                             mProtocol.setMessage(new Ll_Message(msg));
                             mProtocol.prase();
-                            mProtocol.runCommand(mAccessibilityService);
+                            mProtocol.setRunOk(mProtocol.runCommand(mAccessibilityService));
                             // send(mProtocol.getResult(mAccessibilityService));
                             mAccessibilityService.sendMessageByHash(
                                     mProtocol.getResult(mAccessibilityService),

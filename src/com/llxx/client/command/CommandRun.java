@@ -34,7 +34,7 @@ public abstract class CommandRun extends Command
         {
             try
             {
-                object.put("result", isRunOk());
+                object.put("sucess", isRunOk());
                 object.put("clientHash", getClientHash());
                 return object;
             }
@@ -54,7 +54,7 @@ public abstract class CommandRun extends Command
         {
             try
             {
-                object.put("result", isRunOk());
+                object.put("sucess", false);
                 object.put("clientHash", getClientHash());
                 return object;
             }

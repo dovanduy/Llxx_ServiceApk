@@ -8,12 +8,16 @@ import android.content.Context;
 
 public class CommandQuery extends CommandRun
 {
-
+    public static final int TYPE_NONE = 0;
     int type = 0;
 
     @Override
     public boolean runCommand(Ll_AccessibilityService accessibilityService)
     {
+        if(TYPE_NONE == type)
+        {
+            return true;
+        }
         return false;
     }
 
