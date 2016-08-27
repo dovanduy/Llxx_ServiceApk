@@ -23,6 +23,7 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
 {
 
     static final String TAG = "SocketService";
+    static final boolean DEBUG_ON_MESSAGE = false;
     Thread mSocketThread;
     SocketRunnable mRunnable;
     IProtocol mProtocolJson;
@@ -70,6 +71,20 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
         {
             return String.valueOf(mRunnable.getService().getPort());
         }
+
+        @Override
+        public void sendMessageByHash(String message, int hash)
+                throws RemoteException
+        {
+            mRunnable.getService().sendMessage(message, hash);
+        }
+
+        @Override
+        public void sendMessageExcludeHash(String message, int exincludehash)
+                throws RemoteException
+        {
+            mRunnable.getService().sendMessage(message, 0, exincludehash);
+        }
     };
 
     /**
@@ -106,7 +121,9 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
             protocol = mProtocolSplit.parseMessage(message);
         }
 
-        Ll_Loger.d(TAG, "SocketService.onMessage()->" + message.getMessage() + "," + protocol);
+        if (DEBUG_ON_MESSAGE)
+            Ll_Loger.d(TAG, "SocketService.onMessage()->" + message.getMessage()
+                    + "," + protocol);
 
         if (protocol != null)
         {
@@ -119,10 +136,11 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
             {
                 JSONObject object = new JSONObject(message.getMessage());
                 String action = object.optString("action", "");
-                Class<? extends Command> command = CommandManager.mProtocols.get(action);
+                Class<? extends Command> command = CommandManager.mProtocols
+                        .get(action);
                 if (command != null)
                 {
-                    if(!object.optBoolean("isToClient", false))
+                    if (!object.optBoolean("isToClient", false))
                     {
                         object.put("clientHash", wrap.hashCode());
                         mAccessibilityClient.sendmsg(object.toString());
@@ -130,13 +148,15 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
                     else
                     {
                         int hashCode = object.optInt("clientHash", 0);
-                        if(hashCode == 0)
+                        if (hashCode == 0)
                         {
-                            mRunnable.getService().sendMessage(message.getMessage(), 0, wrap.hashCode());
+                            mRunnable.getService().sendMessage(
+                                    message.getMessage(), 0, wrap.hashCode());
                         }
                         else
                         {
-                            mRunnable.getService().sendMessage(message.getMessage(), hashCode);
+                            mRunnable.getService().sendMessage(
+                                    message.getMessage(), hashCode);
                         }
                     }
                 }

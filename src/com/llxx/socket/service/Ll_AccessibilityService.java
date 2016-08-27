@@ -148,6 +148,25 @@ public class Ll_AccessibilityService extends AccessibilityService
         }
     }
     
+    /**
+     * 发送消息
+     * @param message
+     */
+    public void sendMessageByHash(String message, int hash)
+    {
+        if (mBinderUtils.getService() != null)
+        {
+            try
+            {
+                mBinderUtils.getService().sendMessageByHash(message, hash);
+            }
+            catch (Throwable e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     @Override
     public void onDestroy()
     {

@@ -13,6 +13,10 @@ interface ISocketService
 	*/
 	void sendMessage(in String message);
 	
+	void sendMessageByHash(in String message, in int hash);
+	
+	void sendMessageExcludeHash(in String message, in int exincludehash);
+	
 	/**
 	* 获取端口号
 	*/
