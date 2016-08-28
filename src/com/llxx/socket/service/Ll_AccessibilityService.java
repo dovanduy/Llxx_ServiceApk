@@ -53,6 +53,13 @@ public class Ll_AccessibilityService extends AccessibilityService
         accessibilityServiceInfo.notificationTimeout = 100;
         setServiceInfo(accessibilityServiceInfo);
     }
+    
+    @Override
+    protected boolean onGesture(int gestureId)
+    {
+        Ll_Loger.i(TAG, "onGesture -> " + gestureId);
+        return super.onGesture(gestureId);
+    }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event)

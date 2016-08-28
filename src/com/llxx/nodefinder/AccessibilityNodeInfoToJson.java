@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.annotation.TargetApi;
+import android.graphics.Rect;
 import android.os.Build;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -23,8 +24,13 @@ public class AccessibilityNodeInfoToJson
     public static JSONObject getJson(AccessibilityNodeInfo info) throws JSONException
     {
         JSONObject object = new JSONObject();
-        object.put("packagename", CharSequenceWrap(info.getPackageName()));
-        object.put("classname", CharSequenceWrap(info.getClassName()));
+        object.put("package", CharSequenceWrap(info.getPackageName()));
+        object.put("class", CharSequenceWrap(info.getClassName()));
+        object.put("windowId", info.getWindowId());
+        object.put("content-desc", info.getContentDescription());
+        Rect rect = new Rect();
+        info.getBoundsInScreen(rect);
+        object.put("bounds", "[" + rect.left + "," + rect.top+ "]" + "[" + rect.right + "," + rect.bottom+ "]");
         
         object.put("text", CharSequenceWrap(info.getText()));
         object.put("checkable", info.isCheckable());
@@ -37,18 +43,18 @@ public class AccessibilityNodeInfoToJson
         object.put("enabled", info.isEnabled());
         object.put("password", info.isPassword());
         object.put("scrollable", info.isScrollable());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        {
-            try
-            {
-                object.put("collectionInfoCol", info.getCollectionInfo().getColumnCount());
-                object.put("collectionInfoRow", info.getCollectionInfo().getRowCount());
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
+        //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        //        {
+        //            try
+        //            {
+        //                object.put("collectionInfoCol", info.getCollectionInfo().getColumnCount());
+        //                object.put("collectionInfoRow", info.getCollectionInfo().getRowCount());
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                e.printStackTrace();
+        //            }
+        //        }
 
         // object.put("nodedump", info.toString());
         try
@@ -70,7 +76,7 @@ public class AccessibilityNodeInfoToJson
             array.put(getJson(info.getChild(i)));
         }
         if (array.length() > 0)
-            object.put("childs", array);
+            object.put("node", array);
         return object;
     }
 

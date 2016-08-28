@@ -10,5 +10,6 @@ public class CommandManager
     {
         mProtocols.put("preformClick", CommandClick.class);
         mProtocols.put("queryAccessibility", CommandQuery.class);
+        mProtocols.put("preformEvent", CommandEvent.class);
     }
 }
