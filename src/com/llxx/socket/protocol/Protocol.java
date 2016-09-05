@@ -19,9 +19,7 @@ public abstract class Protocol extends Command
     private String classname = "";
     private String packageName = "";
 
-    public abstract void doAction(Ll_ClientSocketWrap wrap,
-            Ll_SocketService service);
-
+    public abstract void doAction(Ll_ClientSocketWrap wrap, Ll_SocketService service);
 
     @Override
     public JSONObject getJsonObject()
@@ -33,9 +31,10 @@ public abstract class Protocol extends Command
             {
                 object.put("classname", getClassname());
                 object.put("packagename", getPackageName());
-                if(getCommandResult() != null)
+                object.put("sucess", isRunOk());
+                if (getCommandResult() != null)
                 {
-                    object.put("result", getCommandResult());
+                    object.put("params", getCommandResult());
                 }
                 return object;
             }
