@@ -8,6 +8,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.ihongqiqu.util.DisplayUtils;
 import com.llxx.socket.protocol.Protocol;
 import com.llxx.socket.service.Ll_SocketService;
 import com.llxx.socket.wrap.Ll_ClientSocketWrap;
@@ -54,7 +55,18 @@ public class ProtocolQuery extends Protocol
             break;
         case SCREENSIZE:
             {
-                
+                try
+                {
+                    JSONObject result = new JSONObject();
+                    result.put("width", DisplayUtils.getScreenW(service));
+                    result.put("height", DisplayUtils.getScreenH(service));
+                    setCommandResult(result);
+                    setRunOk(true);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         default:
             break;

@@ -108,7 +108,7 @@ public final class DisplayUtils
      * @param activity Activity
      * @return 屏幕宽度
      */
-    public static int getScreenW(Activity activity)
+    public static int getScreenW(Context activity)
     {
         DisplayMetrics dm;
         dm = activity.getResources().getDisplayMetrics();
@@ -122,7 +122,7 @@ public final class DisplayUtils
      * @param activity Activity
      * @return 屏幕高度
      */
-    public static int getScreenH(Activity activity)
+    public static int getScreenH(Context activity)
     {
         DisplayMetrics dm = new DisplayMetrics();
         dm = activity.getResources().getDisplayMetrics();
