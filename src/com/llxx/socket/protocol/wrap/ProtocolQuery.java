@@ -3,8 +3,10 @@
  */
 package com.llxx.socket.protocol.wrap;
 
+import java.util.Iterator;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +18,12 @@ import com.llxx.socket.wrap.Ll_ClientSocketWrap;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.text.TextUtils;
 
 /**
  * @author 繁星
@@ -26,7 +34,9 @@ public class ProtocolQuery extends Protocol
 
     public static final String TOP_ACTIVITY = "top_activity";
     public static final String SCREENSIZE = "screensize";
+    public static final String ALLACTIVITY = "allactivity";
     private String type = "";
+    private String packagename = "";
 
     @Override
     public void doAction(Ll_ClientSocketWrap wrap, Ll_SocketService service)
@@ -68,6 +78,43 @@ public class ProtocolQuery extends Protocol
                     e.printStackTrace();
                 }
             }
+            break;
+        case ALLACTIVITY:
+            {
+                try
+                {
+                    JSONObject object = new JSONObject(getMessage().getMessage());
+                    packagename = object.optJSONObject(PARAMS).optString("package");
+                    if (!TextUtils.isEmpty(packagename))
+                    {
+                        // Retrieve all services that can match the given intent
+                        PackageManager pm = service.getPackageManager();
+                        Intent intent = new Intent();
+                        intent.setPackage(packagename);
+                        PackageInfo infos = pm.getPackageInfo(packagename,
+                                android.content.pm.PackageManager.GET_ACTIVITIES);
+                        JSONObject result = new JSONObject();
+                        JSONArray activitys = new JSONArray();
+                        result.put("activitys", activitys);
+                        for (ActivityInfo info : infos.activities)
+                        {
+                            JSONObject activity = new JSONObject();
+                            activity.put("name", info.name);
+                            activity.put("parentActivityName", info.parentActivityName);
+                            activity.put("targetActivity", info.targetActivity);
+                            activity.put("permission", info.permission);
+                            activitys.put(activity);
+                        }
+                        setCommandResult(result);
+                        setRunOk(true);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            break;
         default:
             break;
         }

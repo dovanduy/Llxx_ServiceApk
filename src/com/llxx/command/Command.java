@@ -8,6 +8,7 @@ import android.content.Context;
 
 public abstract class Command
 {
+    public static final String PARAMS = "params";
     Ll_Message message;
     boolean isRunOk = false;
     
