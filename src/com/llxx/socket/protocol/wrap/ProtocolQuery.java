@@ -24,6 +24,7 @@ public class ProtocolQuery extends Protocol
 {
 
     public static final String TOP_ACTIVITY = "top_activity";
+    public static final String SCREENSIZE = "screensize";
     private String type = "";
 
     @Override
@@ -51,7 +52,10 @@ public class ProtocolQuery extends Protocol
                 }
             }
             break;
-
+        case SCREENSIZE:
+            {
+                
+            }
         default:
             break;
         }

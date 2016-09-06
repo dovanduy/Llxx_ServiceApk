@@ -7,4 +7,6 @@ Llxx_MonkeyAutoTest的Android端服务程序，为其提供各种服务
 
 
 #参考
-使用 android 公用库： https://github.com/Trinea/android-common
+
+https://github.com/Trinea/android-common
+https://github.com/jingle1267/android-utils
