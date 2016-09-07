@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.ihongqiqu.util.AppUtils;
 import com.ihongqiqu.util.DisplayUtils;
 import com.llxx.socket.protocol.Protocol;
 import com.llxx.socket.service.Ll_SocketService;
@@ -24,6 +25,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.pm.ServiceInfo;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import cn.trinea.android.common.util.ImageUtils;
@@ -43,6 +45,9 @@ public class ProtocolQuery extends Protocol
 
     /**指定包名所有的Acitivity*/
     public static final String ALLACTIVITY = "allactivity";
+
+    /**指定包名所有的Service*/
+    public static final String ALLSERVICE = "allservice";
 
     /**所有APK的信息*/
     public static final String ALLAPPINFO = "allappinfo";
@@ -127,6 +132,42 @@ public class ProtocolQuery extends Protocol
                 }
             }
             break;
+        case ALLSERVICE:
+            {
+                try
+                {
+                    JSONObject object = new JSONObject(getMessage().getMessage());
+                    packagename = object.optJSONObject(PARAMS).optString("package");
+                    if (!TextUtils.isEmpty(packagename))
+                    {
+                        // Retrieve all services that can match the given intent
+                        PackageManager pm = service.getPackageManager();
+                        Intent intent = new Intent();
+                        intent.setPackage(packagename);
+                        PackageInfo infos = pm.getPackageInfo(packagename,
+                                android.content.pm.PackageManager.GET_SERVICES);
+                        JSONObject result = new JSONObject();
+                        JSONArray activitys = new JSONArray();
+                        result.put("services", activitys);
+                        for (ServiceInfo info : infos.services)
+                        {
+                            JSONObject activity = new JSONObject();
+                            activity.put("name", info.name);
+                            activity.put("exported", info.exported);
+                            activity.put("permission", info.permission);
+                            activity.put("isRunning", AppUtils.isServiceRunning(service, info.name));
+                            activitys.put(activity);
+                        }
+                        setCommandResult(result);
+                        setRunOk(true);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            break;
         case ALLAPPINFO:
             {
                 try
@@ -135,7 +176,7 @@ public class ProtocolQuery extends Protocol
                     String dir = object.optJSONObject(PARAMS).optString("dir");
                     if (!TextUtils.isEmpty(dir))
                     {
-                        
+
                         PackageManager pm = service.getPackageManager(); //获得PackageManager对象
                         Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
                         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -145,7 +186,7 @@ public class ProtocolQuery extends Protocol
                         // 调用系统排序 ， 根据name排序
                         // 该排序很重要，否则只能显示系统应用，而不能列出第三方应用程序
                         Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(pm));
-                        
+
                         JSONObject result = new JSONObject();
                         JSONArray activitys = new JSONArray();
                         result.put("packages", activitys);
