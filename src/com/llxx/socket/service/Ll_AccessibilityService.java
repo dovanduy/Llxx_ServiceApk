@@ -27,17 +27,17 @@ public class Ll_AccessibilityService extends AccessibilityService
     static final String TAG = "Ll_AccessibilityService";
     BinderUtils mBinderUtils;
     // 添加网易阅读，这里后面的是要做成自动化处理
-    String[] PACKAGES = { "com.llxx.service" , "com.netease.newsreader.activity"};
+    String[] PACKAGES = { "com.llxx.service", "com.netease.newsreader.activity" };
     Thread mBinderThread;
     Ll_AccessibilityClient mBinderClient;
     QueryController mController;
-    
+
     @Override
     protected void onServiceConnected()
     {
         super.onServiceConnected();
         // 通知控制器
-        if(mController == null)
+        if (mController == null)
         {
             mController = new QueryController(this);
         }
@@ -53,7 +53,7 @@ public class Ll_AccessibilityService extends AccessibilityService
         accessibilityServiceInfo.notificationTimeout = 100;
         setServiceInfo(accessibilityServiceInfo);
     }
-    
+
     @Override
     protected boolean onGesture(int gestureId)
     {
@@ -67,11 +67,10 @@ public class Ll_AccessibilityService extends AccessibilityService
         try
         {
             mController.onAccessibilityEvent(event);
-            
+
             // 处理自己的消息
             AccessibilityNodeInfo nodeInfo = event.getSource();
-            String result = AccessibilityActionManager
-                    .processEvent(getApplicationContext(), event, nodeInfo);
+            String result = AccessibilityActionManager.processEvent(getApplicationContext(), event, nodeInfo);
             if (!TextUtils.isEmpty(result))
             {
                 sendMessage(result);
@@ -150,7 +149,7 @@ public class Ll_AccessibilityService extends AccessibilityService
     @Override
     public void onInterrupt()
     {
-        
+
     }
 
     /**
@@ -171,7 +170,7 @@ public class Ll_AccessibilityService extends AccessibilityService
             }
         }
     }
-    
+
     /**
      * 发送消息
      * @param message
@@ -190,7 +189,7 @@ public class Ll_AccessibilityService extends AccessibilityService
             }
         }
     }
-    
+
     @Override
     public void onDestroy()
     {
@@ -205,5 +204,19 @@ public class Ll_AccessibilityService extends AccessibilityService
     public QueryController getQueryController()
     {
         return mController;
+    }
+
+    /**
+     * 设置监听的包
+     * @param PACKAGES
+     */
+    public void setPackage(String[] PACKAGES)
+    {
+        AccessibilityServiceInfo accessibilityServiceInfo = new AccessibilityServiceInfo();
+        accessibilityServiceInfo.packageNames = PACKAGES;
+        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
+        accessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_SPOKEN;
+        accessibilityServiceInfo.notificationTimeout = 100;
+        setServiceInfo(accessibilityServiceInfo);
     }
 }

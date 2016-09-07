@@ -40,6 +40,7 @@ public abstract class CommandRun extends Command
                 {
                     object.put("result", getCommandResult());
                 }
+                object.put("reason", getReason());
                 return object;
             }
             catch (JSONException e)
@@ -60,6 +61,7 @@ public abstract class CommandRun extends Command
             {
                 object.put("sucess", false);
                 object.put("clientHash", getClientHash());
+                object.put("reason", getReason());
                 return object;
             }
             catch (JSONException e)
