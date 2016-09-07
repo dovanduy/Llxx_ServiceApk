@@ -1,12 +1,15 @@
 package cn.trinea.android.common.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+
+import org.apache.commons.io.FileUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -85,6 +88,30 @@ public class ImageUtils
     public static Bitmap drawableToBitmap(Drawable d)
     {
         return d == null ? null : ((BitmapDrawable) d).getBitmap();
+    }
+    
+    /**
+     * 将Drawbale保存到文件
+     * @param d
+     * @param file
+     * @return
+     */
+    public static boolean drawableToFile(Drawable d, File file)
+    {
+        Bitmap bitmap = drawableToBitmap(d);
+        if(bitmap != null)
+        {
+            byte[] datas = bitmapToByte(bitmap);
+            try
+            {
+                FileUtils.writeByteArrayToFile(file, datas);
+                return true;
+            }
+            catch (Exception e)
+            {
+            }
+        }
+        return false;
     }
 
     /**

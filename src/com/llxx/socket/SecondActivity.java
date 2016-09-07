@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 /**
- * @author 李万隆
+ * @author fanxin, eachen
  * @date   2016年8月19日
  * @qq 	461051353
  * @describe 类描述

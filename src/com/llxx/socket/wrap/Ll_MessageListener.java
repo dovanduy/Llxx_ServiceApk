@@ -3,7 +3,7 @@ package com.llxx.socket.wrap;
 import com.llxx.socket.wrap.bean.Ll_Message;
 /**
  * 
- * @author 李万隆
+ * @author fanxin, eachen
  * @qq 461051343
  * @date 2016年8月18日
  * @describe 监听Message消息

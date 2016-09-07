@@ -17,7 +17,7 @@ import android.util.Log;
 
 /**
  * 
- * @author 李万隆
+ * @author fanxin, eachen
  * @qq 461051343
  * @date 2016年8月18日
  * @describe 封装Socket服务端

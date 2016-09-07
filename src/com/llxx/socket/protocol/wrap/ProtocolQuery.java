@@ -3,7 +3,8 @@
  */
 package com.llxx.socket.protocol.wrap;
 
-import java.util.Iterator;
+import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -23,7 +24,9 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import cn.trinea.android.common.util.ImageUtils;
 
 /**
  * @author 繁星
@@ -32,9 +35,18 @@ import android.text.TextUtils;
 public class ProtocolQuery extends Protocol
 {
 
+    /**当前运行的顶部的Acitivity*/
     public static final String TOP_ACTIVITY = "top_activity";
+
+    /**屏幕大小*/
     public static final String SCREENSIZE = "screensize";
+
+    /**指定包名所有的Acitivity*/
     public static final String ALLACTIVITY = "allactivity";
+
+    /**所有APK的信息*/
+    public static final String ALLAPPINFO = "allappinfo";
+
     private String type = "";
     private String packagename = "";
 
@@ -113,6 +125,68 @@ public class ProtocolQuery extends Protocol
                 {
                     e.printStackTrace();
                 }
+            }
+            break;
+        case ALLAPPINFO:
+            {
+                try
+                {
+                    JSONObject object = new JSONObject(getMessage().getMessage());
+                    String dir = object.optJSONObject(PARAMS).optString("dir");
+                    if (!TextUtils.isEmpty(dir))
+                    {
+                        
+                        PackageManager pm = service.getPackageManager(); //获得PackageManager对象
+                        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+                        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+                        // 通过查询，获得所有ResolveInfo对象.
+                        List<ResolveInfo> resolveInfos = pm.queryIntentActivities(mainIntent,
+                                PackageManager.MATCH_DEFAULT_ONLY);
+                        // 调用系统排序 ， 根据name排序
+                        // 该排序很重要，否则只能显示系统应用，而不能列出第三方应用程序
+                        Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(pm));
+                        
+                        JSONObject result = new JSONObject();
+                        JSONArray activitys = new JSONArray();
+                        result.put("packages", activitys);
+                        File filedir = new File(dir);
+                        if (!filedir.exists())
+                        {
+                            filedir.mkdirs();
+                        }
+                        for (ResolveInfo reInfo : resolveInfos)
+                        {
+                            String activityName = reInfo.activityInfo.name; // 获得该应用程序的启动Activity的name
+                            String pkgName = reInfo.activityInfo.packageName; // 获得应用程序的包名
+                            String appLabel = (String) reInfo.loadLabel(pm); // 获得应用程序的Label
+                            Drawable icon = reInfo.loadIcon(pm); // 获得应用程序图标
+
+                            File appdir = new File(dir, pkgName);
+                            if (!appdir.exists())
+                            {
+                                appdir.mkdirs();
+                            }
+
+                            File iconpath = new File(appdir, "icon.png");
+                            boolean isSucess = ImageUtils.drawableToFile(icon, iconpath);
+
+                            JSONObject activity = new JSONObject();
+                            activity.put("activityName", activityName);
+                            activity.put("package", pkgName);
+                            activity.put("name", appLabel);
+                            activity.put("iconpath", iconpath.getAbsolutePath());
+                            activity.put("iconsucess", isSucess);
+                            activitys.put(activity);
+                        }
+                        setCommandResult(result);
+                        setRunOk(true);
+                    }
+                }
+                catch (Throwable e)
+                {
+                    e.printStackTrace();
+                }
+
             }
             break;
         default:

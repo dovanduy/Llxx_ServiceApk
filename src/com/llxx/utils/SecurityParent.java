@@ -12,7 +12,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 /**
- * @author 李万隆
+ * @author fanxin, eachen
  * @date   2015年6月10日
  */
 public class SecurityParent

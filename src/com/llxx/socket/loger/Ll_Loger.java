@@ -8,7 +8,7 @@ import com.llxx.service.BuildConfig;
 import android.util.Log;
 
 /**
- * @author 李万隆
+ * @author fanxin, eachen
  * @date   2015年5月5日
  */
 public class Ll_Loger
