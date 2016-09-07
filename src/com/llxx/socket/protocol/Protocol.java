@@ -36,6 +36,7 @@ public abstract class Protocol extends Command
                 {
                     object.put("params", getCommandResult());
                 }
+                object.put("reason", getReason());
                 return object;
             }
             catch (JSONException e)

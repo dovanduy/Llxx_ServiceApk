@@ -11,7 +11,8 @@ public abstract class Command
     public static final String PARAMS = "params";
     Ll_Message message;
     boolean isRunOk = false;
-    
+    private String reason = "";
+
     /**
      * 是否是发送给客户端端的
      */
@@ -21,12 +22,12 @@ public abstract class Command
      * 客户端持有对象的Hash值
      */
     int clientHash = 0;
-    
+
     /**
      * 返回客户端执行结果
      */
     JSONObject result = null;
-    
+
     public Command()
     {
         setAction(action());
@@ -105,7 +106,7 @@ public abstract class Command
         }
         return null;
     }
-    
+
     /**
      * 获取JsonObject对象
      * @return
@@ -188,4 +189,21 @@ public abstract class Command
     {
         this.result = result;
     }
+
+    /**
+     * @return the reason
+     */
+    public String getReason()
+    {
+        return reason;
+    }
+
+    /**
+     * @param reason the reason to set
+     */
+    public void setReason(String reason)
+    {
+        this.reason = reason;
+    }
+
 }
