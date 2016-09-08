@@ -3,6 +3,8 @@
  */
 package com.llxx.socket.action;
 
+import com.llxx.socket.loger.Ll_Loger;
+
 import android.content.Context;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -27,8 +29,11 @@ public class AccessibilityActionManager
         {
             try
             {
+                System.out.println("AccessibilityActionManager.processEvent()->" + config + "," + config.getEventType()
+                        + "," + event.getEventType());
                 if (config.getEventType() == event.getEventType())
                 {
+                    System.out.println("AccessibilityActionManager.processEvent()--> in :" +config);
                     try
                     {
                         boolean isMatch = false;
@@ -38,8 +43,10 @@ public class AccessibilityActionManager
                             continue;
                         }
                         isMatch = config.processEvent(context, event, nodeInfo);
+                        System.out.println("AccessibilityActionManager.processEvent()--> in isMatch :" + isMatch);
                         if (isMatch)
                         {
+                            System.out.println("AccessibilityActionManager.processEvent()--> in result :" + config.getResult());
                             return config.getResult();
                         }
                     }

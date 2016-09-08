@@ -36,8 +36,8 @@ public class AccessibilityActivityAction extends AccessibilityAction
             if (activityInfo != null)
             {
                 setResult(getAccessibilityResult().getResult());
+                return true;
             }
-            return true;
         }
         catch (Exception e)
         {
