@@ -27,10 +27,11 @@ public class Ll_AccessibilityService extends AccessibilityService
     static final String TAG = "Ll_AccessibilityService";
     BinderUtils mBinderUtils;
     // 添加网易阅读，这里后面的是要做成自动化处理
-    String[] PACKAGES = { "com.llxx.service", "com.netease.newsreader.activity" };
+    String[] PACKAGES = { "com.llxx.service", "com.android.systemui" };
     Thread mBinderThread;
     Ll_AccessibilityClient mBinderClient;
     QueryController mController;
+    
 
     @Override
     protected void onServiceConnected()
@@ -83,7 +84,7 @@ public class Ll_AccessibilityService extends AccessibilityService
             {
                 Ll_Loger.i(TAG, "==============Start====================");
             }
-            
+
             // Ll_Loger.i(TAG, event.getBeforeText().toString());
             if (event.getClassName() != null)
                 Ll_Loger.i(TAG, "class name: " + event.getClassName().toString());
@@ -91,8 +92,7 @@ public class Ll_AccessibilityService extends AccessibilityService
             // Ll_Loger.i(TAG, event.getContentDescription().toString());
             // Ll_Loger.i(TAG, event.getText().toString());
             if (event.getPackageName() != null)
-                Ll_Loger.i(TAG,
-                        "package name: " + event.getPackageName().toString());
+                Ll_Loger.i(TAG, "package name: " + event.getPackageName().toString());
             switch (eventType)
             {
             case AccessibilityEvent.TYPE_VIEW_CLICKED:

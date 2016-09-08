@@ -71,11 +71,11 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
         case R.id.socket_send:
             try
             {
-                // mBinderUtils.getService().sendMessage("socket_send");
-                JSONObject command = new CommandClick().performClickById("com.llxx.service:id/start_fuzhu_fuwu")
-                        .getJsonObject();
-                mClientWrap.send(command == null ? "" : command.toString());
-                Ll_Loger.d(TAG, "socket_send->socket_send");
+                mBinderUtils.getService().sendMessage("socket_send");
+                //                JSONObject command = new CommandClick().performClickById("com.llxx.service:id/start_fuzhu_fuwu")
+                //                        .getJsonObject();
+                //                mClientWrap.send(command == null ? "" : command.toString());
+                //                Ll_Loger.d(TAG, "socket_send->socket_send");
             }
             catch (Exception e)
             {
@@ -132,7 +132,7 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
     @Override
     public void onMessage(Ll_ClientSocketWrap wrap, Ll_Message message)
     {
-        Ll_Loger.d(TAG, "message->" + message.getMessage());
+        // Ll_Loger.d(TAG, "message->" + message.getMessage());
     }
 
     void showDialog()
