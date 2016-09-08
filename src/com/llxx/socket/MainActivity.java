@@ -9,14 +9,17 @@ import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.wrap.Ll_ClientSocketWrap;
 import com.llxx.socket.wrap.Ll_MessageListener;
 import com.llxx.socket.wrap.bean.Ll_Message;
+import com.llxx.utils.AccessibilityUtils;
 import com.llxx.utils.BinderUtils;
 import com.llxx.utils.ToastUtil;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import me.drakeet.materialdialog.MaterialDialog;
 
 public class MainActivity extends Activity implements OnClickListener, Ll_MessageListener
 {
@@ -24,10 +27,15 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
     BinderUtils mBinderUtils;
     ClientWrap mClientWrap;
 
+    MaterialDialog mMaterialDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        mMaterialDialog = new MaterialDialog(this);
+
         mBinderUtils = new BinderUtils(getApplicationContext());
         mBinderUtils.bind();
 
@@ -40,6 +48,17 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
         findViewById(R.id.open_toast).setOnClickListener(this);
         findViewById(R.id.start_second_page).setOnClickListener(this);
         findViewById(R.id.start_fuzhu_fuwu).setOnClickListener(this);
+        findViewById(R.id.start_dialog).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if (!AccessibilityUtils.isAccessibilitySettingsOn(getApplicationContext()))
+        {
+            showDialog();
+        }
     }
 
     int start = 0;
@@ -53,7 +72,8 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
             try
             {
                 // mBinderUtils.getService().sendMessage("socket_send");
-                JSONObject command = new CommandClick().performClickById("com.llxx.service:id/start_fuzhu_fuwu").getJsonObject();
+                JSONObject command = new CommandClick().performClickById("com.llxx.service:id/start_fuzhu_fuwu")
+                        .getJsonObject();
                 mClientWrap.send(command == null ? "" : command.toString());
                 Ll_Loger.d(TAG, "socket_send->socket_send");
             }
@@ -92,6 +112,11 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
                 startActivity(new Intent(this, SecondActivity.class));
             }
             break;
+
+        case R.id.start_dialog:
+            {
+                showDialog();
+            }
         default:
             break;
         }
@@ -108,6 +133,51 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
     public void onMessage(Ll_ClientSocketWrap wrap, Ll_Message message)
     {
         Ll_Loger.d(TAG, "message->" + message.getMessage());
+    }
+
+    void showDialog()
+    {
+        if (mMaterialDialog != null)
+        {
+            mMaterialDialog.setTitle("辅助服务没打开")
+                    .setMessage("辅助服务用来模拟点击事件，获取界面控件，打开使软件正常运行\r\n1.选择AutoTestService\r\n2.选择打开")
+                    //mMaterialDialog.setBackgroundResource(R.drawable.background);
+                    .setPositiveButton("打开", new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            mMaterialDialog.dismiss();
+                            try
+                            {
+                                Intent intent = new Intent("android.settings.ACCESSIBILITY_SETTINGS");
+                                startActivity(intent);
+
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).setNegativeButton("退出", new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            mMaterialDialog.dismiss();
+                            System.exit(0);
+                        }
+                    }).setCanceledOnTouchOutside(true)
+                    // You can change the message anytime.
+                    // mMaterialDialog.setTitle("提示");
+                    .setOnDismissListener(new DialogInterface.OnDismissListener()
+                    {
+                        @Override
+                        public void onDismiss(DialogInterface dialog)
+                        {
+                        }
+                    }).show();
+        }
     }
 
     /*
