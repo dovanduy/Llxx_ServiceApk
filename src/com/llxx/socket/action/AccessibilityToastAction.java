@@ -22,8 +22,7 @@ public class AccessibilityToastAction extends AccessibilityAction
     public static final String TAG = "AccessibilityToastAction";
 
     @Override
-    protected boolean processEvent(Context context, AccessibilityEvent event,
-            AccessibilityNodeInfo nodeInfo)
+    protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
         setResult("");
         // Ll_Loger.i(TAG, event.getBeforeText().toString());
@@ -33,12 +32,10 @@ public class AccessibilityToastAction extends AccessibilityAction
         // Ll_Loger.i(TAG, event.getContentDescription().toString());
         // Ll_Loger.i(TAG, event.getText().toString());
         if (event.getPackageName() != null)
-            Ll_Loger.i(TAG,
-                    "package name: " + event.getPackageName().toString());
+            Ll_Loger.i(TAG, "package name: " + event.getPackageName().toString());
         try
         {
-            if (event.getClassName().toString()
-                    .startsWith("android.widget.Toast"))
+            if (event.getClassName().toString().startsWith("android.widget.Toast"))
             {
                 ProtocolNotify activity = new ProtocolNotify();
                 activity.setClassname(event.getClassName().toString());
@@ -63,5 +60,11 @@ public class AccessibilityToastAction extends AccessibilityAction
     public int getEventType()
     {
         return AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED;
+    }
+
+    @Override
+    protected String getActoin()
+    {
+        return "notify";
     }
 }

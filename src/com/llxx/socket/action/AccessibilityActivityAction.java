@@ -25,34 +25,17 @@ public class AccessibilityActivityAction extends AccessibilityAction
     public static final String TAG = "AccessibilityActivityAction";
 
     @Override
-    protected boolean processEvent(Context context, AccessibilityEvent event,
-            AccessibilityNodeInfo nodeInfo)
+    protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
-        setResult("");
-        // Ll_Loger.i(TAG, event.getBeforeText().toString());
-        if (event.getClassName() != null)
-            Ll_Loger.i(TAG, "class name: " + event.getClassName().toString());
-
-        // Ll_Loger.i(TAG, event.getContentDescription().toString());
-        // Ll_Loger.i(TAG, event.getText().toString());
-        if (event.getPackageName() != null)
-            Ll_Loger.i(TAG,
-                    "package name: " + event.getPackageName().toString());
         try
         {
-            ComponentName componentName = new ComponentName(
-                    event.getPackageName().toString(),
+            ComponentName componentName = new ComponentName(event.getPackageName().toString(),
                     event.getClassName().toString());
 
             ActivityInfo activityInfo = tryGetActivity(context, componentName);
             if (activityInfo != null)
             {
-                Ll_Loger.i(TAG, componentName.flattenToShortString());
-                ProtocolActivity activity = new ProtocolActivity();
-                activity.setClassname(event.getClassName().toString());
-                activity.setPackageName(event.getPackageName().toString());
-                activity.setType(ProtocolConstants.START_TYPE_ACTIVITY);
-                setResult(activity.getResult(context));
+                setResult(getAccessibilityResult().getResult());
             }
             return true;
         }
@@ -69,18 +52,22 @@ public class AccessibilityActivityAction extends AccessibilityAction
         return AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
     }
 
-    private ActivityInfo tryGetActivity(Context context,
-            ComponentName componentName)
+    private ActivityInfo tryGetActivity(Context context, ComponentName componentName)
     {
         try
         {
-            return context.getPackageManager().getActivityInfo(componentName,
-                    0);
+            return context.getPackageManager().getActivityInfo(componentName, 0);
         }
         catch (PackageManager.NameNotFoundException e)
         {
             return null;
         }
+    }
+
+    @Override
+    protected String getActoin()
+    {
+        return "start_activity";
     }
 
 }

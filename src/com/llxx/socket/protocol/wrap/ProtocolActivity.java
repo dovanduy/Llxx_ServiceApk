@@ -19,8 +19,6 @@ import android.content.Context;
 public class ProtocolActivity extends Protocol
 {
 
-    private String classname = "";
-    private String packageName = "";
     private String type = "";
 
     @Override
@@ -49,8 +47,6 @@ public class ProtocolActivity extends Protocol
         {
             try
             {
-                object.put("classname", getClassname());
-                object.put("packageName", getPackageName());
                 object.put("type", getType());
                 return object.toString();
             }
@@ -60,38 +56,6 @@ public class ProtocolActivity extends Protocol
             }
         }
         return null;
-    }
-
-    /**
-     * @return the classname
-     */
-    public String getClassname()
-    {
-        return classname;
-    }
-
-    /**
-     * @param classname the classname to set
-     */
-    public void setClassname(String classname)
-    {
-        this.classname = classname;
-    }
-
-    /**
-     * @return the packageName
-     */
-    public String getPackageName()
-    {
-        return packageName;
-    }
-
-    /**
-     * @param packageName the packageName to set
-     */
-    public void setPackageName(String packageName)
-    {
-        this.packageName = packageName;
     }
 
     /**

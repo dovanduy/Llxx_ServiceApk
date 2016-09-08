@@ -30,16 +30,14 @@ public class AccessibilityWinStateChangeAction extends AccessibilityAction
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
-    protected boolean processEvent(Context context, AccessibilityEvent event,
-            AccessibilityNodeInfo nodeInfo)
+    protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
         setResult("");
         if (event.getClassName() != null)
             Ll_Loger.i(TAG, "class name: " + event.getClassName().toString());
 
         if (event.getPackageName() != null)
-            Ll_Loger.i(TAG,
-                    "package name: " + event.getPackageName().toString());
+            Ll_Loger.i(TAG, "package name: " + event.getPackageName().toString());
 
         ProtocolClick activity = new ProtocolClick();
         activity.setClassname(event.getClassName().toString());
@@ -48,15 +46,13 @@ public class AccessibilityWinStateChangeAction extends AccessibilityAction
         if (nodeInfo != null)
         {
             activity.setType(activity.getClassname());
-            activity.setTitle(nodeInfo.getText() != null
-                    ? nodeInfo.getText().toString() : "");
+            activity.setTitle(nodeInfo.getText() != null ? nodeInfo.getText().toString() : "");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
             {
                 String id = nodeInfo.getViewIdResourceName();
                 activity.setIdname(TextUtils.isEmpty(id) ? "" : id);
             }
-            Ll_Loger.i(TAG, "nodeInfo.getViewIdResourceName() "
-                    + nodeInfo.getViewIdResourceName());
+            Ll_Loger.i(TAG, "nodeInfo.getViewIdResourceName() " + nodeInfo.getViewIdResourceName());
             try
             {
                 activity.setCommandResult(AccessibilityNodeInfoToJson.getJson(nodeInfo));
@@ -84,5 +80,12 @@ public class AccessibilityWinStateChangeAction extends AccessibilityAction
     public int getEventType()
     {
         return AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+    }
+
+    @Override
+    protected String getActoin()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

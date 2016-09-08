@@ -21,8 +21,7 @@ public class AccessibilityActionManager
      * @param nodeInfo
      * @return
      */
-    public static final String processEvent(Context context, AccessibilityEvent event,
-            AccessibilityNodeInfo nodeInfo)
+    public static final String processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
         for (AccessibilityAction config : AccessibilityActionConfig.ACTIONS)
         {
@@ -32,7 +31,13 @@ public class AccessibilityActionManager
                 {
                     try
                     {
-                        boolean isMatch = config.processEvent(context, event, nodeInfo);
+                        boolean isMatch = false;
+                        isMatch = config.preProcessEvent(context, event, nodeInfo);
+                        if (!isMatch)
+                        {
+                            continue;
+                        }
+                        isMatch = config.processEvent(context, event, nodeInfo);
                         if (isMatch)
                         {
                             return config.getResult();

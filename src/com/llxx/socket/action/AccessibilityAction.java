@@ -3,7 +3,7 @@
  */
 package com.llxx.socket.action;
 
-import com.llxx.socket.service.ISocketService;
+import com.llxx.socket.action.result.AccessibilityResult;
 
 import android.content.Context;
 import android.view.accessibility.AccessibilityEvent;
@@ -17,14 +17,41 @@ import android.view.accessibility.AccessibilityNodeInfo;
  */
 public abstract class AccessibilityAction
 {
+    static final String TAG = "AccessibilityAction";
+
     /**
      * 发送给客户端的结果
      */
     String result = "";
+    AccessibilityResult mAccessibilityResult;
 
     public AccessibilityAction()
     {
+        mAccessibilityResult = new AccessibilityResult(getActoin());
+    }
 
+    /**
+     * 预处理命令
+     * @param context
+     * @param event
+     * @param nodeInfo
+     * @return
+     */
+    protected boolean preProcessEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
+    {
+        setResult("");
+        try
+        {
+            mAccessibilityResult.setPackageName(event.getPackageName().toString());
+            mAccessibilityResult.setClassname(event.getClassName().toString());
+            mAccessibilityResult.setSucess(true);
+            return true;
+        }
+        catch (Throwable e)
+        {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**
@@ -33,8 +60,13 @@ public abstract class AccessibilityAction
      * @param nodeInfo Node信息，有可能返回为空，需要添加判断
      * @return
      */
-    protected abstract boolean processEvent(Context context, AccessibilityEvent event,
-            AccessibilityNodeInfo nodeInfo);
+    protected abstract boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo);
+
+    /**
+     * 
+     * @return
+     */
+    protected abstract String getActoin();
 
     /**
      * @return 返回给服务的结果
@@ -51,6 +83,14 @@ public abstract class AccessibilityAction
     public void setResult(String result)
     {
         this.result = result;
+    }
+    
+    /**
+     * @return the mAccessibilityResult
+     */
+    public AccessibilityResult getAccessibilityResult()
+    {
+        return mAccessibilityResult;
     }
 
     /**
