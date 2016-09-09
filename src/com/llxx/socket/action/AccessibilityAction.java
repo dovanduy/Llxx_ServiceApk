@@ -48,7 +48,7 @@ public abstract class AccessibilityAction
             AccessibilityNodeInfo info = event.getSource();
             if (info != null)
             {
-                mAccessibilityResult.putParams("node", AccessibilityNodeInfoToJson.getJson(info));
+                mAccessibilityResult.putParams("node", AccessibilityNodeInfoToJson.getJson(info, false));
             }
             mAccessibilityResult.setSucess(true);
             return true;

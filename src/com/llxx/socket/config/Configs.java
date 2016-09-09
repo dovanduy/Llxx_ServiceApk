@@ -3,7 +3,7 @@ package com.llxx.socket.config;
 public class Configs
 {
     /** Ll_AccessibilityClient 客户端接收数据LOG */
-    public static final boolean DEBUG_ACCESSIBLITY_CLIENT_RECEIVE = false;
+    public static final boolean DEBUG_ACCESSIBLITY_CLIENT_RECEIVE = true;
     
     /** Ll_AccessibilityClient 客户端发送数据LOG */
     public static final boolean DEBUG_ACCESSIBLITY_CLIENT_SEND = false;

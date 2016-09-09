@@ -23,11 +23,17 @@ public class AccessibilityNodeInfoToJson
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static JSONObject getJson(AccessibilityNodeInfo info) throws JSONException
     {
+        return getJson(info, true);
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static JSONObject getJson(AccessibilityNodeInfo info, boolean needChild) throws JSONException
+    {
         JSONObject object = new JSONObject();
 
-        if(info == null)
+        if (info == null)
             return object;
-        
+
         object.put("text", CharSequenceWrap(info.getText()));
 
         object.put("windowId", info.getWindowId());
@@ -43,7 +49,6 @@ public class AccessibilityNodeInfoToJson
         {
             object.put("resource-id", CharSequenceWrap(info.getViewIdResourceName()));
         }
-
 
         object.put("package", CharSequenceWrap(info.getPackageName()));
         object.put("class", CharSequenceWrap(info.getClassName()));
@@ -64,14 +69,17 @@ public class AccessibilityNodeInfoToJson
         object.put("enabled", info.isEnabled());
         object.put("password", info.isPassword());
         object.put("scrollable", info.isScrollable());
-        
-        JSONArray array = new JSONArray();
-        for (int i = 0; i < info.getChildCount(); i++)
+        if (needChild)
         {
-            array.put(getJson(info.getChild(i)));
+            JSONArray array = new JSONArray();
+
+            for (int i = 0; i < info.getChildCount(); i++)
+            {
+                array.put(getJson(info.getChild(i)));
+            }
+            if (array.length() > 0)
+                object.put("node", array);
         }
-        if (array.length() > 0)
-            object.put("node", array);
         return object;
     }
 

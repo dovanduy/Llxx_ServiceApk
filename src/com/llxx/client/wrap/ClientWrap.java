@@ -83,6 +83,7 @@ public class ClientWrap implements Runnable
                 {
                     input.append((char) a);
                 }
+                
                 String msg = input.toString();
                 if (!TextUtils.isEmpty(msg) && mListener != null)
                 {
@@ -93,7 +94,7 @@ public class ClientWrap implements Runnable
                 {
                     isKeepListener = false;
                 }
-                Ll_Loger.i(TAG, socket + " wait for message" + a);
+                // Ll_Loger.i(TAG, socket + " wait for message" + a);
             }
             isConnect = false;
             socket.close();

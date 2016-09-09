@@ -1,7 +1,6 @@
 package com.llxx.client.command;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.llxx.socket.loger.Ll_Loger;
@@ -33,7 +32,7 @@ public class CommandRegPackage extends CommandRun
                 setRunOk(true);
                 return true;
             }
-            catch (JSONException e)
+            catch (Throwable e)
             {
                 e.printStackTrace();
             }
