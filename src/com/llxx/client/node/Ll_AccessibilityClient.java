@@ -126,7 +126,7 @@ public class Ll_AccessibilityClient implements Runnable
                 {
                     isKeepListener = false;
                 }
-                Ll_Loger.i(TAG, socket + " wait for message" + a);
+                // Ll_Loger.i(TAG, socket + " wait for message" + a);
             }
             socket.close();
             Ll_Loger.d(TAG, socket + " close  -->" + socket);
