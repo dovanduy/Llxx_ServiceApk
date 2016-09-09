@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.llxx.socket.config.Configs;
 import com.llxx.socket.loger.Ll_Loger;
 
 import android.util.Log;
@@ -74,7 +75,7 @@ public class Ll_SocketServiceWrap
      * 给指定Hash的客户端发送消息
      * @param msg
      */
-    public void sendMessage(String msg, int hash , int exclude)
+    public void sendMessage(String msg, int hash, int exclude)
     {
         int num = mList.size();
         for (int index = 0; index < num; index++)
@@ -91,7 +92,10 @@ public class Ll_SocketServiceWrap
                                 new BufferedWriter(new OutputStreamWriter(mSocket.getSocket().getOutputStream())),
                                 true);
                         pout.println(msg);
-                        Ll_Loger.d(TAG, "sendMessage" + msg);
+                        if (Configs.DEBUG_SOCKETSERVICEWRAP_SEND_SHORT)
+                            Ll_Loger.d(TAG, "sendMessage->" + (msg.length() > 200 ? msg.substring(0, 200) : msg));
+                        else
+                            Ll_Loger.d(TAG, "sendMessage->" + msg);
                     }
                     catch (IOException e)
                     {
@@ -104,8 +108,9 @@ public class Ll_SocketServiceWrap
 
     public void sendMessage(String msg, int hash)
     {
-        sendMessage(msg, hash , 0);
+        sendMessage(msg, hash, 0);
     }
+
     /**
      * 给所有的客户端发送消息
      * @param msg

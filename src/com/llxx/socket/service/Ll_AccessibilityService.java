@@ -23,7 +23,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  */
 public class Ll_AccessibilityService extends AccessibilityService
 {
-    static final boolean DEBUG_OUTPUT = true;
+    static final boolean DEBUG_OUTPUT = false;
     static final String TAG = "Ll_AccessibilityService";
     BinderUtils mBinderUtils;
     // 添加网易阅读，这里后面的是要做成自动化处理

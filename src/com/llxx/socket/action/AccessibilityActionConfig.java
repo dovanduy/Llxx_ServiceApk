@@ -15,10 +15,13 @@ public class AccessibilityActionConfig
 
     static
     {
+        
         ACTIONS.add(new AccessibilityClickAction());
         ACTIONS.add(new AccessibilityToastAction());
         ACTIONS.add(new AccessibilityActivityAction());
         ACTIONS.add(new AccessibilityDialogAction());
         ACTIONS.add(new AccessibilityWinchageAction());
+        
+        ACTIONS.add(new AccessibilityScrollAction());
     }
 }

@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.llxx.client.action.ActionConnectService;
 import com.llxx.client.command.CommandManager;
 import com.llxx.client.command.CommandRun;
+import com.llxx.socket.config.Configs;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
 import com.llxx.socket.wrap.bean.Ll_Message;
@@ -72,12 +73,8 @@ public class Ll_AccessibilityClient implements Runnable
                 }
             }
 
-            in = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(
-                    new BufferedWriter(
-                            new OutputStreamWriter(socket.getOutputStream())),
-                    true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
             send(new ActionConnectService().getResult(mAccessibilityService));
             while (isKeepListener)
             {
@@ -93,14 +90,14 @@ public class Ll_AccessibilityClient implements Runnable
                 String msg = input.toString();
                 if (!TextUtils.isEmpty(msg))
                 {
-                    Ll_Loger.d(TAG, socket + " receive message -->" + msg);
+                    if (Configs.DEBUG_ACCESSIBLITY_CLIENT_RECEIVE)
+                        Ll_Loger.d(TAG, socket + " receive message -->" + msg);
                     JSONObject object = new JSONObject(msg);
                     String action = object.optString("action", "");
-                    Class<? extends CommandRun> command = CommandManager.mProtocols
-                            .get(action);
+                    Class<? extends CommandRun> command = CommandManager.mProtocols.get(action);
 
-                    Ll_Loger.d(TAG, "parseMessage -> action : " + action
-                            + ", protocol ->" + command);
+                    if (Configs.DEBUG_ACCESSIBLITY_CLIENT_RECEIVE)
+                        Ll_Loger.d(TAG, "parseMessage -> action : " + action + ", protocol ->" + command);
                     if (command != null)
                     {
                         try
@@ -111,8 +108,7 @@ public class Ll_AccessibilityClient implements Runnable
                             mProtocol.prase();
                             mProtocol.setRunOk(mProtocol.runCommand(mAccessibilityService));
                             // send(mProtocol.getResult(mAccessibilityService));
-                            mAccessibilityService.sendMessageByHash(
-                                    mProtocol.getResult(mAccessibilityService),
+                            mAccessibilityService.sendMessageByHash(mProtocol.getResult(mAccessibilityService),
                                     mProtocol.getClientHash());
                         }
                         catch (InstantiationException e)
@@ -162,11 +158,9 @@ public class Ll_AccessibilityClient implements Runnable
         PrintWriter pout = null;
         try
         {
-            pout = new PrintWriter(
-                    new BufferedWriter(
-                            new OutputStreamWriter(mSocket.getOutputStream())),
-                    true);
-            Ll_Loger.d(TAG, "Accessibility sendmsg -> " + msg);
+            pout = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mSocket.getOutputStream())), true);
+            if (Configs.DEBUG_ACCESSIBLITY_CLIENT_SEND)
+                Ll_Loger.d(TAG, "Accessibility sendmsg -> " + msg);
             pout.println(msg);
         }
         catch (IOException e)
