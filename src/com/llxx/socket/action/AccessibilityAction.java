@@ -38,20 +38,17 @@ public abstract class AccessibilityAction
      * @param nodeInfo
      * @return
      */
-    protected boolean preProcessEvent(Context context, AccessibilityEvent event,
-            AccessibilityNodeInfo nodeInfo)
+    protected boolean preProcessEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
         setResult("");
         try
         {
-            mAccessibilityResult
-                    .setPackageName(event.getPackageName().toString());
+            mAccessibilityResult.setPackageName(event.getPackageName().toString());
             mAccessibilityResult.setClassname(event.getClassName().toString());
             AccessibilityNodeInfo info = event.getSource();
             if (info != null)
             {
-                mAccessibilityResult.putParams("node",
-                        AccessibilityNodeInfoToJson.getJson(info));
+                mAccessibilityResult.putParams("node", AccessibilityNodeInfoToJson.getJson(info));
             }
             mAccessibilityResult.setSucess(true);
             return true;
@@ -69,8 +66,19 @@ public abstract class AccessibilityAction
      * @param nodeInfo Node信息，有可能返回为空，需要添加判断
      * @return
      */
-    protected abstract boolean processEvent(Context context,
-            AccessibilityEvent event, AccessibilityNodeInfo nodeInfo);
+    protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
+    {
+        try
+        {
+            setResult(getAccessibilityResult().getResult());
+            return true;
+        }
+        catch (Throwable e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     /**
      * 

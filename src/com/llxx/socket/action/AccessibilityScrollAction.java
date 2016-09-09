@@ -3,9 +3,7 @@
  */
 package com.llxx.socket.action;
 
-import android.content.Context;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityNodeInfo;
 
 /**
  * @author fanxin, eachen
@@ -15,22 +13,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  */
 public class AccessibilityScrollAction extends AccessibilityAction
 {
-    public static final String TAG = "AccessibilityToastAction";
-
-    @Override
-    protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
-    {
-        try
-        {
-            setResult(getAccessibilityResult().getResult());
-            return true;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return false;
-    }
+    public static final String TAG = "AccessibilityScrollAction";
 
     @Override
     public int getEventType()

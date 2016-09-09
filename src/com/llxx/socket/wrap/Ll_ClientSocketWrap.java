@@ -88,7 +88,7 @@ public class Ll_ClientSocketWrap implements Runnable
                 {
                     isKeepListener = false;
                 }
-                Ll_Loger.i(TAG, this + " wait for message" + a);
+                // Ll_Loger.i(TAG, this + " wait for message" + a);
             }
             try
             {

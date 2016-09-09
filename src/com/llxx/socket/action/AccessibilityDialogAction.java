@@ -3,13 +3,7 @@
  */
 package com.llxx.socket.action;
 
-import org.json.JSONException;
-
-import com.llxx.socket.loger.Ll_Loger;
-
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -26,10 +20,8 @@ public class AccessibilityDialogAction extends AccessibilityAction
     @Override
     protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
-        Ll_Loger.i(TAG, "getAccessibilityResult().getClassname()->" + getAccessibilityResult().getClassname());
         try
         {
-            Ll_Loger.i(TAG, "getAccessibilityResult().getClassname()->" + getAccessibilityResult().getClassname());
             if (getAccessibilityResult().getClassname().equals("android.app.AlertDialog"))
             {
                 setResult(getAccessibilityResult().getResult());

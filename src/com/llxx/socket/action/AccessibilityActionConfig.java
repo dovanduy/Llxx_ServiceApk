@@ -17,7 +17,7 @@ public class AccessibilityActionConfig
     {
         
         ACTIONS.add(new AccessibilityClickAction());
-        ACTIONS.add(new AccessibilityToastAction());
+        ACTIONS.add(new AccessibilityNotifyAction());
         ACTIONS.add(new AccessibilityActivityAction());
         ACTIONS.add(new AccessibilityDialogAction());
         ACTIONS.add(new AccessibilityWinchageAction());
