@@ -23,5 +23,8 @@ public class AccessibilityActionConfig
         ACTIONS.add(new AccessibilityWinchageAction());
         
         ACTIONS.add(new AccessibilityScrollAction());
+        
+        ACTIONS.add(new AccessibilityTextChangeAction());
+        
     }
 }

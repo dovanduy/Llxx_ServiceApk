@@ -105,6 +105,18 @@ public class Ll_SocketServiceWrap
             }
         }
     }
+    
+    /**
+     * 移除指定的监听
+     * @param wrap
+     */
+    public void remove(Ll_ClientSocketWrap wrap)
+    {
+        if(mList.contains(wrap))
+        {
+            mList.remove(wrap);
+        }
+    }
 
     public void sendMessage(String msg, int hash)
     {

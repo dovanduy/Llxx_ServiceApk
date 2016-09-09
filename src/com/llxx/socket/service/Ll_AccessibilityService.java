@@ -23,7 +23,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  */
 public class Ll_AccessibilityService extends AccessibilityService
 {
-    static final boolean DEBUG_OUTPUT = false;
+    static final boolean DEBUG_OUTPUT = true;
     static final String TAG = "Ll_AccessibilityService";
     BinderUtils mBinderUtils;
     // 添加网易阅读，这里后面的是要做成自动化处理
@@ -79,7 +79,7 @@ public class Ll_AccessibilityService extends AccessibilityService
             }
             // TODO Auto-generated method stub  
             int eventType = event.getEventType();
-            String eventText = "";
+            String eventText = "nnnnnnnnnnnnnnnnnnnnnn";
             if (DEBUG_OUTPUT)
             {
                 Ll_Loger.i(TAG, "==============Start====================");
