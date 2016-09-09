@@ -3,6 +3,10 @@
  */
 package com.llxx.socket.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
 import com.llxx.client.node.Ll_AccessibilityClient;
 import com.llxx.nodefinder.QueryController;
 import com.llxx.socket.action.AccessibilityActionManager;
@@ -28,10 +32,10 @@ public class Ll_AccessibilityService extends AccessibilityService
     BinderUtils mBinderUtils;
     // 添加网易阅读，这里后面的是要做成自动化处理
     String[] PACKAGES = { "com.llxx.service", "com.android.systemui" };
+    HashMap<String, Boolean> mPackages = new HashMap<>();
     Thread mBinderThread;
     Ll_AccessibilityClient mBinderClient;
     QueryController mController;
-    
 
     @Override
     protected void onServiceConnected()
@@ -47,6 +51,11 @@ public class Ll_AccessibilityService extends AccessibilityService
         mBinderThread.start();
         mBinderUtils = new BinderUtils(getApplicationContext());
         mBinderUtils.bind();
+
+        for (int i = 0; i < PACKAGES.length; i++)
+        {
+            mPackages.put(PACKAGES[i], true);
+        }
         AccessibilityServiceInfo accessibilityServiceInfo = new AccessibilityServiceInfo();
         accessibilityServiceInfo.packageNames = PACKAGES;
         accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
@@ -222,11 +231,34 @@ public class Ll_AccessibilityService extends AccessibilityService
      */
     public void setPackage(String[] PACKAGES)
     {
-        AccessibilityServiceInfo accessibilityServiceInfo = new AccessibilityServiceInfo();
-        accessibilityServiceInfo.packageNames = PACKAGES;
-        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
-        accessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_SPOKEN;
-        accessibilityServiceInfo.notificationTimeout = 100;
-        setServiceInfo(accessibilityServiceInfo);
+        ArrayList<String> mSetPackage = new ArrayList<>();
+        for (int i = 0; i < PACKAGES.length; i++)
+        {
+            Ll_Loger.e(TAG, "is containsKey : " + PACKAGES[i] + " = "+ mPackages.containsKey(PACKAGES[i]));
+            if (mPackages.containsKey(PACKAGES[i]))
+                continue;
+
+            mPackages.put(PACKAGES[i], true);
+            mSetPackage.add(PACKAGES[i]);
+        }
+        if (mSetPackage.size() != 0)
+        {
+            String sets[] = new String[mSetPackage.size()];
+            mSetPackage.toArray(sets);
+            Ll_Loger.e(TAG, "set packages is " + Arrays.toString(sets));
+            String result[] = new String[mPackages.size()];
+            this.PACKAGES = mPackages.keySet().toArray(result);
+            Ll_Loger.e(TAG, "all packages is " + Arrays.toString(this.PACKAGES));
+            AccessibilityServiceInfo accessibilityServiceInfo = new AccessibilityServiceInfo();
+            accessibilityServiceInfo.packageNames = this.PACKAGES;
+            accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
+            accessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_SPOKEN;
+            accessibilityServiceInfo.notificationTimeout = 100;
+            setServiceInfo(accessibilityServiceInfo);
+        }
+        else
+        {
+            Ll_Loger.e(TAG, "skip set packages curr is : " + Arrays.toString(this.PACKAGES));
+        }
     }
 }

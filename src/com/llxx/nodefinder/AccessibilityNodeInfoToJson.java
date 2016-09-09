@@ -25,6 +25,9 @@ public class AccessibilityNodeInfoToJson
     {
         JSONObject object = new JSONObject();
 
+        if(info == null)
+            return object;
+        
         object.put("text", CharSequenceWrap(info.getText()));
 
         object.put("windowId", info.getWindowId());
