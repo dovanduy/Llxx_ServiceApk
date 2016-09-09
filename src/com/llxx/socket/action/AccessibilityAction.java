@@ -3,6 +3,7 @@
  */
 package com.llxx.socket.action;
 
+import com.llxx.nodefinder.AccessibilityNodeInfoToJson;
 import com.llxx.socket.action.result.AccessibilityResult;
 
 import android.content.Context;
@@ -37,13 +38,21 @@ public abstract class AccessibilityAction
      * @param nodeInfo
      * @return
      */
-    protected boolean preProcessEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
+    protected boolean preProcessEvent(Context context, AccessibilityEvent event,
+            AccessibilityNodeInfo nodeInfo)
     {
         setResult("");
         try
         {
-            mAccessibilityResult.setPackageName(event.getPackageName().toString());
+            mAccessibilityResult
+                    .setPackageName(event.getPackageName().toString());
             mAccessibilityResult.setClassname(event.getClassName().toString());
+            AccessibilityNodeInfo info = event.getSource();
+            if (info != null)
+            {
+                mAccessibilityResult.putParams("node",
+                        AccessibilityNodeInfoToJson.getJson(info));
+            }
             mAccessibilityResult.setSucess(true);
             return true;
         }
@@ -60,7 +69,8 @@ public abstract class AccessibilityAction
      * @param nodeInfo Node信息，有可能返回为空，需要添加判断
      * @return
      */
-    protected abstract boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo);
+    protected abstract boolean processEvent(Context context,
+            AccessibilityEvent event, AccessibilityNodeInfo nodeInfo);
 
     /**
      * 
@@ -84,7 +94,7 @@ public abstract class AccessibilityAction
     {
         this.result = result;
     }
-    
+
     /**
      * @return the mAccessibilityResult
      */

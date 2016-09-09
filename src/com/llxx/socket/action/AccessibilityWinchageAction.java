@@ -19,22 +19,18 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * @qq 	461051353
  * @describe 获取点击事件
  */
-public class AccessibilityDialogAction extends AccessibilityAction
+public class AccessibilityWinchageAction extends AccessibilityAction
 {
     public static final String TAG = "AccessibilityClickAction";
 
     @Override
-    protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
+    protected boolean processEvent(Context context, AccessibilityEvent event,
+            AccessibilityNodeInfo nodeInfo)
     {
-        Ll_Loger.i(TAG, "getAccessibilityResult().getClassname()->" + getAccessibilityResult().getClassname());
         try
         {
-            Ll_Loger.i(TAG, "getAccessibilityResult().getClassname()->" + getAccessibilityResult().getClassname());
-            if (getAccessibilityResult().getClassname().equals("android.app.AlertDialog"))
-            {
-                setResult(getAccessibilityResult().getResult());
-                return true;
-            }
+            setResult(getAccessibilityResult().getResult());
+            return true;
         }
         catch (Throwable e)
         {
@@ -46,12 +42,12 @@ public class AccessibilityDialogAction extends AccessibilityAction
     @Override
     public int getEventType()
     {
-        return AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+        return AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
     }
 
     @Override
     protected String getActoin()
     {
-        return "start_dialog";
+        return "window_state";
     }
 }

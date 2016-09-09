@@ -29,13 +29,13 @@ public class AccessibilityNodeInfoToJson
 
         object.put("windowId", info.getWindowId());
         object.put("index", -1);
-        try
-        {
-            object.put("resource-id", callIntMethod("getAccessibilityViewId", info));
-        }
-        catch (Exception e)
-        {
-        }
+        //        try
+        //        {
+        //            object.put("resource-id", callIntMethod("getAccessibilityViewId", info));
+        //        }
+        //        catch (Exception e)
+        //        {
+        //        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
         {
             object.put("resource-id", CharSequenceWrap(info.getViewIdResourceName()));
