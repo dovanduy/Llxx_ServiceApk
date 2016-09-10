@@ -129,11 +129,11 @@ public class CommandClick extends CommandRun
         boolean result = false;
         //通过文字找到当前的节点
         List<AccessibilityNodeInfo> nodes = null;
-        if (getClicktype() == CLICK_TYPE_BY_ID)
+        if (getClicktype() == CLICK_TYPE_BY_ID || getClicktype() == CLICK_TYPE_BY_ID_INDEX)
         {
             nodes = info.findAccessibilityNodeInfosByViewId(clickName);
         }
-        else if (getClicktype() == CLICK_TYPE_BY_NAME)
+        else if (getClicktype() == CLICK_TYPE_BY_NAME || getClicktype() == CLICK_TYPE_BY_NAME_INDEX)
         {
             nodes = info.findAccessibilityNodeInfosByText(clickName);
         }
@@ -152,6 +152,7 @@ public class CommandClick extends CommandRun
                     {
                         continue;
                     }
+                    Ll_Loger.e(TAG, getAction() + " click node " + result + "," + index);
                     result = node.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 }
             }
