@@ -92,33 +92,40 @@ public class Ll_AccessibilityClient implements Runnable
                 {
                     if (Configs.DEBUG_ACCESSIBLITY_CLIENT_RECEIVE)
                         Ll_Loger.d(TAG, socket + " receive message -->" + msg);
-                    JSONObject object = new JSONObject(msg);
-                    String action = object.optString("action", "");
-                    Class<? extends CommandRun> command = CommandManager.mProtocols.get(action);
-
-                    if (Configs.DEBUG_ACCESSIBLITY_CLIENT_RECEIVE)
-                        Ll_Loger.d(TAG, "parseMessage -> action : " + action + ", protocol ->" + command);
-                    if (command != null)
+                    try
                     {
-                        try
+                        JSONObject object = new JSONObject(msg);
+                        String action = object.optString("action", "");
+                        Class<? extends CommandRun> command = CommandManager.mProtocols.get(action);
+
+                        if (Configs.DEBUG_ACCESSIBLITY_CLIENT_RECEIVE)
+                            Ll_Loger.d(TAG, "parseMessage -> action : " + action + ", protocol ->" + command);
+                        if (command != null)
                         {
-                            // 1. 设置消息 2.解析消息 3.运行命令 4.通过服务器直接发送到客户端
-                            CommandRun mProtocol = command.newInstance();
-                            mProtocol.setMessage(new Ll_Message(msg));
-                            mProtocol.prase();
-                            mProtocol.setRunOk(mProtocol.runCommand(mAccessibilityService));
-                            // send(mProtocol.getResult(mAccessibilityService));
-                            mAccessibilityService.sendMessageByHash(mProtocol.getResult(mAccessibilityService),
-                                    mProtocol.getClientHash());
+                            try
+                            {
+                                // 1. 设置消息 2.解析消息 3.运行命令 4.通过服务器直接发送到客户端
+                                CommandRun mProtocol = command.newInstance();
+                                mProtocol.setMessage(new Ll_Message(msg));
+                                mProtocol.prase();
+                                mProtocol.setRunOk(mProtocol.runCommand(mAccessibilityService));
+                                // send(mProtocol.getResult(mAccessibilityService));
+                                mAccessibilityService.sendMessageByHash(mProtocol.getResult(mAccessibilityService),
+                                        mProtocol.getClientHash());
+                            }
+                            catch (InstantiationException e)
+                            {
+                                e.printStackTrace();
+                            }
+                            catch (IllegalAccessException e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
-                        catch (InstantiationException e)
-                        {
-                            e.printStackTrace();
-                        }
-                        catch (IllegalAccessException e)
-                        {
-                            e.printStackTrace();
-                        }
+                    }
+                    catch (Throwable e)
+                    {
+                        e.printStackTrace();
                     }
                 }
                 // 客户端已经断开连接
