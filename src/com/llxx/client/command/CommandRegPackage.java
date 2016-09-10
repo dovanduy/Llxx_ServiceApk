@@ -6,8 +6,6 @@ import org.json.JSONObject;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
 
-import android.content.Context;
-
 public class CommandRegPackage extends CommandRun
 {
     public static final String TAG = "CommandRegPackage";
@@ -44,25 +42,6 @@ public class CommandRegPackage extends CommandRun
     public String action()
     {
         return "regPackage";
-    }
-
-    @Override
-    public String getResult(Context context)
-    {
-        JSONObject object = getJsonObject();
-        if (object != null)
-        {
-            try
-            {
-                object.put("isToClient", true);
-                return object.toString();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return null;
     }
 
     /**

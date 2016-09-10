@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import com.llxx.command.Command;
 import com.llxx.socket.service.Ll_AccessibilityService;
 
+import android.content.Context;
+
 public abstract class CommandRun extends Command
 {
     public abstract boolean runCommand(Ll_AccessibilityService accessibilityService);
@@ -65,6 +67,25 @@ public abstract class CommandRun extends Command
                 return object;
             }
             catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    public String getResult(Context context)
+    {
+        JSONObject object = getJsonObject();
+        if (object != null)
+        {
+            try
+            {
+                object.put("isToClient", true);
+                return object.toString();
+            }
+            catch (Exception e)
             {
                 e.printStackTrace();
             }

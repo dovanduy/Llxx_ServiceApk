@@ -40,12 +40,13 @@ public class CommandClick extends CommandRun
         try
         {
             JSONObject object = new JSONObject(getMessage().getMessage());
-            clicktype = object.optInt("clicktype");
+            JSONObject params = object.optJSONObject(PARAMS);
+            clicktype = params.optInt("clicktype");
             if (clicktype == CLICK_TYPE_BY_ID_INDEX || clicktype == CLICK_TYPE_BY_NAME_INDEX)
             {
-                index = object.optInt("index", -1);
+                index = params.optInt("index", -1);
             }
-            clickName = object.optString("name", "");
+            clickName = params.optString("name", "");
             return true;
         }
         catch (Exception e)
@@ -59,12 +60,6 @@ public class CommandClick extends CommandRun
     public String action()
     {
         return "preformClick";
-    }
-
-    @Override
-    public String getResult(Context context)
-    {
-        return "";
     }
 
     @Override
@@ -161,6 +156,7 @@ public class CommandClick extends CommandRun
                 e.printStackTrace();
             }
         }
+        setRunOk(result);
         return result;
     }
 
