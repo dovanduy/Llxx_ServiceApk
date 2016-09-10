@@ -148,6 +148,10 @@ public class CommandClick extends CommandRun
             {
                 if (node.isEnabled())
                 {
+                    if((getClicktype() == CLICK_TYPE_BY_NAME_INDEX || getClicktype() == CLICK_TYPE_BY_ID_INDEX) && index != i)
+                    {
+                        continue;
+                    }
                     result = node.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 }
             }
