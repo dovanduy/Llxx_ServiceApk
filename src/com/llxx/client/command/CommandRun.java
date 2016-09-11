@@ -15,6 +15,7 @@ public abstract class CommandRun extends Command
     @Override
     public boolean prase()
     {
+        super.prase();
         try
         {
             JSONObject object = new JSONObject(getMessage().getMessage());
@@ -40,7 +41,7 @@ public abstract class CommandRun extends Command
                 object.put("clientHash", getClientHash());
                 if(getCommandResult() != null)
                 {
-                    object.put("result", getCommandResult());
+                    object.put(PARAMS, getCommandResult());
                 }
                 object.put("reason", getReason());
                 return object;

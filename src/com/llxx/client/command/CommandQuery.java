@@ -9,40 +9,31 @@ import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
 
 import android.content.Context;
+import android.util.SparseArray;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 public class CommandQuery extends CommandRun
 {
     public static final String TAG = "CommandQuery";
-    public static final int TYPE_NONE = 0x00;
-    public static final int TYPE_QUERY_LISTVIEW = 0x01;
-    public static final int TYPE_QUERY_CONTAINER_IDS = 0x02;
+
+    private SparseArray<Object> mSelectorAttributes = new SparseArray<Object>();
+
     int type = 0;
 
     @Override
     public boolean runCommand(Ll_AccessibilityService accessibilityService)
     {
         UiSelector selector = null;
-        if (type == TYPE_NONE)
-        {
-            return true;
-        }
-        else if (type == TYPE_QUERY_LISTVIEW)
-        {
-            selector = new UiSelector().className("android.widget.ListView");
-        }
-        else if (type == TYPE_QUERY_CONTAINER_IDS)
-        {
-            selector = new UiSelector().className("android.widget.ListView");
-        }
-        AccessibilityNodeInfo info = accessibilityService.getQueryController()
-                .findAccessibilityNodeInfo(selector);
+        selector = new UiSelector(mSelectorAttributes);
+        AccessibilityNodeInfo info = accessibilityService.getQueryController().findAccessibilityNodeInfo(selector);
         if (info != null)
         {
             try
             {
-                JSONObject result = AccessibilityNodeInfoToJson.getJson(info);
-                setCommandResult(result);
+                JSONObject nodes = new JSONObject();
+                JSONObject result = AccessibilityNodeInfoToJson.getJson(info, false);
+                nodes.put("node", result);
+                setCommandResult(nodes);
                 return true;
             }
             catch (Throwable e)
@@ -50,24 +41,30 @@ public class CommandQuery extends CommandRun
                 e.printStackTrace();
             }
         }
-        Ll_Loger.e(TAG,
-                "TYPE_QUERY_LISTVIEW but findAccessibilityNodeInfo is null");
+        else
+        {
+            setReason("node not find");
+        }
+        Ll_Loger.e(TAG, "findAccessibilityNodeInfo is null");
         return false;
     }
 
     @Override
     public boolean prase()
     {
-        super.prase();
-        try
+        boolean isSucess = super.prase();
+        if (isSucess)
         {
-            JSONObject object = new JSONObject(getMessage().getMessage());
-            type = object.optInt("type");
-            return true;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+            JSONObject select = getCommand().getParams("select", new JSONObject());
+            for (int i = 0; i < UiSelector.SELECTOR_MAX; i++)
+            {
+                if (select.has(String.valueOf(i)))
+                {
+                    String text = select.optString(String.valueOf(i), "");
+                    mSelectorAttributes.put(i, text);
+                    Ll_Loger.i(TAG, "mSelectorAttributes put " + i + ", " + text);
+                }
+            }
         }
         return false;
     }

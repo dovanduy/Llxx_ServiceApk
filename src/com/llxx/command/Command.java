@@ -13,6 +13,7 @@ public abstract class Command
     boolean isRunOk = false;
     private String reason = "";
 
+    CommandBean mCommandBean;
     /**
      * 是否是发送给客户端端的
      */
@@ -37,7 +38,20 @@ public abstract class Command
      * 解析设置的message数据
      * @return 是否解析成功
      */
-    public abstract boolean prase();
+    public boolean prase()
+    {
+        mCommandBean = new CommandBean(getMessage());
+        return mCommandBean.isSucess();
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public CommandBean getCommand()
+    {
+        return mCommandBean;
+    }
 
     /**
      * 默认的Action

@@ -65,6 +65,8 @@ public class UiSelector
     static final int SELECTOR_RESOURCE_ID = 29;
     static final int SELECTOR_CHECKABLE = 30;
     static final int SELECTOR_RESOURCE_ID_REGEX = 31;
+    
+    public static final int SELECTOR_MAX = 32;
 
     private SparseArray<Object> mSelectorAttributes = new SparseArray<Object>();
 
@@ -78,6 +80,15 @@ public class UiSelector
     UiSelector(UiSelector selector)
     {
         mSelectorAttributes = selector.cloneSelector().mSelectorAttributes;
+    }
+    
+    /**
+     * 
+     * @param selectorAttributes
+     */
+    public UiSelector(SparseArray<Object> selectorAttributes)
+    {
+        mSelectorAttributes = selectorAttributes;
     }
 
     /**
