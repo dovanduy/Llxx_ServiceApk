@@ -3,10 +3,13 @@
  */
 package com.llxx.socket.action;
 
+import java.util.List;
+
 import com.llxx.nodefinder.AccessibilityNodeInfoToJson;
 import com.llxx.socket.action.result.AccessibilityResult;
-
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -31,6 +34,11 @@ public abstract class AccessibilityAction
         mAccessibilityResult = new AccessibilityResult(getActoin());
     }
 
+    static CharSequence CharSequenceWrap(CharSequence sequence)
+    {
+        return sequence == null ? "" : sequence;
+    }
+
     /**
      * 预处理命令
      * @param context
@@ -38,6 +46,7 @@ public abstract class AccessibilityAction
      * @param nodeInfo
      * @return
      */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     protected boolean preProcessEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
         setResult("");
@@ -49,6 +58,11 @@ public abstract class AccessibilityAction
             if (info != null)
             {
                 mAccessibilityResult.putParams("node", AccessibilityNodeInfoToJson.getJson(info, false));
+                mAccessibilityResult.putParams("text", info.getText() == null ? "" : info.getText().toString());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                {
+                    mAccessibilityResult.putParams("resource-id", CharSequenceWrap(info.getViewIdResourceName()));
+                }
             }
             mAccessibilityResult.setSucess(true);
             return true;

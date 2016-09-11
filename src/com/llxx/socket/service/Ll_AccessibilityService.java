@@ -15,6 +15,8 @@ import com.llxx.utils.BinderUtils;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -37,6 +39,7 @@ public class Ll_AccessibilityService extends AccessibilityService
     Ll_AccessibilityClient mBinderClient;
     QueryController mController;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     protected void onServiceConnected()
     {
@@ -52,16 +55,7 @@ public class Ll_AccessibilityService extends AccessibilityService
         mBinderUtils = new BinderUtils(getApplicationContext());
         mBinderUtils.bind();
 
-        for (int i = 0; i < PACKAGES.length; i++)
-        {
-            mPackages.put(PACKAGES[i], true);
-        }
-        AccessibilityServiceInfo accessibilityServiceInfo = new AccessibilityServiceInfo();
-        accessibilityServiceInfo.packageNames = PACKAGES;
-        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
-        accessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_SPOKEN;
-        accessibilityServiceInfo.notificationTimeout = 100;
-        setServiceInfo(accessibilityServiceInfo);
+        setPackage(PACKAGES);
     }
 
     @Override
@@ -234,7 +228,7 @@ public class Ll_AccessibilityService extends AccessibilityService
         ArrayList<String> mSetPackage = new ArrayList<>();
         for (int i = 0; i < PACKAGES.length; i++)
         {
-            Ll_Loger.e(TAG, "is containsKey : " + PACKAGES[i] + " = "+ mPackages.containsKey(PACKAGES[i]));
+            Ll_Loger.e(TAG, "is containsKey : " + PACKAGES[i] + " = " + mPackages.containsKey(PACKAGES[i]));
             if (mPackages.containsKey(PACKAGES[i]))
                 continue;
 
@@ -254,6 +248,10 @@ public class Ll_AccessibilityService extends AccessibilityService
             accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
             accessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_SPOKEN;
             accessibilityServiceInfo.notificationTimeout = 100;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+            {
+                accessibilityServiceInfo.flags = AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS;
+            }
             setServiceInfo(accessibilityServiceInfo);
         }
         else
