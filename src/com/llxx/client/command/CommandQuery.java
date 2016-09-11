@@ -1,6 +1,5 @@
 package com.llxx.client.command;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.llxx.nodefinder.AccessibilityNodeInfoToJson;
@@ -32,6 +31,7 @@ public class CommandQuery extends CommandRun
             {
                 JSONObject nodes = new JSONObject();
                 JSONObject result = AccessibilityNodeInfoToJson.getJson(info, false);
+                nodes.put("isfind", true);
                 nodes.put("node", result);
                 setCommandResult(nodes);
                 return true;
@@ -43,7 +43,17 @@ public class CommandQuery extends CommandRun
         }
         else
         {
-            setReason("node not find");
+            try
+            {
+                JSONObject nodes = new JSONObject();
+                nodes.put("isfind", false);
+                setReason("node not find");
+                return true;
+            }
+            catch (Throwable e)
+            {
+                e.printStackTrace();
+            }
         }
         Ll_Loger.e(TAG, "findAccessibilityNodeInfo is null");
         return false;
