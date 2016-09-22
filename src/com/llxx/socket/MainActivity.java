@@ -123,6 +123,7 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
     {
         if (mMaterialDialog != null)
         {
+            mMaterialDialog.setCanceledOnTouchOutside(false);
             mMaterialDialog.setTitle("辅助服务没打开")
                     .setMessage("辅助服务用来模拟点击事件，获取界面控件，打开使软件正常运行\r\n1.选择AutoTestService\r\n2.选择打开")
                     //mMaterialDialog.setBackgroundResource(R.drawable.background);
