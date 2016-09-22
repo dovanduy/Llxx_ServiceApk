@@ -1,37 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp" >
 
-    <Button
-        android:id="@+id/socket_send"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="发送数据" />
-
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/open_toast"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Show_Toast" />
+        android:layout_marginTop="10dp"
+        android:text="Toast"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="true" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/start_second_page"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="启动第二页" />
+        android:layout_marginTop="10dp"
+        android:text="启动第二页"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="lg"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="true" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/start_fuzhu_fuwu"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="打开辅助服务" />
+        android:layout_marginTop="10dp"
+        android:text="打开辅助服务"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="lg"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="true" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/start_dialog"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="弹出对话框" />
+        android:layout_marginTop="10dp"
+        android:text="弹出对话框"
+        app:bootstrapBrand="danger"
+        app:bootstrapSize="lg"
+        app:buttonMode="regular"
+        app:roundedCorners="true"
+        app:showOutline="true" />
 
 </LinearLayout>

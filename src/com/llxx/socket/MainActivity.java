@@ -44,7 +44,6 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
 
         setContentView(R.layout.socket_control_layout);
 
-        findViewById(R.id.socket_send).setOnClickListener(this);
         findViewById(R.id.open_toast).setOnClickListener(this);
         findViewById(R.id.start_second_page).setOnClickListener(this);
         findViewById(R.id.start_fuzhu_fuwu).setOnClickListener(this);
@@ -68,21 +67,6 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
     {
         switch (v.getId())
         {
-        case R.id.socket_send:
-            try
-            {
-                mBinderUtils.getService().sendMessage("socket_send");
-                //                JSONObject command = new CommandClick().performClickById("com.llxx.service:id/start_fuzhu_fuwu")
-                //                        .getJsonObject();
-                //                mClientWrap.send(command == null ? "" : command.toString());
-                //                Ll_Loger.d(TAG, "socket_send->socket_send");
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            break;
-
         case R.id.start_fuzhu_fuwu:
             try
             {
