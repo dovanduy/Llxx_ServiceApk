@@ -5,6 +5,7 @@ package com.llxx.socket.protocol;
 
 import java.util.HashMap;
 
+import com.llxx.socket.protocol.wrap.ProtocolAm;
 import com.llxx.socket.protocol.wrap.ProtocolQuery;
 import com.llxx.socket.protocol.wrap.ProtocolScreen;
 
@@ -20,5 +21,6 @@ public class ProtocolManager
     {
         mProtocols.put("getwh", ProtocolScreen.class);
         mProtocols.put("query", ProtocolQuery.class);
+        mProtocols.put("am", ProtocolAm.class);
     }
 }
