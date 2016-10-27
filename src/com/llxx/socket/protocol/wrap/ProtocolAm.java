@@ -6,6 +6,7 @@ package com.llxx.socket.protocol.wrap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.protocol.Protocol;
 import com.llxx.socket.service.Ll_SocketService;
 import com.llxx.socket.wrap.Ll_ClientSocketWrap;
@@ -18,7 +19,8 @@ import android.content.Context;
  */
 public class ProtocolAm extends Protocol
 {
-
+    public static final String TAG = "ProtocolAm";
+    
     /**启动Acitivity*/
     public static final String START_ACTIVITY = "start_app";
 
@@ -34,7 +36,9 @@ public class ProtocolAm extends Protocol
             {
                 try
                 {
+                    Ll_Loger.d(TAG, "start_app->" + packagename);
                     com.llxx.utils.AppUtils.openApp(packagename, service);
+                    setRunOk(true);
                 }
                 catch (Exception e)
                 {
