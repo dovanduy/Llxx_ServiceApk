@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.json.JSONObject;
 
 import com.llxx.client.command.CommandManager;
+import com.llxx.client.node.Ll_AccessibilityClient;
 import com.llxx.command.Command;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.protocol.IProtocol;
@@ -30,7 +31,6 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
     SocketRunnable mRunnable;
     IProtocol mProtocolJson;
     IProtocol mProtocolSplit;
-    Ll_ClientSocketWrap mAccessibilityClient;
     Object mAccessibilityClientLock = new Object();
 
     @Override
@@ -154,7 +154,8 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
                     if (!object.optBoolean("isToClient", false))
                     {
                         object.put("clientHash", wrap.hashCode());
-                        mAccessibilityClient.sendmsg(object.toString());
+                        Ll_AccessibilityClient
+                                .addMessage(new Ll_Message(object.toString()));
                     }
                     else
                     {
@@ -178,18 +179,6 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
             }
 
             // XXX DO ERROR
-        }
-    }
-
-    /**
-     * 设置辅助服务的客户端
-     * @param wrap
-     */
-    public void setAccessibilityClient(Ll_ClientSocketWrap wrap)
-    {
-        synchronized (mAccessibilityClientLock)
-        {
-            mAccessibilityClient = wrap;
         }
     }
 }

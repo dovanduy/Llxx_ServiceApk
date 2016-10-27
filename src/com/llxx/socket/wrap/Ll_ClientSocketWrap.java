@@ -67,14 +67,13 @@ public class Ll_ClientSocketWrap extends WebSocket
     @Override
     protected void onMessage(WebSocketFrame message)
     {
-        System.out.println("Ll_ClientSocketWrap.onMessage()" + message.getTextPayload());
-       //  mListener.onMessage(this, new Ll_Message(message.getTextPayload()));
+        mListener.onMessage(this, new Ll_Message(message.getTextPayload()));
     }
 
     @Override
     protected void onPong(WebSocketFrame pong)
     {
-
+        
     }
 
     @Override
