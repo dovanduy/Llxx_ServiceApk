@@ -1,5 +1,7 @@
 package com.llxx.socket.service;
 
+import java.io.IOException;
+
 import org.json.JSONObject;
 
 import com.llxx.client.command.CommandManager;
@@ -39,8 +41,9 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
         mProtocolJson = new ProtocolJson();
         mProtocolSplit = new ProtocolSplit();
         mRunnable = new SocketRunnable();
-        mSocketThread = new Thread(mRunnable);
-        mSocketThread.start();
+        mRunnable.run();
+        //mSocketThread = new Thread(mRunnable);
+        //mSocketThread.start();
     }
 
     @Override
@@ -99,7 +102,15 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
         public void run()
         {
             mService = new Ll_SocketServiceWrap(Ll_SocketService.this);
-            mService.run();
+            try
+            {
+                mService.start();
+                Ll_Loger.d(TAG, "Ll_SocketServiceWrap- run>");
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
 
         public Ll_SocketServiceWrap getService()

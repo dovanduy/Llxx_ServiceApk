@@ -94,6 +94,10 @@ public class ClientHandler implements Runnable
                 }
                 catch (Throwable e)
                 {
+                    if ("NanoHttpd Shutdown".endsWith(e.getMessage().trim()))
+                    {
+                        break;
+                    }
                 }
             }
         }
