@@ -2,6 +2,7 @@ package com.llxx.socket;
 
 import org.json.JSONObject;
 
+import com.llxx.capturescreen.ScreenActivity;
 import com.llxx.client.command.CommandClick;
 import com.llxx.client.wrap.ClientWrap;
 import com.llxx.service.R;
@@ -93,7 +94,7 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
 
         case R.id.start_second_page:
             {
-                startActivity(new Intent(this, SecondActivity.class));
+                startActivity(new Intent(this, ScreenActivity.class));
             }
             break;
 
