@@ -24,7 +24,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="启动第二页"
+        android:text="启用截图，5.0以上版本适用"
         app:bootstrapBrand="primary"
         app:bootstrapSize="lg"
         app:buttonMode="regular"
