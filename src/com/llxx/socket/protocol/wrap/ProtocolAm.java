@@ -83,6 +83,7 @@ public class ProtocolAm extends Protocol
             try
             {
                 object.put("type", type);
+                object.put("packagename", packagename);
                 return object.toString();
             }
             catch (JSONException e)
