@@ -33,7 +33,7 @@ public class Ll_AccessibilityService extends AccessibilityService
     static final String TAG = "Ll_AccessibilityService";
     BinderUtils mBinderUtils;
     // 添加网易阅读，这里后面的是要做成自动化处理
-    String[] PACKAGES = { "com.llxx.service", "com.android.systemui" };
+    String[] PACKAGES = { "com.llxx.service", "com.android.systemui", "com.android.packageinstaller" };
     HashMap<String, Boolean> mPackages = new HashMap<>();
     Thread mBinderThread;
     Ll_AccessibilityClient mBinderClient;
