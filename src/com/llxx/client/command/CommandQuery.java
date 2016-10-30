@@ -1,5 +1,6 @@
 package com.llxx.client.command;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.llxx.nodefinder.AccessibilityNodeInfoToJson;
@@ -23,36 +24,59 @@ public class CommandQuery extends CommandRun
     public boolean runCommand(Ll_AccessibilityService accessibilityService)
     {
         UiSelector selector = null;
-        selector = new UiSelector(mSelectorAttributes);
-        AccessibilityNodeInfo info = accessibilityService.getQueryController().findAccessibilityNodeInfo(selector);
-        if (info != null)
+
+        // 查询所有的节点
+        if (mSelectorAttributes.size() == 0)
         {
+            JSONObject nodes = new JSONObject();
+            JSONObject result;
             try
             {
-                JSONObject nodes = new JSONObject();
-                JSONObject result = AccessibilityNodeInfoToJson.getJson(info, false);
-                nodes.put("isfind", true);
+                result = AccessibilityNodeInfoToJson.getJson(accessibilityService.getRootInActiveWindow(), true);
                 nodes.put("node", result);
                 setCommandResult(nodes);
                 return true;
             }
-            catch (Throwable e)
+            catch (JSONException e)
             {
                 e.printStackTrace();
             }
         }
+
+        // 查询单个节点
         else
         {
-            try
+            selector = new UiSelector(mSelectorAttributes);
+            AccessibilityNodeInfo info = accessibilityService.getQueryController().findAccessibilityNodeInfo(selector);
+            if (info != null)
             {
-                JSONObject nodes = new JSONObject();
-                nodes.put("isfind", false);
-                setReason("node not find");
-                return true;
+                try
+                {
+                    JSONObject nodes = new JSONObject();
+                    JSONObject result = AccessibilityNodeInfoToJson.getJson(info, false);
+                    nodes.put("isfind", true);
+                    nodes.put("node", result);
+                    setCommandResult(nodes);
+                    return true;
+                }
+                catch (Throwable e)
+                {
+                    e.printStackTrace();
+                }
             }
-            catch (Throwable e)
+            else
             {
-                e.printStackTrace();
+                try
+                {
+                    JSONObject nodes = new JSONObject();
+                    nodes.put("isfind", false);
+                    setReason("node not find");
+                    return true;
+                }
+                catch (Throwable e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
         Ll_Loger.e(TAG, "findAccessibilityNodeInfo is null");
@@ -66,13 +90,16 @@ public class CommandQuery extends CommandRun
         if (isSucess)
         {
             JSONObject select = getCommand().getParams("select", new JSONObject());
-            for (int i = 0; i < UiSelector.SELECTOR_MAX; i++)
+            if (select != null)
             {
-                if (select.has(String.valueOf(i)))
+                for (int i = 0; i < UiSelector.SELECTOR_MAX; i++)
                 {
-                    String text = select.optString(String.valueOf(i), "");
-                    mSelectorAttributes.put(i, text);
-                    Ll_Loger.i(TAG, "mSelectorAttributes put " + i + ", " + text);
+                    if (select.has(String.valueOf(i)))
+                    {
+                        String text = select.optString(String.valueOf(i), "");
+                        mSelectorAttributes.put(i, text);
+                        Ll_Loger.i(TAG, "mSelectorAttributes put " + i + ", " + text);
+                    }
                 }
             }
         }
