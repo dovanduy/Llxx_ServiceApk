@@ -12,5 +12,6 @@ public class CommandManager
         mProtocols.put("queryAccessibility", CommandQuery.class);
         mProtocols.put("preformEvent", CommandEvent.class);
         mProtocols.put("regPackage", CommandRegPackage.class);
+        mProtocols.put("uiSecletAction", CommandSelectAction.class);
     }
 }
