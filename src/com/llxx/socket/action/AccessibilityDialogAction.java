@@ -18,16 +18,14 @@ public class AccessibilityDialogAction extends AccessibilityAction
     public static final String TAG = "AccessibilityClickAction";
 
     @Override
-    protected boolean processEvent(Context context, AccessibilityEvent event,
-            AccessibilityNodeInfo nodeInfo)
+    protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
         try
         {
             // llxx_log:class name: android.support.v7.app.AlertDialog
-            if (getAccessibilityResult().getClassname()
-                    .equals("android.app.AlertDialog")
-                    || "android.support.v7.app.AlertDialog".startsWith(
-                            getAccessibilityResult().getClassname()))
+            if (getAccessibilityResult().getClassname().equals("android.app.AlertDialog")
+                    || "android.support.v7.app.AlertDialog".startsWith(getAccessibilityResult().getClassname())
+                    || "android.app.Dialog".startsWith(getAccessibilityResult().getClassname()))
             {
                 setResult(getAccessibilityResult().getResult());
                 return true;
