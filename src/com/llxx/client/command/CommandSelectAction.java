@@ -1,5 +1,6 @@
 package com.llxx.client.command;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.llxx.nodefinder.AccessibilityNodeInfoToJson;
@@ -8,6 +9,7 @@ import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -17,7 +19,9 @@ public class CommandSelectAction extends CommandRun
 
     private SparseArray<Object> mSelectorAttributes = new SparseArray<Object>();
 
-    int type = 0;
+    int mType = 0;
+    int mActoinCode = -1;
+    Bundle mActionParams = null;
 
     @Override
     public boolean runCommand(Ll_AccessibilityService accessibilityService)
@@ -33,8 +37,8 @@ public class CommandSelectAction extends CommandRun
                 JSONObject result = AccessibilityNodeInfoToJson.getJson(info, false);
                 nodes.put("isfind", true);
                 nodes.put("node", result);
-                boolean isSucess = info.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                setRunOk(isSucess);
+
+                setRunOk(performAction(info));
                 setCommandResult(nodes);
                 return true;
             }
@@ -62,6 +66,25 @@ public class CommandSelectAction extends CommandRun
         return false;
     }
 
+    /**
+     * 执行操作
+     * @param node
+     * @return
+     */
+    private boolean performAction(AccessibilityNodeInfo node)
+    {
+        boolean isSucess = false;
+        if (mActionParams == null)
+        {
+            isSucess = node.performAction(mActoinCode);
+        }
+        else
+        {
+            node.performAction(mActoinCode, mActionParams);
+        }
+        return isSucess;
+    }
+
     @Override
     public boolean prase()
     {
@@ -78,8 +101,62 @@ public class CommandSelectAction extends CommandRun
                     Ll_Loger.i(TAG, "mSelectorAttributes put " + i + ", " + text);
                 }
             }
+            mActoinCode = getCommand().getParams("action", -1);
+            JSONArray _actionParams = getCommand().getParams("actionParams", new JSONArray());
+
+            if (_actionParams != null)
+            {
+                Bundle arguments = new Bundle();
+                for (int i = 0; i < _actionParams.length(); i++)
+                {
+                    putArguments(arguments, _actionParams.optJSONObject(i));
+                }
+                mActionParams = arguments;
+            }
+            return true;
         }
         return false;
+    }
+
+    /**
+     * 解析传入的Action
+     * @param arguments
+     * @param actionParamsItem
+     */
+    void putArguments(Bundle arguments, JSONObject actionParamsItem)
+    {
+        String actionType = actionParamsItem.optString("type");
+        String key = actionParamsItem.optString("key");
+
+        switch (actionType)
+        {
+        case "putBoolean":
+            arguments.putBoolean(key, actionParamsItem.optBoolean("value"));
+            break;
+
+        case "putInt":
+            arguments.putInt(key, actionParamsItem.optInt("value"));
+            break;
+
+        case "putLong":
+            arguments.putLong(key, actionParamsItem.optLong("value"));
+            break;
+
+        case "putDouble":
+            arguments.putDouble(key, actionParamsItem.optDouble("value"));
+            break;
+
+        case "putString":
+            arguments.putString(key, actionParamsItem.optString("value"));
+            break;
+
+        case "putCharSequence":
+            arguments.putCharSequence(key, actionParamsItem.optString("value"));
+            break;
+        default:
+            break;
+        }
+
     }
 
     @Override
@@ -112,7 +189,7 @@ public class CommandSelectAction extends CommandRun
      */
     public int getType()
     {
-        return type;
+        return mType;
     }
 
     /**
@@ -120,7 +197,7 @@ public class CommandSelectAction extends CommandRun
      */
     public void setType(int type)
     {
-        this.type = type;
+        this.mType = type;
     }
 
 }

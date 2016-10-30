@@ -41,7 +41,6 @@ public class Ll_ClientSocketWrap extends WebSocket
         try
         {
             send(msg);
-            System.out.println("Ll_ClientSocketWrap.sendmsg()" + msg);
         }
         catch (IOException e)
         {

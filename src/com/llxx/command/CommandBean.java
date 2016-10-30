@@ -1,9 +1,11 @@
 package com.llxx.command;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.llxx.socket.wrap.bean.Ll_Message;
+
 /**
  * 
  * @author fanxin, eachen
@@ -36,7 +38,7 @@ public class CommandBean
             JSONObject object = new JSONObject(this.message.getMessage());
             this.action = object.optString(action);
             mParams = object.getJSONObject(KEY_PARAMS);
-            if(mParams == null)
+            if (mParams == null)
                 mParams = new JSONObject();
             sucess = isSucess();
         }
@@ -102,6 +104,17 @@ public class CommandBean
     }
 
     /**
+     * 
+     * @param name
+     * @param value
+     * @throws JSONException
+     */
+    public JSONArray getParams(String name, JSONArray value)
+    {
+        return mParams.optJSONArray(name);
+    }
+
+    /**
      * 是否运行成功
      * @return the sucess
      */
@@ -158,5 +171,5 @@ public class CommandBean
     {
         return action;
     }
-    
+
 }
