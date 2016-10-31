@@ -6,20 +6,22 @@ import org.json.JSONObject;
 
 import com.llxx.client.command.CommandManager;
 import com.llxx.client.command.CommandRun;
+import com.llxx.command.Command;
 import com.llxx.socket.config.Configs;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
 import com.llxx.socket.wrap.bean.Ll_Message;
 
+import android.content.Context;
+
 public class Ll_AccessibilityClient implements Runnable
 {
 
     public static final String TAG = "Ll_AccessibilityClient";
-    private static ArrayBlockingQueue<Ll_Message> mBlockingQueue = new ArrayBlockingQueue<>(
-            100);
+    private static ArrayBlockingQueue<Ll_Message> mBlockingQueue = new ArrayBlockingQueue<>(100);
 
-    private boolean isKeepListener = true;
-    Ll_AccessibilityService mAccessibilityService;
+    private static boolean isKeepListener = true;
+    private static Ll_AccessibilityService mAccessibilityService;
 
     public Ll_AccessibilityClient(Ll_AccessibilityService accessibilityService)
     {
@@ -37,12 +39,10 @@ public class Ll_AccessibilityClient implements Runnable
                 {
                     JSONObject object = new JSONObject(message.getMessage());
                     String action = object.optString("action", "");
-                    Class<? extends CommandRun> command = CommandManager.mProtocols
-                            .get(action);
+                    Class<? extends CommandRun> command = CommandManager.mProtocols.get(action);
 
                     if (Configs.DEBUG_ACCESSIBLITY_CLIENT_RECEIVE)
-                        Ll_Loger.d(TAG, "parseMessage -> action : " + action
-                                + ", protocol ->" + command);
+                        Ll_Loger.d(TAG, "parseMessage -> action : " + action + ", protocol ->" + command);
                     if (command != null)
                     {
                         try
@@ -51,11 +51,9 @@ public class Ll_AccessibilityClient implements Runnable
                             CommandRun mProtocol = command.newInstance();
                             mProtocol.setMessage(message);
                             mProtocol.prase();
-                            mProtocol.setRunOk(mProtocol
-                                    .runCommand(mAccessibilityService));
+                            mProtocol.setRunOk(mProtocol.runCommand(mAccessibilityService));
                             // send(mProtocol.getResult(mAccessibilityService));
-                            mAccessibilityService.sendMessageByHash(
-                                    mProtocol.getResult(mAccessibilityService),
+                            mAccessibilityService.sendMessageByHash(mProtocol.getResult(mAccessibilityService),
                                     mProtocol.getClientHash());
                         }
                         catch (InstantiationException e)
@@ -88,7 +86,40 @@ public class Ll_AccessibilityClient implements Runnable
      */
     public static final boolean addMessage(Ll_Message message)
     {
+        if (!isKeepListener)
+        {
+            mAccessibilityService.sendMessage(new DiaCommand().getResult(null));
+            return true;
+        }
         return mBlockingQueue.add(message);
     }
 
+    static class DiaCommand extends Command
+    {
+        @Override
+        public String action()
+        {
+            return "service_dia";
+        }
+
+        @Override
+        public String getResult(Context context)
+        {
+            JSONObject object = getJsonObject();
+            if (object != null)
+            {
+                try
+                {
+                    object.put("isToClient", true);
+                    return object.toString();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+    }
 }
