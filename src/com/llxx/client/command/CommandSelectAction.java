@@ -6,10 +6,14 @@ import org.json.JSONObject;
 import com.llxx.nodefinder.AccessibilityNodeInfoToJson;
 import com.llxx.nodefinder.UiSelectParse;
 import com.llxx.nodefinder.UiSelector;
+import com.llxx.socket.Llxx_Application;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
-
+import android.annotation.TargetApi;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -26,19 +30,17 @@ public class CommandSelectAction extends CommandRun
     @Override
     public boolean runCommand(Ll_AccessibilityService accessibilityService)
     {
-        AccessibilityNodeInfo info = accessibilityService.getQueryController()
-                .findAccessibilityNodeInfo(mSelector);
+        AccessibilityNodeInfo info = accessibilityService.getQueryController().findAccessibilityNodeInfo(mSelector);
         if (info != null)
         {
             try
             {
                 JSONObject nodes = new JSONObject();
-                JSONObject result = AccessibilityNodeInfoToJson.getJson(info,
-                        false);
+                JSONObject result = AccessibilityNodeInfoToJson.getJson(info, false);
                 nodes.put("isfind", true);
                 nodes.put("node", result);
 
-                setRunOk(performAction(info));
+                setRunOk(performAction(accessibilityService, info));
                 setCommandResult(nodes);
                 return true;
             }
@@ -71,25 +73,35 @@ public class CommandSelectAction extends CommandRun
      * @param node
      * @return
      */
-    private boolean performAction(AccessibilityNodeInfo node)
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    private boolean performAction(Ll_AccessibilityService accessibilityService, AccessibilityNodeInfo node)
     {
         boolean isSucess = false;
         if (mActionParams == null)
         {
             isSucess = node.performAction(mActoinCode);
+            Ll_Loger.e(TAG,
+                    "performAction do action mActoinCode = " + mActoinCode + ", mActionParams = " + mActionParams);
         }
         else
         {
-            Bundle arguments = new Bundle();
-            arguments.putCharSequence(
-                    AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
-                    "android");
-            node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT,
-                    arguments);
-            Ll_Loger.e(TAG, "performAction do action mActoinCode = "
-                    + mActoinCode + ", mActionParams = " + mActionParams);
-            //node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, )
-            //node.performAction(mActoinCode, mActionParams);
+            if (mActoinCode == AccessibilityNodeInfo.ACTION_SET_TEXT)
+            {
+                ClipboardManager clipboard = Llxx_Application.getApplication().getClipboardManager();
+                ClipData clip = ClipData.newPlainText("text",
+                        mActionParams.getString("ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE", ""));
+                clipboard.setPrimaryClip(clip);
+                //焦点（n是AccessibilityNodeInfo对象）  
+                node.performAction(AccessibilityNodeInfo.ACTION_FOCUS);
+                ////粘贴进入内容  
+                node.performAction(AccessibilityNodeInfo.ACTION_PASTE);
+                Ll_Loger.e(TAG,
+                        "performAction do action mActoinCode = " + mActoinCode + ", mActionParams = " + mActionParams.getString("ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE", ""));
+            }
+            else
+            {
+                node.performAction(mActoinCode, mActionParams);
+            }
         }
         return isSucess;
     }
@@ -100,12 +112,10 @@ public class CommandSelectAction extends CommandRun
         boolean isSucess = super.prase();
         if (isSucess)
         {
-            JSONObject select = getCommand().getParams("select",
-                    new JSONObject());
+            JSONObject select = getCommand().getParams("select", new JSONObject());
             mSelector = UiSelectParse.parse(select);
             mActoinCode = getCommand().getParams("action", -1);
-            JSONArray _actionParams = getCommand().getParams("actionParams",
-                    new JSONArray());
+            JSONArray _actionParams = getCommand().getParams("actionParams", new JSONArray());
 
             if (_actionParams != null)
             {
@@ -114,7 +124,8 @@ public class CommandSelectAction extends CommandRun
                 {
                     putArguments(arguments, _actionParams.optJSONObject(i));
                 }
-                mActionParams = arguments;
+                if (arguments.size() > 0)
+                    mActionParams = arguments;
             }
             return true;
         }

@@ -23,6 +23,8 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.regex.Pattern;
 
+import com.llxx.socket.loger.Ll_Loger;
+
 /**
  * Specifies the elements in the layout hierarchy for tests to target, filtered
  * by properties such as text value, content-description, class name, and state
@@ -853,6 +855,12 @@ public class UiSelector
                 }
                 break;
             case UiSelector.SELECTOR_ID:
+                s = node.getViewIdResourceName();
+                if (s == null
+                        || !s.toString().contentEquals(getString(criterion)))
+                {
+                    return false;
+                }
                 break; //TODO: do we need this for AccessibilityNodeInfo.id?
             case UiSelector.SELECTOR_PACKAGE_NAME:
                 s = node.getPackageName();
