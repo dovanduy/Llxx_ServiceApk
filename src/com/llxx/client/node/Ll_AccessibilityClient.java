@@ -43,6 +43,8 @@ public class Ll_AccessibilityClient implements Runnable
 
                     if (Configs.DEBUG_ACCESSIBLITY_CLIENT_RECEIVE)
                         Ll_Loger.d(TAG, "parseMessage -> action : " + action + ", protocol ->" + command);
+
+                    Ll_Loger.d(TAG, "receive msg: " + message.getMessage());
                     if (command != null)
                     {
                         try

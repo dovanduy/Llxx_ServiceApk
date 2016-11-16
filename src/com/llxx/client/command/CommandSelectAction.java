@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.llxx.nodefinder.AccessibilityNodeInfoToJson;
+import com.llxx.nodefinder.UiSelectParse;
 import com.llxx.nodefinder.UiSelector;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
@@ -17,8 +18,7 @@ public class CommandSelectAction extends CommandRun
 {
     public static final String TAG = "CommandSelectAction";
 
-    private SparseArray<Object> mSelectorAttributes = new SparseArray<Object>();
-
+    UiSelector mSelector = null;
     int mType = 0;
     int mActoinCode = -1;
     Bundle mActionParams = null;
@@ -26,15 +26,15 @@ public class CommandSelectAction extends CommandRun
     @Override
     public boolean runCommand(Ll_AccessibilityService accessibilityService)
     {
-        UiSelector selector = null;
-        selector = new UiSelector(mSelectorAttributes);
-        AccessibilityNodeInfo info = accessibilityService.getQueryController().findAccessibilityNodeInfo(selector);
+        AccessibilityNodeInfo info = accessibilityService.getQueryController()
+                .findAccessibilityNodeInfo(mSelector);
         if (info != null)
         {
             try
             {
                 JSONObject nodes = new JSONObject();
-                JSONObject result = AccessibilityNodeInfoToJson.getJson(info, false);
+                JSONObject result = AccessibilityNodeInfoToJson.getJson(info,
+                        false);
                 nodes.put("isfind", true);
                 nodes.put("node", result);
 
@@ -80,7 +80,16 @@ public class CommandSelectAction extends CommandRun
         }
         else
         {
-            node.performAction(mActoinCode, mActionParams);
+            Bundle arguments = new Bundle();
+            arguments.putCharSequence(
+                    AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
+                    "android");
+            node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT,
+                    arguments);
+            Ll_Loger.e(TAG, "performAction do action mActoinCode = "
+                    + mActoinCode + ", mActionParams = " + mActionParams);
+            //node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, )
+            //node.performAction(mActoinCode, mActionParams);
         }
         return isSucess;
     }
@@ -91,18 +100,12 @@ public class CommandSelectAction extends CommandRun
         boolean isSucess = super.prase();
         if (isSucess)
         {
-            JSONObject select = getCommand().getParams("select", new JSONObject());
-            for (int i = 0; i < UiSelector.SELECTOR_MAX; i++)
-            {
-                if (select.has(String.valueOf(i)))
-                {
-                    String text = select.optString(String.valueOf(i), "");
-                    mSelectorAttributes.put(i, text);
-                    Ll_Loger.i(TAG, "mSelectorAttributes put " + i + ", " + text);
-                }
-            }
+            JSONObject select = getCommand().getParams("select",
+                    new JSONObject());
+            mSelector = UiSelectParse.parse(select);
             mActoinCode = getCommand().getParams("action", -1);
-            JSONArray _actionParams = getCommand().getParams("actionParams", new JSONArray());
+            JSONArray _actionParams = getCommand().getParams("actionParams",
+                    new JSONArray());
 
             if (_actionParams != null)
             {

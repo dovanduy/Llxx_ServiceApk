@@ -22,7 +22,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import me.drakeet.materialdialog.MaterialDialog;
 
-public class MainActivity extends Activity implements OnClickListener, Ll_MessageListener
+public class MainActivity extends Activity
+        implements OnClickListener, Ll_MessageListener
 {
     static final String TAG = "MainActivity";
     BinderUtils mBinderUtils;
@@ -55,9 +56,10 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
     protected void onResume()
     {
         super.onResume();
-        if (!AccessibilityUtils.isAccessibilitySettingsOn(getApplicationContext()))
+        if (!AccessibilityUtils
+                .isAccessibilitySettingsOn(getApplicationContext()))
         {
-            showDialog();
+            startAccessibility();
         }
     }
 
@@ -71,7 +73,8 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
         case R.id.start_fuzhu_fuwu:
             try
             {
-                Intent intent = new Intent("android.settings.ACCESSIBILITY_SETTINGS");
+                Intent intent = new Intent(
+                        "android.settings.ACCESSIBILITY_SETTINGS");
                 startActivity(intent);
 
             }
@@ -120,13 +123,13 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
         // Ll_Loger.d(TAG, "message->" + message.getMessage());
     }
 
-    void showDialog()
+    void startAccessibility()
     {
         if (mMaterialDialog != null)
         {
             mMaterialDialog.setCanceledOnTouchOutside(false);
-            mMaterialDialog.setTitle("辅助服务没打开")
-                    .setMessage("辅助服务用来模拟点击事件，获取界面控件，打开使软件正常运行\r\n1.选择AutoTestService\r\n2.选择打开")
+            mMaterialDialog.setTitle("辅助服务没打开").setMessage(
+                    "辅助服务用来模拟点击事件，获取界面控件，打开使软件正常运行\r\n1.选择AutoTestService\r\n2.选择打开")
                     //mMaterialDialog.setBackgroundResource(R.drawable.background);
                     .setPositiveButton("打开", new View.OnClickListener()
                     {
@@ -136,7 +139,8 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
                             mMaterialDialog.dismiss();
                             try
                             {
-                                Intent intent = new Intent("android.settings.ACCESSIBILITY_SETTINGS");
+                                Intent intent = new Intent(
+                                        "android.settings.ACCESSIBILITY_SETTINGS");
                                 startActivity(intent);
 
                             }
@@ -156,13 +160,51 @@ public class MainActivity extends Activity implements OnClickListener, Ll_Messag
                     }).setCanceledOnTouchOutside(true)
                     // You can change the message anytime.
                     // mMaterialDialog.setTitle("提示");
-                    .setOnDismissListener(new DialogInterface.OnDismissListener()
+                    .setOnDismissListener(
+                            new DialogInterface.OnDismissListener()
+                            {
+                                @Override
+                                public void onDismiss(DialogInterface dialog)
+                                {
+                                }
+                            })
+                    .show();
+        }
+    }
+
+    void showDialog()
+    {
+        if (mMaterialDialog != null)
+        {
+            mMaterialDialog.setCanceledOnTouchOutside(false);
+            mMaterialDialog.setTitle("对话框").setMessage("对话框信息")
+                    //mMaterialDialog.setBackgroundResource(R.drawable.background);
+                    .setPositiveButton("确定", new View.OnClickListener()
                     {
                         @Override
-                        public void onDismiss(DialogInterface dialog)
+                        public void onClick(View v)
                         {
+                            mMaterialDialog.dismiss();
                         }
-                    }).show();
+                    }).setNegativeButton("取消", new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            mMaterialDialog.dismiss();
+                        }
+                    }).setCanceledOnTouchOutside(true)
+                    // You can change the message anytime.
+                    // mMaterialDialog.setTitle("提示");
+                    .setOnDismissListener(
+                            new DialogInterface.OnDismissListener()
+                            {
+                                @Override
+                                public void onDismiss(DialogInterface dialog)
+                                {
+                                }
+                            })
+                    .show();
         }
     }
 
