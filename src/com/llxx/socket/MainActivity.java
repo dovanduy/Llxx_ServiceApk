@@ -1,12 +1,8 @@
 package com.llxx.socket;
 
-import org.json.JSONObject;
-
 import com.llxx.capturescreen.ScreenActivity;
-import com.llxx.client.command.CommandClick;
 import com.llxx.client.wrap.ClientWrap;
 import com.llxx.service.R;
-import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.wrap.Ll_ClientSocketWrap;
 import com.llxx.socket.wrap.Ll_MessageListener;
 import com.llxx.socket.wrap.bean.Ll_Message;
@@ -20,10 +16,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import me.drakeet.materialdialog.MaterialDialog;
 
-public class MainActivity extends Activity
-        implements OnClickListener, Ll_MessageListener
+public class MainActivity extends Activity implements OnClickListener, Ll_MessageListener
 {
     static final String TAG = "MainActivity";
     BinderUtils mBinderUtils;
@@ -47,6 +43,22 @@ public class MainActivity extends Activity
         setContentView(R.layout.socket_control_layout);
 
         findViewById(R.id.open_toast).setOnClickListener(this);
+        findViewById(R.id.open_toast).setOnLongClickListener(new OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(View v)
+            {
+                try
+                {
+                    ToastUtil.showToast(getApplicationContext(), "长按Toast");
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
         findViewById(R.id.start_second_page).setOnClickListener(this);
         findViewById(R.id.start_fuzhu_fuwu).setOnClickListener(this);
         findViewById(R.id.start_dialog).setOnClickListener(this);
@@ -56,8 +68,7 @@ public class MainActivity extends Activity
     protected void onResume()
     {
         super.onResume();
-        if (!AccessibilityUtils
-                .isAccessibilitySettingsOn(getApplicationContext()))
+        if (!AccessibilityUtils.isAccessibilitySettingsOn(getApplicationContext()))
         {
             startAccessibility();
         }
@@ -73,8 +84,7 @@ public class MainActivity extends Activity
         case R.id.start_fuzhu_fuwu:
             try
             {
-                Intent intent = new Intent(
-                        "android.settings.ACCESSIBILITY_SETTINGS");
+                Intent intent = new Intent("android.settings.ACCESSIBILITY_SETTINGS");
                 startActivity(intent);
 
             }
@@ -128,8 +138,8 @@ public class MainActivity extends Activity
         if (mMaterialDialog != null)
         {
             mMaterialDialog.setCanceledOnTouchOutside(false);
-            mMaterialDialog.setTitle("辅助服务没打开").setMessage(
-                    "辅助服务用来模拟点击事件，获取界面控件，打开使软件正常运行\r\n1.选择AutoTestService\r\n2.选择打开")
+            mMaterialDialog.setTitle("辅助服务没打开")
+                    .setMessage("辅助服务用来模拟点击事件，获取界面控件，打开使软件正常运行\r\n1.选择AutoTestService\r\n2.选择打开")
                     //mMaterialDialog.setBackgroundResource(R.drawable.background);
                     .setPositiveButton("打开", new View.OnClickListener()
                     {
@@ -139,8 +149,7 @@ public class MainActivity extends Activity
                             mMaterialDialog.dismiss();
                             try
                             {
-                                Intent intent = new Intent(
-                                        "android.settings.ACCESSIBILITY_SETTINGS");
+                                Intent intent = new Intent("android.settings.ACCESSIBILITY_SETTINGS");
                                 startActivity(intent);
 
                             }
@@ -160,15 +169,13 @@ public class MainActivity extends Activity
                     }).setCanceledOnTouchOutside(true)
                     // You can change the message anytime.
                     // mMaterialDialog.setTitle("提示");
-                    .setOnDismissListener(
-                            new DialogInterface.OnDismissListener()
-                            {
-                                @Override
-                                public void onDismiss(DialogInterface dialog)
-                                {
-                                }
-                            })
-                    .show();
+                    .setOnDismissListener(new DialogInterface.OnDismissListener()
+                    {
+                        @Override
+                        public void onDismiss(DialogInterface dialog)
+                        {
+                        }
+                    }).show();
         }
     }
 
@@ -196,15 +203,13 @@ public class MainActivity extends Activity
                     }).setCanceledOnTouchOutside(true)
                     // You can change the message anytime.
                     // mMaterialDialog.setTitle("提示");
-                    .setOnDismissListener(
-                            new DialogInterface.OnDismissListener()
-                            {
-                                @Override
-                                public void onDismiss(DialogInterface dialog)
-                                {
-                                }
-                            })
-                    .show();
+                    .setOnDismissListener(new DialogInterface.OnDismissListener()
+                    {
+                        @Override
+                        public void onDismiss(DialogInterface dialog)
+                        {
+                        }
+                    }).show();
         }
     }
 
