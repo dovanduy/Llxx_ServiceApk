@@ -87,16 +87,32 @@ public class CommandSelectAction extends CommandRun
         {
             if (mActoinCode == AccessibilityNodeInfo.ACTION_SET_TEXT)
             {
-                ClipboardManager clipboard = Llxx_Application.getApplication().getClipboardManager();
-                ClipData clip = ClipData.newPlainText("text",
-                        mActionParams.getString("ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE", ""));
-                clipboard.setPrimaryClip(clip);
-                //焦点（n是AccessibilityNodeInfo对象）  
-                node.performAction(AccessibilityNodeInfo.ACTION_FOCUS);
-                ////粘贴进入内容  
-                node.performAction(AccessibilityNodeInfo.ACTION_PASTE);
-                Ll_Loger.e(TAG,
-                        "performAction do action mActoinCode = " + mActoinCode + ", mActionParams = " + mActionParams.getString("ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE", ""));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
+                    node.performAction(mActoinCode, mActionParams);
+                }
+                else
+                {
+                    //先将输入框内容清空
+                    Bundle arguments = new Bundle();
+                    arguments.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_START_INT, 0);
+                    arguments.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_END_INT, node.getText().length());
+                    node.performAction(AccessibilityNodeInfo.ACTION_SET_SELECTION, arguments);
+                    node.performAction(AccessibilityNodeInfo.ACTION_CUT);
+                    
+                    // 将数据填入
+                    ClipboardManager clipboard = Llxx_Application.getApplication().getClipboardManager();
+                    ClipData clip = ClipData.newPlainText("text",
+                            mActionParams.getString("ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE", ""));
+                    clipboard.setPrimaryClip(clip);
+                    //焦点（n是AccessibilityNodeInfo对象）  
+                    node.performAction(AccessibilityNodeInfo.ACTION_FOCUS);
+                    ////粘贴进入内容  
+                    node.performAction(AccessibilityNodeInfo.ACTION_PASTE);
+                    
+                    Ll_Loger.e(TAG, "performAction do action mActoinCode = " + mActoinCode + ", mActionParams = "
+                            + mActionParams.getString("ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE", ""));
+                }
             }
             else
             {
