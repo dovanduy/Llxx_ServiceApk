@@ -43,7 +43,7 @@ public abstract class Command
         mCommandBean = new CommandBean(getMessage());
         return mCommandBean.isSucess();
     }
-    
+
     /**
      * 
      * @return
@@ -51,6 +51,15 @@ public abstract class Command
     public CommandBean getCommand()
     {
         return mCommandBean;
+    }
+
+    /**
+     * 获取描述
+     * @return
+     */
+    public String getDescribe()
+    {
+        return getCommand().getDescribe();
     }
 
     /**

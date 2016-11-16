@@ -19,6 +19,7 @@ public class CommandBean
     public static final String KEY_SUCESS = "sucess";
     public static final String KEY_ACTOIN = "action";
     public static final String KEY_REASON = "reason";
+    public static final String KEY_DESCRIBE = "describe";
 
     JSONObject mParams;
 
@@ -26,6 +27,7 @@ public class CommandBean
     private String action = "";
     private String classname = "";
     private String packageName = "";
+    private String describe = "";
 
     Ll_Message message;
 
@@ -37,6 +39,7 @@ public class CommandBean
         {
             JSONObject object = new JSONObject(this.message.getMessage());
             this.action = object.optString(action);
+            this.describe = object.optString(KEY_DESCRIBE, "");
             mParams = object.getJSONObject(KEY_PARAMS);
             if (mParams == null)
                 mParams = new JSONObject();
@@ -79,6 +82,17 @@ public class CommandBean
     public int getParams(String name, int value)
     {
         return mParams.optInt(name, value);
+    }
+
+    /**
+     * 
+     * @param name
+     * @param value
+     * @throws JSONException
+     */
+    public String getParams(String name, String value)
+    {
+        return mParams.optString(name, value);
     }
 
     /**
@@ -170,6 +184,22 @@ public class CommandBean
     public String getAction()
     {
         return action;
+    }
+
+    /**
+     * @return the describe
+     */
+    public String getDescribe()
+    {
+        return describe;
+    }
+
+    /**
+     * @param describe the describe to set
+     */
+    public void setDescribe(String describe)
+    {
+        this.describe = describe;
     }
 
 }

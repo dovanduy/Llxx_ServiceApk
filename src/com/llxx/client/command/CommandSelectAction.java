@@ -40,9 +40,10 @@ public class CommandSelectAction extends CommandRun
                 nodes.put("isfind", true);
                 nodes.put("node", result);
 
-                setRunOk(performAction(accessibilityService, info));
+                boolean isActionOk = performAction(accessibilityService, info);
                 setCommandResult(nodes);
-                return true;
+                setRunOk(isActionOk);
+                return isActionOk;
             }
             catch (Throwable e)
             {
@@ -56,15 +57,15 @@ public class CommandSelectAction extends CommandRun
                 JSONObject nodes = new JSONObject();
                 nodes.put("isfind", false);
                 setRunOk(false);
-                setReason("node not find");
-                return true;
+                setReason(getDescribe() + " node not find");
+                return false;
             }
             catch (Throwable e)
             {
                 e.printStackTrace();
             }
         }
-        Ll_Loger.e(TAG, "findAccessibilityNodeInfo is null");
+        setReason("find node and action fali");
         return false;
     }
 
@@ -99,7 +100,7 @@ public class CommandSelectAction extends CommandRun
                     arguments.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_END_INT, node.getText().length());
                     node.performAction(AccessibilityNodeInfo.ACTION_SET_SELECTION, arguments);
                     node.performAction(AccessibilityNodeInfo.ACTION_CUT);
-                    
+
                     // 将数据填入
                     ClipboardManager clipboard = Llxx_Application.getApplication().getClipboardManager();
                     ClipData clip = ClipData.newPlainText("text",
@@ -109,7 +110,7 @@ public class CommandSelectAction extends CommandRun
                     node.performAction(AccessibilityNodeInfo.ACTION_FOCUS);
                     ////粘贴进入内容  
                     node.performAction(AccessibilityNodeInfo.ACTION_PASTE);
-                    
+
                     Ll_Loger.e(TAG, "performAction do action mActoinCode = " + mActoinCode + ", mActionParams = "
                             + mActionParams.getString("ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE", ""));
                 }
