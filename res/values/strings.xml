@@ -1,5 +1,6 @@
 <resources>
 
     <string name="app_name">自动化测试辅助</string>
+    <string name="app_description">自动化测试辅助</string>
 
 </resources>

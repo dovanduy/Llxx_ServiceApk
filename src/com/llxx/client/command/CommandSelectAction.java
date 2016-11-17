@@ -90,7 +90,7 @@ public class CommandSelectAction extends CommandRun
             {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 {
-                    node.performAction(mActoinCode, mActionParams);
+                    isSucess = node.performAction(mActoinCode, mActionParams);
                 }
                 else
                 {
@@ -109,7 +109,7 @@ public class CommandSelectAction extends CommandRun
                     //焦点（n是AccessibilityNodeInfo对象）  
                     node.performAction(AccessibilityNodeInfo.ACTION_FOCUS);
                     ////粘贴进入内容  
-                    node.performAction(AccessibilityNodeInfo.ACTION_PASTE);
+                    isSucess = node.performAction(AccessibilityNodeInfo.ACTION_PASTE);
 
                     Ll_Loger.e(TAG, "performAction do action mActoinCode = " + mActoinCode + ", mActionParams = "
                             + mActionParams.getString("ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE", ""));
@@ -117,7 +117,7 @@ public class CommandSelectAction extends CommandRun
             }
             else
             {
-                node.performAction(mActoinCode, mActionParams);
+                isSucess = node.performAction(mActoinCode, mActionParams);
             }
         }
         return isSucess;
