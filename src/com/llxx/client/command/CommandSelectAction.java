@@ -39,11 +39,16 @@ public class CommandSelectAction extends CommandRun
                 JSONObject result = AccessibilityNodeInfoToJson.getJson(info, false);
                 nodes.put("isfind", true);
                 nodes.put("node", result);
-
-                boolean isActionOk = performAction(accessibilityService, info);
                 setCommandResult(nodes);
-                setRunOk(isActionOk);
-                return isActionOk;
+
+                if (mActoinCode != -1)
+                {
+                    boolean isActionOk = performAction(accessibilityService, info);
+                    setRunOk(isActionOk);
+                    return isActionOk;
+                }
+                setRunOk(true);
+                return true;
             }
             catch (Throwable e)
             {
