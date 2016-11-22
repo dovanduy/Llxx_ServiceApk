@@ -25,7 +25,7 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
 {
 
     static final String TAG = "SocketService";
-    static final boolean DEBUG_ON_MESSAGE = false;
+    static final boolean DEBUG_ON_MESSAGE = true;
     Thread mSocketThread;
     SocketRunnable mRunnable;
     IProtocol mProtocolJson;

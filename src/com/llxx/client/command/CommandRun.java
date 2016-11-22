@@ -44,6 +44,7 @@ public abstract class CommandRun extends Command
                     object.put(PARAMS, getCommandResult());
                 }
                 object.put("reason", getReason());
+                object.put("id", getCommand().getId());
                 return object;
             }
             catch (JSONException e)

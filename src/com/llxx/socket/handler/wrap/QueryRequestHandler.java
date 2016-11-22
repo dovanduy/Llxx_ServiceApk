@@ -238,6 +238,7 @@ public class QueryRequestHandler extends RequestHandler
     @Override
     public boolean prase()
     {
+        super.prase();
         try
         {
             JSONObject object = new JSONObject(getMessage().getMessage());
