@@ -11,7 +11,7 @@ import android.view.accessibility.AccessibilityEvent;
  * @qq 	461051353
  * @describe 获取点击事件
  */
-public class AccessibilityWinchageAction extends AccessibilityAction
+public class WindowsChageNofity extends AActionNofity
 {
     public static final String TAG = "AccessibilityClickAction";
 

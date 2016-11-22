@@ -16,7 +16,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * @qq 	461051353
  * @describe 获取Activity事件
  */
-public class AccessibilityActivityAction extends AccessibilityAction
+public class ActivityNofity extends AActionNofity
 {
     public static final String TAG = "AccessibilityActivityAction";
 

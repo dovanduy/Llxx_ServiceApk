@@ -13,7 +13,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * @qq 	461051353
  * @describe 获取点击事件
  */
-public class AccessibilityDialogAction extends AccessibilityAction
+public class DialogNofity extends AActionNofity
 {
     public static final String TAG = "AccessibilityClickAction";
 

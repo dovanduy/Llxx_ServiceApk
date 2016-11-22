@@ -9,21 +9,21 @@ import android.view.accessibility.AccessibilityEvent;
  * @author fanxin, eachen
  * @date   2016年9月9日
  * @qq 	461051353
- * @describe 获取滚动事件
+ * @describe 文本改变事件监听
  */
-public class AccessibilityScrollAction extends AccessibilityAction
+public class TextChangeNofity extends AActionNofity
 {
-    public static final String TAG = "AccessibilityScrollAction";
+    public static final String TAG = "AccessibilityTextChangeAction";
 
     @Override
     public int getEventType()
     {
-        return AccessibilityEvent.TYPE_VIEW_SCROLLED;
+        return AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED;
     }
 
     @Override
     protected String getActoin()
     {
-        return "scrolled";
+        return "textchange";
     }
 }

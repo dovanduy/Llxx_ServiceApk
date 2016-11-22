@@ -5,14 +5,14 @@ package com.llxx.socket.action.manager;
 
 import java.util.ArrayList;
 
-import com.llxx.socket.action.AccessibilityAction;
-import com.llxx.socket.action.AccessibilityActivityAction;
-import com.llxx.socket.action.AccessibilityClickAction;
-import com.llxx.socket.action.AccessibilityDialogAction;
-import com.llxx.socket.action.AccessibilityNotifyAction;
-import com.llxx.socket.action.AccessibilityScrollAction;
-import com.llxx.socket.action.AccessibilityTextChangeAction;
-import com.llxx.socket.action.AccessibilityWinchageAction;
+import com.llxx.socket.action.AActionNofity;
+import com.llxx.socket.action.ActivityNofity;
+import com.llxx.socket.action.ClickNofity;
+import com.llxx.socket.action.DialogNofity;
+import com.llxx.socket.action.NotifyActionNofity;
+import com.llxx.socket.action.ScrollActionNofity;
+import com.llxx.socket.action.TextChangeNofity;
+import com.llxx.socket.action.WindowsChageNofity;
 
 /**
  * @author fanxin, eachen
@@ -20,20 +20,20 @@ import com.llxx.socket.action.AccessibilityWinchageAction;
  */
 public class AccessibilityActionConfig
 {
-    public static final ArrayList<AccessibilityAction> ACTIONS = new ArrayList<AccessibilityAction>();
+    public static final ArrayList<AActionNofity> ACTIONS = new ArrayList<AActionNofity>();
 
     static
     {
 
-        ACTIONS.add(new AccessibilityClickAction());
-        ACTIONS.add(new AccessibilityNotifyAction());
-        ACTIONS.add(new AccessibilityActivityAction());
-        ACTIONS.add(new AccessibilityDialogAction());
-        ACTIONS.add(new AccessibilityWinchageAction());
+        ACTIONS.add(new ClickNofity());
+        ACTIONS.add(new NotifyActionNofity());
+        ACTIONS.add(new ActivityNofity());
+        ACTIONS.add(new DialogNofity());
+        ACTIONS.add(new WindowsChageNofity());
 
-        ACTIONS.add(new AccessibilityScrollAction());
+        ACTIONS.add(new ScrollActionNofity());
 
-        ACTIONS.add(new AccessibilityTextChangeAction());
+        ACTIONS.add(new TextChangeNofity());
 
     }
 }

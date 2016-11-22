@@ -3,7 +3,7 @@
  */
 package com.llxx.socket.action.manager;
 
-import com.llxx.socket.action.AccessibilityAction;
+import com.llxx.socket.action.AActionNofity;
 
 import android.content.Context;
 import android.view.accessibility.AccessibilityEvent;
@@ -26,7 +26,7 @@ public class AccessibilityActionManager
      */
     public static final String processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
-        for (AccessibilityAction config : AccessibilityActionConfig.ACTIONS)
+        for (AActionNofity config : AccessibilityActionConfig.ACTIONS)
         {
             try
             {

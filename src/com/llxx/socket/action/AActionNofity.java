@@ -18,7 +18,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * @qq 	461051353
  * @describe 辅助服务对应的Action
  */
-public abstract class AccessibilityAction
+public abstract class AActionNofity
 {
     static final String TAG = "AccessibilityAction";
 
@@ -28,7 +28,7 @@ public abstract class AccessibilityAction
     String result = "";
     AccessibilityResult mAccessibilityResult;
 
-    public AccessibilityAction()
+    public AActionNofity()
     {
         mAccessibilityResult = new AccessibilityResult(getActoin());
     }
