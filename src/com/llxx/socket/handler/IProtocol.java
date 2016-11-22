@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.llxx.socket.protocol;
+package com.llxx.socket.handler;
 
 import com.llxx.socket.wrap.bean.Ll_Message;
 
@@ -16,5 +16,5 @@ public interface IProtocol
      * @param message
      * @return
      */
-    public Protocol parseMessage(Ll_Message message);
+    public RequestHandler parseMessage(Ll_Message message);
 }

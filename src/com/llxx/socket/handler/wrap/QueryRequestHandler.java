@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.llxx.socket.protocol.wrap;
+package com.llxx.socket.handler.wrap;
 
 import java.io.File;
 import java.util.Collections;
@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import com.ihongqiqu.util.AppUtils;
 import com.ihongqiqu.util.DisplayUtils;
-import com.llxx.socket.protocol.Protocol;
+import com.llxx.socket.handler.RequestHandler;
 import com.llxx.socket.service.Ll_SocketService;
 import com.llxx.socket.wrap.Ll_ClientSocketWrap;
 
@@ -34,7 +34,7 @@ import cn.trinea.android.common.util.ImageUtils;
  * @author 繁星
  * @describe 打开页面
  */
-public class ProtocolQuery extends Protocol
+public class QueryRequestHandler extends RequestHandler
 {
 
     /**当前运行的顶部的Acitivity*/

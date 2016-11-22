@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.llxx.socket.protocol;
+package com.llxx.socket.handler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,13 +18,13 @@ public class ProtocolJson implements IProtocol
     public static final String TAG = "ProtocolJson";
 
     @Override
-    public Protocol parseMessage(Ll_Message message)
+    public RequestHandler parseMessage(Ll_Message message)
     {
         try
         {
             JSONObject object = new JSONObject(message.getMessage());
             String action = object.optString("action", "");
-            Class<? extends Protocol> protocol = ProtocolManager.mProtocols
+            Class<? extends RequestHandler> protocol = ProtocolManager.mProtocols
                     .get(action);
             
             Ll_Loger.d(TAG, "parseMessage -> action : " + action
@@ -33,7 +33,7 @@ public class ProtocolJson implements IProtocol
             {
                 try
                 {
-                    Protocol mProtocol = protocol.newInstance();
+                    RequestHandler mProtocol = protocol.newInstance();
                     mProtocol.setMessage(message);
                     mProtocol.prase();
                     return mProtocol;

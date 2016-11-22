@@ -12,7 +12,6 @@ public abstract class Command
     Ll_Message message;
     boolean isRunOk = false;
     private String reason = "";
-    private String id = "";
 
     CommandBean mCommandBean;
     /**
@@ -122,6 +121,7 @@ public abstract class Command
         {
             JSONObject object = new JSONObject();
             object.put("action", getAction());
+            object.put("id", getCommand().getId());
             return object;
         }
         catch (Exception e)
@@ -141,6 +141,7 @@ public abstract class Command
         {
             JSONObject object = new JSONObject();
             object.put("action", getAction());
+            object.put("id", getCommand().getId());
             return object;
         }
         catch (Exception e)
@@ -229,21 +230,4 @@ public abstract class Command
     {
         this.reason = reason;
     }
-
-    /**
-     * @return the id
-     */
-    public String getId()
-    {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(String id)
-    {
-        this.id = id;
-    }
-
 }

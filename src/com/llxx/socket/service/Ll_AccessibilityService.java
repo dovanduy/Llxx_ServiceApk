@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import com.llxx.client.node.Ll_AccessibilityClient;
 import com.llxx.nodefinder.QueryController;
-import com.llxx.socket.action.AccessibilityActionManager;
+import com.llxx.socket.action.manager.AccessibilityActionManager;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.utils.BinderUtils;
 

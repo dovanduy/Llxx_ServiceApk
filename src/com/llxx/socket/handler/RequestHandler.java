@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.llxx.socket.protocol;
+package com.llxx.socket.handler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +14,7 @@ import com.llxx.socket.wrap.Ll_ClientSocketWrap;
  * @author 繁星
  * @describe 协议数据协议分装
  */
-public abstract class Protocol extends Command
+public abstract class RequestHandler extends Command
 {
     private String classname = "";
     private String packageName = "";

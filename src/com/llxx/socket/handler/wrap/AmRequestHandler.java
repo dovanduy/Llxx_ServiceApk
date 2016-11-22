@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.llxx.socket.protocol.wrap;
+package com.llxx.socket.handler.wrap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.llxx.socket.handler.RequestHandler;
 import com.llxx.socket.loger.Ll_Loger;
-import com.llxx.socket.protocol.Protocol;
 import com.llxx.socket.service.Ll_SocketService;
 import com.llxx.socket.wrap.Ll_ClientSocketWrap;
 
@@ -17,7 +17,7 @@ import android.content.Context;
  * @author 繁星
  * @describe 打开页面
  */
-public class ProtocolAm extends Protocol
+public class AmRequestHandler extends RequestHandler
 {
     public static final String TAG = "ProtocolAm";
     

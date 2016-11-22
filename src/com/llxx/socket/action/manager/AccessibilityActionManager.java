@@ -1,7 +1,9 @@
 /**
  * 
  */
-package com.llxx.socket.action;
+package com.llxx.socket.action.manager;
+
+import com.llxx.socket.action.AccessibilityAction;
 
 import android.content.Context;
 import android.view.accessibility.AccessibilityEvent;

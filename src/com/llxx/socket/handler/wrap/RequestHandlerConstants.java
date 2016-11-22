@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.llxx.socket.protocol.wrap;
+package com.llxx.socket.handler.wrap;
 
 /**
  * @author 繁星
  * @describe 协议的常量
  */
-public class ProtocolConstants
+public class RequestHandlerConstants
 {
     /**
      * 启动类型是Activity

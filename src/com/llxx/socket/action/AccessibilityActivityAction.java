@@ -3,10 +3,6 @@
  */
 package com.llxx.socket.action;
 
-import com.llxx.socket.loger.Ll_Loger;
-import com.llxx.socket.protocol.wrap.ProtocolActivity;
-import com.llxx.socket.protocol.wrap.ProtocolConstants;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -25,7 +21,7 @@ public class AccessibilityActivityAction extends AccessibilityAction
     public static final String TAG = "AccessibilityActivityAction";
 
     @Override
-    protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
+    public boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
         try
         {

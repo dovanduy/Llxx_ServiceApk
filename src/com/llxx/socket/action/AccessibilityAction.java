@@ -3,10 +3,9 @@
  */
 package com.llxx.socket.action;
 
-import java.util.List;
-
 import com.llxx.nodefinder.AccessibilityNodeInfoToJson;
 import com.llxx.socket.action.result.AccessibilityResult;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
@@ -47,7 +46,7 @@ public abstract class AccessibilityAction
      * @return
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    protected boolean preProcessEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
+    public boolean preProcessEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
         setResult("");
         try
@@ -80,7 +79,7 @@ public abstract class AccessibilityAction
      * @param nodeInfo Node信息，有可能返回为空，需要添加判断
      * @return
      */
-    protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
+    public boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
         try
         {

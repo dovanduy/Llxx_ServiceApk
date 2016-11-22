@@ -18,7 +18,7 @@ public class AccessibilityDialogAction extends AccessibilityAction
     public static final String TAG = "AccessibilityClickAction";
 
     @Override
-    protected boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
+    public boolean processEvent(Context context, AccessibilityEvent event, AccessibilityNodeInfo nodeInfo)
     {
         try
         {
