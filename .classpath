@@ -11,5 +11,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="ws_service"/>
+	<classpathentry kind="lib" path="provide/android-19_layoutlib.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

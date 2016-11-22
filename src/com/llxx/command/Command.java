@@ -12,6 +12,7 @@ public abstract class Command
     Ll_Message message;
     boolean isRunOk = false;
     private String reason = "";
+    private String id = "";
 
     CommandBean mCommandBean;
     /**
@@ -227,6 +228,22 @@ public abstract class Command
     public void setReason(String reason)
     {
         this.reason = reason;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId()
+    {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id)
+    {
+        this.id = id;
     }
 
 }

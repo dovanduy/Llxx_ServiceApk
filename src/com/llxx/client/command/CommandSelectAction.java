@@ -201,25 +201,6 @@ public class CommandSelectAction extends CommandRun
         return "uiSecletAction";
     }
 
-    @Override
-    public String getResult(Context context)
-    {
-        JSONObject object = getJsonObject();
-        if (object != null)
-        {
-            try
-            {
-                object.put("isToClient", true);
-                return object.toString();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
     /**
      * @return the type
      */

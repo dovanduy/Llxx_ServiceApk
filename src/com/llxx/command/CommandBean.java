@@ -18,6 +18,7 @@ public class CommandBean
     public static final String KEY_PARAMS = "params";
     public static final String KEY_SUCESS = "sucess";
     public static final String KEY_ACTOIN = "action";
+    public static final String KEY_ID = "id";
     public static final String KEY_REASON = "reason";
     public static final String KEY_DESCRIBE = "describe";
 
@@ -27,6 +28,7 @@ public class CommandBean
     private String action = "";
     private String classname = "";
     private String packageName = "";
+    private String id = "";
     private String describe = "";
 
     Ll_Message message;
@@ -38,7 +40,8 @@ public class CommandBean
         try
         {
             JSONObject object = new JSONObject(this.message.getMessage());
-            this.action = object.optString(action);
+            this.action = object.optString(KEY_ACTOIN);
+            this.id = object.optString(KEY_ID);
             this.describe = object.optString(KEY_DESCRIBE, "");
             mParams = object.getJSONObject(KEY_PARAMS);
             if (mParams == null)
@@ -200,6 +203,22 @@ public class CommandBean
     public void setDescribe(String describe)
     {
         this.describe = describe;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId()
+    {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id)
+    {
+        this.id = id;
     }
 
 }

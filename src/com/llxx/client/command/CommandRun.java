@@ -39,7 +39,7 @@ public abstract class CommandRun extends Command
             {
                 object.put("sucess", isRunOk());
                 object.put("clientHash", getClientHash());
-                if(getCommandResult() != null)
+                if (getCommandResult() != null)
                 {
                     object.put(PARAMS, getCommandResult());
                 }
@@ -53,7 +53,7 @@ public abstract class CommandRun extends Command
         }
         return null;
     }
-    
+
     @Override
     public JSONObject getErrorResult()
     {
@@ -74,7 +74,7 @@ public abstract class CommandRun extends Command
         }
         return null;
     }
-    
+
     @Override
     public String getResult(Context context)
     {
@@ -84,6 +84,7 @@ public abstract class CommandRun extends Command
             try
             {
                 object.put("isToClient", true);
+                object.put("id", getCommand().getId());
                 return object.toString();
             }
             catch (Exception e)
