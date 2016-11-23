@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ihongqiqu.util.AppUtils;
@@ -37,9 +36,6 @@ import cn.trinea.android.common.util.ImageUtils;
 public class QueryRequestHandler extends RequestHandler
 {
 
-    /**当前运行的顶部的Acitivity*/
-    public static final String TOP_ACTIVITY = "top_activity";
-
     /**屏幕大小*/
     public static final String SCREENSIZE = "screensize";
 
@@ -52,43 +48,20 @@ public class QueryRequestHandler extends RequestHandler
     /**所有APK的信息*/
     public static final String ALLAPPINFO = "allappinfo";
 
-    private String type = "";
-    private String packagename = "";
-
     @Override
     public void doAction(Ll_ClientSocketWrap wrap, Ll_SocketService service)
     {
+        String type = getCommand().getParams("type", "");
         switch (type)
         {
-        case TOP_ACTIVITY:
-            {
-                try
-                {
-                    ActivityManager am = (ActivityManager) service.getSystemService(Context.ACTIVITY_SERVICE);
-                    // get the info from the currently running task  
-                    List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-                    ComponentName componentInfo = taskInfo.get(0).topActivity;
-                    JSONObject result = new JSONObject();
-                    result.put("package", componentInfo.getPackageName());
-                    result.put("class", componentInfo.getClassName());
-                    setCommandResult(result);
-                    setRunOk(true);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            break;
         case SCREENSIZE:
             {
                 try
                 {
-                    JSONObject result = new JSONObject();
-                    result.put("width", DisplayUtils.getScreenW(service));
-                    result.put("height", DisplayUtils.getScreenH(service));
-                    setCommandResult(result);
-                    setRunOk(true);
+                    getResult().putParams("width", DisplayUtils.getScreenW(service));
+                    getResult().putParams("height", DisplayUtils.getScreenH(service));
+                    getResult().setSucess(true);
+                    return;
                 }
                 catch (Exception e)
                 {
@@ -100,8 +73,7 @@ public class QueryRequestHandler extends RequestHandler
             {
                 try
                 {
-                    JSONObject object = new JSONObject(getMessage().getMessage());
-                    packagename = object.optJSONObject(PARAMS).optString("package");
+                    String packagename = getCommand().getParams("packagename", "");
                     if (!TextUtils.isEmpty(packagename))
                     {
                         // Retrieve all services that can match the given intent
@@ -136,8 +108,7 @@ public class QueryRequestHandler extends RequestHandler
             {
                 try
                 {
-                    JSONObject object = new JSONObject(getMessage().getMessage());
-                    packagename = object.optJSONObject(PARAMS).optString("package");
+                    String packagename = getCommand().getParams("packagename", "");
                     if (!TextUtils.isEmpty(packagename))
                     {
                         // Retrieve all services that can match the given intent
@@ -172,8 +143,7 @@ public class QueryRequestHandler extends RequestHandler
             {
                 try
                 {
-                    JSONObject object = new JSONObject(getMessage().getMessage());
-                    String dir = object.optJSONObject(PARAMS).optString("dir");
+                    String dir = getCommand().getParams("dir", "");
                     if (!TextUtils.isEmpty(dir))
                     {
 
@@ -236,61 +206,8 @@ public class QueryRequestHandler extends RequestHandler
     }
 
     @Override
-    public boolean prase()
-    {
-        super.prase();
-        try
-        {
-            JSONObject object = new JSONObject(getMessage().getMessage());
-            type = object.optString("type", "");
-            return true;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
     public String action()
     {
         return "query";
     }
-
-    @Override
-    public String getResult(Context context)
-    {
-        JSONObject object = getJsonObject();
-        if (object != null)
-        {
-            try
-            {
-                object.put("type", type);
-                return object.toString();
-            }
-            catch (JSONException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @return the type
-     */
-    public String getType()
-    {
-        return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type)
-    {
-        this.type = type;
-    }
-
 }

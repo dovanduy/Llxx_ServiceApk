@@ -10,6 +10,8 @@ import com.llxx.command.Command;
 import com.llxx.socket.service.Ll_SocketService;
 import com.llxx.socket.wrap.Ll_ClientSocketWrap;
 
+import android.content.Context;
+
 /**
  * @author 繁星
  * @describe 协议数据协议分装
@@ -43,6 +45,17 @@ public abstract class RequestHandler extends Command
             {
                 e.printStackTrace();
             }
+        }
+        return null;
+    }
+
+    @Override
+    public String getResult(Context context)
+    {
+        JSONObject object = getJsonObject();
+        if (object != null)
+        {
+            return object.toString();
         }
         return null;
     }

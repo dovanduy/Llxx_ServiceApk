@@ -11,7 +11,7 @@ import org.json.JSONObject;
  * @describe 
  *
  */
-public abstract class Result
+public class CommandResult
 {
     public static final String KEY_PARAMS = "params";
     public static final String KEY_SUCESS = "sucess";
@@ -27,8 +27,9 @@ public abstract class Result
     private String packageName = "";
 
     private String reason = "";
+    private String id = "";
 
-    public Result(String action)
+    public CommandResult(String action)
     {
         mResult = new JSONObject();
         mParams = new JSONObject();
@@ -170,6 +171,22 @@ public abstract class Result
     public void setReason(String reason)
     {
         this.reason = reason;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId()
+    {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id)
+    {
+        this.id = id;
     }
 
 }

@@ -2,6 +2,7 @@ package com.llxx.socket.service;
 
 import java.io.IOException;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.llxx.client.command.CommandManager;
@@ -126,7 +127,17 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
         if (protocol != null)
         {
             protocol.doAction(wrap, this);
-            wrap.sendmsg(protocol.getResult(getApplicationContext()));
+            try
+            {
+                String resurlt = protocol.getResult().getResult();
+                if (DEBUG_ON_MESSAGE)
+                    Ll_Loger.d(TAG, "SocketService.onResult->" + resurlt);
+                wrap.sendmsg(resurlt);
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
         }
         else
         {

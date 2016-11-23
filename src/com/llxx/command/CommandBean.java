@@ -24,7 +24,7 @@ public class CommandBean
 
     JSONObject mParams;
 
-    private boolean sucess;
+    private boolean sucess = false;
     private String action = "";
     private String classname = "";
     private String packageName = "";
@@ -46,7 +46,7 @@ public class CommandBean
             mParams = object.getJSONObject(KEY_PARAMS);
             if (mParams == null)
                 mParams = new JSONObject();
-            sucess = isSucess();
+            sucess = true;
         }
         catch (Exception e)
         {

@@ -14,6 +14,8 @@ public abstract class Command
     private String reason = "";
 
     CommandBean mCommandBean;
+    CommandResult mCommandResult;
+
     /**
      * 是否是发送给客户端端的
      */
@@ -41,7 +43,15 @@ public abstract class Command
     public boolean prase()
     {
         mCommandBean = new CommandBean(getMessage());
-        return mCommandBean.isSucess();
+        mCommandResult = new CommandResult(mCommandBean.getAction());
+        if (!mCommandBean.isSucess())
+        {
+            mCommandResult.setReason("parse requer json error!!");
+            return false;
+        }
+        mCommandResult.setId(mCommandBean.getId());
+        mCommandResult.setSucess(mCommandBean.isSucess());
+        return true;
     }
 
     /**
@@ -51,6 +61,11 @@ public abstract class Command
     public CommandBean getCommand()
     {
         return mCommandBean;
+    }
+
+    public CommandResult getResult()
+    {
+        return mCommandResult;
     }
 
     /**
@@ -71,6 +86,7 @@ public abstract class Command
     /**
      * 返回结果
      * @return 给客户端返回数据结果
+     * @deprecated 使用getResult() {@link #getResult()}
      */
     public abstract String getResult(Context context);
 
