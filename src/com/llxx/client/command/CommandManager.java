@@ -8,7 +8,6 @@ public class CommandManager
 
     static
     {
-        mProtocols.put("queryAccessibility", CommandQuery.class);
         mProtocols.put("regPackage", CommandRegPackage.class);
         mProtocols.put("uiSecletAction", CommandSelectAction.class);
     }
