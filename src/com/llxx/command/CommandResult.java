@@ -17,6 +17,7 @@ public class CommandResult
     public static final String KEY_SUCESS = "sucess";
     public static final String KEY_ACTOIN = "action";
     public static final String KEY_REASON = "reason";
+    public static final String KEY_ID = "id";
 
     JSONObject mResult;
     JSONObject mParams;
@@ -46,6 +47,7 @@ public class CommandResult
         mResult.put(KEY_SUCESS, isSucess());
         mResult.put(KEY_ACTOIN, action);
         mResult.put(KEY_REASON, reason);
+        mResult.put(KEY_ID, id);
         mParams.put("classname", getClassname());
         mParams.put("packagename", getPackageName());
         mResult.put(KEY_PARAMS, mParams);
