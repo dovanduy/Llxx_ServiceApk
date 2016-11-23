@@ -16,9 +16,6 @@ import com.llxx.socket.handler.RequestHandler;
 import com.llxx.socket.service.Ll_SocketService;
 import com.llxx.socket.wrap.Ll_ClientSocketWrap;
 
-import android.app.ActivityManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
@@ -82,9 +79,8 @@ public class QueryRequestHandler extends RequestHandler
                         intent.setPackage(packagename);
                         PackageInfo infos = pm.getPackageInfo(packagename,
                                 android.content.pm.PackageManager.GET_ACTIVITIES);
-                        JSONObject result = new JSONObject();
                         JSONArray activitys = new JSONArray();
-                        result.put("activitys", activitys);
+                        getResult().putParams("activitys", activitys);
                         for (ActivityInfo info : infos.activities)
                         {
                             JSONObject activity = new JSONObject();
@@ -94,8 +90,7 @@ public class QueryRequestHandler extends RequestHandler
                             activity.put("permission", info.permission);
                             activitys.put(activity);
                         }
-                        setCommandResult(result);
-                        setRunOk(true);
+                        getResult().setSucess(true);
                     }
                 }
                 catch (Exception e)
@@ -119,7 +114,7 @@ public class QueryRequestHandler extends RequestHandler
                                 android.content.pm.PackageManager.GET_SERVICES);
                         JSONObject result = new JSONObject();
                         JSONArray activitys = new JSONArray();
-                        result.put("services", activitys);
+                        getResult().putParams("services", activitys);
                         for (ServiceInfo info : infos.services)
                         {
                             JSONObject activity = new JSONObject();
@@ -129,8 +124,7 @@ public class QueryRequestHandler extends RequestHandler
                             activity.put("isRunning", AppUtils.isServiceRunning(service, info.name));
                             activitys.put(activity);
                         }
-                        setCommandResult(result);
-                        setRunOk(true);
+                        getResult().setSucess(true);
                     }
                 }
                 catch (Exception e)
@@ -157,9 +151,8 @@ public class QueryRequestHandler extends RequestHandler
                         // 该排序很重要，否则只能显示系统应用，而不能列出第三方应用程序
                         Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(pm));
 
-                        JSONObject result = new JSONObject();
                         JSONArray activitys = new JSONArray();
-                        result.put("packages", activitys);
+                        getResult().putParams("packages", activitys);
                         File filedir = new File(dir);
                         if (!filedir.exists())
                         {
@@ -189,8 +182,7 @@ public class QueryRequestHandler extends RequestHandler
                             activity.put("iconsucess", isSucess);
                             activitys.put(activity);
                         }
-                        setCommandResult(result);
-                        setRunOk(true);
+                        getResult().setSucess(true);
                     }
                 }
                 catch (Throwable e)
