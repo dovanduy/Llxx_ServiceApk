@@ -55,9 +55,9 @@ public class QueryRequestHandler extends RequestHandler
             {
                 try
                 {
-                    getResult().putParams("width", DisplayUtils.getScreenW(service));
-                    getResult().putParams("height", DisplayUtils.getScreenH(service));
-                    getResult().setSucess(true);
+                    getResultObject().putParams("width", DisplayUtils.getScreenW(service));
+                    getResultObject().putParams("height", DisplayUtils.getScreenH(service));
+                    getResultObject().setSucess(true);
                     return;
                 }
                 catch (Exception e)
@@ -80,7 +80,7 @@ public class QueryRequestHandler extends RequestHandler
                         PackageInfo infos = pm.getPackageInfo(packagename,
                                 android.content.pm.PackageManager.GET_ACTIVITIES);
                         JSONArray activitys = new JSONArray();
-                        getResult().putParams("activitys", activitys);
+                        getResultObject().putParams("activitys", activitys);
                         for (ActivityInfo info : infos.activities)
                         {
                             JSONObject activity = new JSONObject();
@@ -90,7 +90,7 @@ public class QueryRequestHandler extends RequestHandler
                             activity.put("permission", info.permission);
                             activitys.put(activity);
                         }
-                        getResult().setSucess(true);
+                        getResultObject().setSucess(true);
                     }
                 }
                 catch (Exception e)
@@ -114,7 +114,7 @@ public class QueryRequestHandler extends RequestHandler
                                 android.content.pm.PackageManager.GET_SERVICES);
                         JSONObject result = new JSONObject();
                         JSONArray activitys = new JSONArray();
-                        getResult().putParams("services", activitys);
+                        getResultObject().putParams("services", activitys);
                         for (ServiceInfo info : infos.services)
                         {
                             JSONObject activity = new JSONObject();
@@ -124,7 +124,7 @@ public class QueryRequestHandler extends RequestHandler
                             activity.put("isRunning", AppUtils.isServiceRunning(service, info.name));
                             activitys.put(activity);
                         }
-                        getResult().setSucess(true);
+                        getResultObject().setSucess(true);
                     }
                 }
                 catch (Exception e)
@@ -152,7 +152,7 @@ public class QueryRequestHandler extends RequestHandler
                         Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(pm));
 
                         JSONArray activitys = new JSONArray();
-                        getResult().putParams("packages", activitys);
+                        getResultObject().putParams("packages", activitys);
                         File filedir = new File(dir);
                         if (!filedir.exists())
                         {
@@ -182,7 +182,7 @@ public class QueryRequestHandler extends RequestHandler
                             activity.put("iconsucess", isSucess);
                             activitys.put(activity);
                         }
-                        getResult().setSucess(true);
+                        getResultObject().setSucess(true);
                     }
                 }
                 catch (Throwable e)

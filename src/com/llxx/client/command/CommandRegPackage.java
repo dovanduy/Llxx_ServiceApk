@@ -22,7 +22,7 @@ public class CommandRegPackage extends CommandRun
                     stirngs[i] = array.getString(i);
                 }
                 accessibilityService.setPackage(stirngs);
-                getResult().setSucess(true);
+                getResultObject().setSucess(true);
                 return true;
             }
             catch (Throwable e)
@@ -30,6 +30,7 @@ public class CommandRegPackage extends CommandRun
                 e.printStackTrace();
             }
         }
+        getResultObject().setSucess(false);
         return false;
     }
 

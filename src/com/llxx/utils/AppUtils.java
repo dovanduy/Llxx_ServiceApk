@@ -34,16 +34,14 @@ public class AppUtils
         openApp(openPackageName, context, null);
     }
 
-    public static final void openApp(String openPackageName, Activity context,
-            Map<String, String> values)
+    public static final void openApp(String openPackageName, Activity context, Map<String, String> values)
     {
         if (openPackageName == null)
             return;
         PackageManager pm = context.getPackageManager();
         try
         {
-            PackageInfo pi = context.getPackageManager()
-                    .getPackageInfo(openPackageName, 0);
+            PackageInfo pi = context.getPackageManager().getPackageInfo(openPackageName, 0);
 
             Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
             resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -58,8 +56,7 @@ public class AppUtils
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
                 ComponentName cn = new ComponentName(packageName, className);
                 intent.setComponent(cn);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
                 if (values != null)
                 {
                     for (String key : values.keySet())
@@ -80,8 +77,9 @@ public class AppUtils
      * 打开APP
      * @param openPackageName
      * @param context
+     * @throws NameNotFoundException 
      */
-    public static final void openApp(String openPackageName, Context context)
+    public static final void openApp(String openPackageName, Context context) throws NameNotFoundException
     {
         openApp(openPackageName, context, null);
     }
@@ -90,46 +88,38 @@ public class AppUtils
      * 打开指定包名的App
      * @param openPackageName
      * @param context
+     * @throws NameNotFoundException 
      */
-    public static final void openApp(String openPackageName, Context context,
-            Map<String, String> values)
+    public static final void openApp(String openPackageName, Context context, Map<String, String> values)
+            throws NameNotFoundException
     {
         if (openPackageName == null)
             return;
         PackageManager pm = context.getPackageManager();
-        try
-        {
-            PackageInfo pi = context.getPackageManager()
-                    .getPackageInfo(openPackageName, 0);
+        PackageInfo pi = context.getPackageManager().getPackageInfo(openPackageName, 0);
 
-            Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
-            resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-            resolveIntent.setPackage(pi.packageName);
-            List<ResolveInfo> apps = pm.queryIntentActivities(resolveIntent, 0);
-            ResolveInfo ri = apps.iterator().next();
-            if (ri != null)
-            {
-                String packageName = ri.activityInfo.packageName;
-                String className = ri.activityInfo.name;
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                ComponentName cn = new ComponentName(packageName, className);
-                intent.setComponent(cn);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                if (values != null)
-                {
-                    for (String key : values.keySet())
-                    {
-                        intent.putExtra(key, values.get(key));
-                    }
-                }
-                context.startActivity(intent);
-            }
-        }
-        catch (PackageManager.NameNotFoundException localNameNotFoundException)
+        Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+        resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        resolveIntent.setPackage(pi.packageName);
+        List<ResolveInfo> apps = pm.queryIntentActivities(resolveIntent, 0);
+        ResolveInfo ri = apps.iterator().next();
+        if (ri != null)
         {
-            localNameNotFoundException.printStackTrace();
+            String packageName = ri.activityInfo.packageName;
+            String className = ri.activityInfo.name;
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            ComponentName cn = new ComponentName(packageName, className);
+            intent.setComponent(cn);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            if (values != null)
+            {
+                for (String key : values.keySet())
+                {
+                    intent.putExtra(key, values.get(key));
+                }
+            }
+            context.startActivity(intent);
         }
     }
 
@@ -139,8 +129,7 @@ public class AppUtils
      * @param packageName
      * @return
      */
-    public static final boolean isInstallApp(Context context,
-            String packageName)
+    public static final boolean isInstallApp(Context context, String packageName)
     {
         final PackageManager packageManager = context.getPackageManager();
         // 获取所有已安装程序的包信息
@@ -160,8 +149,7 @@ public class AppUtils
      * @param className
      * @return
      */
-    public static final boolean isExsitAcivity(Activity activity,
-            String packageName, String className)
+    public static final boolean isExsitAcivity(Activity activity, String packageName, String className)
     {
         Intent intent = new Intent();
         intent.setClassName(packageName, className);
@@ -182,8 +170,7 @@ public class AppUtils
     {
         try
         {
-            ActivityManager mAm = (ActivityManager) context
-                    .getSystemService(Context.ACTIVITY_SERVICE);
+            ActivityManager mAm = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             mAm.killBackgroundProcesses(packageName);
         }
         catch (Exception e)
@@ -196,15 +183,12 @@ public class AppUtils
      * @param context
      * @param packageName
      */
-    public static final void force_stopPackage(Context context,
-            String packageName)
+    public static final void force_stopPackage(Context context, String packageName)
     {
         try
         {
-            ActivityManager mAm = (ActivityManager) context
-                    .getSystemService(Context.ACTIVITY_SERVICE);
-            Method method = Class.forName("android.app.ActivityManager")
-                    .getMethod("forceStopPackage", String.class);
+            ActivityManager mAm = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            Method method = Class.forName("android.app.ActivityManager").getMethod("forceStopPackage", String.class);
             method.invoke(mAm, packageName);
         }
         catch (Exception e)
@@ -222,8 +206,7 @@ public class AppUtils
         String versionCode = "";
         try
         {
-            PackageInfo info = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             versionCode = info.versionName + "";
         }
         catch (NameNotFoundException e)
@@ -246,8 +229,7 @@ public class AppUtils
         {
             PackageManager manager = context.getPackageManager();
             /** 通过包管理器获得指定包名包含签名的包信息 **/
-            PackageInfo packageInfo = manager.getPackageInfo(packegeName,
-                    PackageManager.GET_SIGNATURES);
+            PackageInfo packageInfo = manager.getPackageInfo(packegeName, PackageManager.GET_SIGNATURES);
             /******* 通过返回的包信息获得签名数组 *******/
             Signature[] signatures = packageInfo.signatures;
             StringBuilder builder = new StringBuilder();
@@ -271,8 +253,7 @@ public class AppUtils
      * 是否共享系统UID
      * @return
      */
-    public static boolean isSharedUserIdSystem(Context context,
-            String packagename)
+    public static boolean isSharedUserIdSystem(Context context, String packagename)
     {
         PackageManager manager = context.getPackageManager();
         boolean IS_SHARED_USER_ID = false;

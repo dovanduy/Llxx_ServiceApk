@@ -127,17 +127,10 @@ public class Ll_SocketService extends Service implements Ll_MessageListener
         if (protocol != null)
         {
             protocol.doAction(wrap, this);
-            try
-            {
-                String resurlt = protocol.getResult().getResult();
-                if (DEBUG_ON_MESSAGE)
-                    Ll_Loger.d(TAG, "SocketService.onResult->" + resurlt);
-                wrap.sendmsg(resurlt);
-            }
-            catch (JSONException e)
-            {
-                e.printStackTrace();
-            }
+            String resurlt = protocol.getResultObject().getResult();
+            if (DEBUG_ON_MESSAGE)
+                Ll_Loger.d(TAG, "SocketService.onResult->" + resurlt);
+            wrap.sendmsg(resurlt);
         }
         else
         {

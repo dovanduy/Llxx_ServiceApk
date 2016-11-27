@@ -4,14 +4,11 @@ import org.json.JSONObject;
 
 import com.llxx.socket.wrap.bean.Ll_Message;
 
-import android.content.Context;
-
 public abstract class Command
 {
     public static final String PARAMS = "params";
     Ll_Message message;
     boolean isRunOk = false;
-    private String reason = "";
 
     CommandBean mCommandBean;
     CommandResult mCommandResult;
@@ -63,9 +60,18 @@ public abstract class Command
         return mCommandBean;
     }
 
-    public CommandResult getResult()
+    public CommandResult getResultObject()
     {
         return mCommandResult;
+    }
+
+    /**
+     * 获取结果
+     * @return
+     */
+    public String getResult()
+    {
+        return getResultObject().getResult().toString();
     }
 
     /**
@@ -82,13 +88,6 @@ public abstract class Command
      * @return 默认的Action方式
      */
     public abstract String action();
-
-    /**
-     * 返回结果
-     * @return 给客户端返回数据结果
-     * @deprecated 使用getResult() {@link #getResult()}
-     */
-    public abstract String getResult(Context context);
 
     /**
      * 要执行的操作
@@ -125,46 +124,6 @@ public abstract class Command
     public void setMessage(Ll_Message message)
     {
         this.message = message;
-    }
-
-    /**
-     * 获取JsonObject对象
-     * @return
-     */
-    public JSONObject getJsonObject()
-    {
-        try
-        {
-            JSONObject object = new JSONObject();
-            object.put("action", getAction());
-            object.put("id", getCommand().getId());
-            return object;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 获取JsonObject对象
-     * @return
-     */
-    public JSONObject getErrorResult()
-    {
-        try
-        {
-            JSONObject object = new JSONObject();
-            object.put("action", getAction());
-            object.put("id", getCommand().getId());
-            return object;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**
@@ -213,37 +172,5 @@ public abstract class Command
     public void setClientHash(int clientHash)
     {
         this.clientHash = clientHash;
-    }
-
-    /**
-     * @return the result
-     */
-    public JSONObject getCommandResult()
-    {
-        return result;
-    }
-
-    /**
-     * @param result the result to set
-     */
-    public void setCommandResult(JSONObject result)
-    {
-        this.result = result;
-    }
-
-    /**
-     * @return the reason
-     */
-    public String getReason()
-    {
-        return reason;
-    }
-
-    /**
-     * @param reason the reason to set
-     */
-    public void setReason(String reason)
-    {
-        this.reason = reason;
     }
 }

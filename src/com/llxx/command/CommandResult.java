@@ -40,17 +40,24 @@ public class CommandResult
     /**
      * 返回结果
      * @return 给客户端返回数据结果
-     * @throws JSONException 
      */
-    public String getResult() throws JSONException
+    public String getResult()
     {
-        mResult.put(KEY_SUCESS, isSucess());
-        mResult.put(KEY_ACTOIN, action);
-        mResult.put(KEY_REASON, reason);
-        mResult.put(KEY_ID, id);
-        mParams.put("classname", getClassname());
-        mParams.put("packagename", getPackageName());
-        mResult.put(KEY_PARAMS, mParams);
+        try
+        {
+            mResult.put(KEY_SUCESS, isSucess());
+            mResult.put(KEY_ACTOIN, action);
+            mResult.put(KEY_REASON, reason);
+            mResult.put(KEY_ID, id);
+            mResult.put(KEY_PARAMS, mParams);
+
+            mParams.put("classname", getClassname());
+            mParams.put("packagename", getPackageName());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return mResult.toString();
     }
 

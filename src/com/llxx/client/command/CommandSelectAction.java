@@ -9,13 +9,12 @@ import com.llxx.nodefinder.UiSelector;
 import com.llxx.socket.Llxx_Application;
 import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
+
 import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.SparseArray;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 public class CommandSelectAction extends CommandRun
@@ -35,19 +34,17 @@ public class CommandSelectAction extends CommandRun
         {
             try
             {
-                JSONObject nodes = new JSONObject();
                 JSONObject result = AccessibilityNodeInfoToJson.getJson(info, false);
-                nodes.put("isfind", true);
-                nodes.put("node", result);
-                setCommandResult(nodes);
+                getResultObject().putParams("isfind", true);
+                getResultObject().putParams("node", result);
 
                 if (mActoinCode != -1)
                 {
                     boolean isActionOk = performAction(accessibilityService, info);
-                    setRunOk(isActionOk);
+                    getResultObject().setSucess(isActionOk);
                     return isActionOk;
                 }
-                setRunOk(true);
+                getResultObject().setSucess(true);
                 return true;
             }
             catch (Throwable e)
@@ -59,18 +56,18 @@ public class CommandSelectAction extends CommandRun
         {
             try
             {
-                JSONObject nodes = new JSONObject();
-                nodes.put("isfind", false);
-                setRunOk(false);
-                setReason(getDescribe() + " node not find");
-                return false;
+                getResultObject().putParams("isfind", false);
+                getResultObject().setSucess(true);
+                getResultObject().setReason(getDescribe() + " node not find");
+                return true;
             }
             catch (Throwable e)
             {
                 e.printStackTrace();
             }
         }
-        setReason("find node and action fali");
+        getResultObject().setReason("find node and action fali");
+        getResultObject().setSucess(false);
         return false;
     }
 

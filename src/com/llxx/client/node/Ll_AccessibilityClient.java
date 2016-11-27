@@ -12,8 +12,6 @@ import com.llxx.socket.loger.Ll_Loger;
 import com.llxx.socket.service.Ll_AccessibilityService;
 import com.llxx.socket.wrap.bean.Ll_Message;
 
-import android.content.Context;
-
 public class Ll_AccessibilityClient implements Runnable
 {
 
@@ -55,8 +53,7 @@ public class Ll_AccessibilityClient implements Runnable
                             mProtocol.prase();
                             mProtocol.setRunOk(mProtocol.runCommand(mAccessibilityService));
                             // send(mProtocol.getResult(mAccessibilityService));
-                            mAccessibilityService.sendMessageByHash(mProtocol.getResult(mAccessibilityService),
-                                    mProtocol.getClientHash());
+                            mAccessibilityService.sendMessageByHash(mProtocol.getResult(), mProtocol.getClientHash());
                         }
                         catch (InstantiationException e)
                         {
@@ -90,7 +87,7 @@ public class Ll_AccessibilityClient implements Runnable
     {
         if (!isKeepListener)
         {
-            mAccessibilityService.sendMessage(new DiaCommand().getResult(null));
+            mAccessibilityService.sendMessage(new DiaCommand().getResult());
             return true;
         }
         return mBlockingQueue.add(message);
@@ -103,25 +100,5 @@ public class Ll_AccessibilityClient implements Runnable
         {
             return "service_dia";
         }
-
-        @Override
-        public String getResult(Context context)
-        {
-            JSONObject object = getJsonObject();
-            if (object != null)
-            {
-                try
-                {
-                    object.put("isToClient", true);
-                    return object.toString();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
     }
 }
